@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ShareLibrary</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logo_image_description">Logo Image</string>
+    <string name="registration_label">REGISTRATION</string>
+    <string name="full_name_label">Full name</string>
+    <string name="postal_code_hint">Postal code</string>
+    <string name="building_number_hint">Building number</string>
+    <string name="street_hint">Street</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="username_hint">Username</string>
+    <string name="full_name_hint">Full Name</string>
+    <string name="city_hint">City</string>
+    <string name="country_hint">Country</string>
+    <string name="register_button_text">REGISTER</string>
+    <string name="have_an_account_text">You have an account?</string>
+    <string name="sign_in_text">Sign in</string>
+</resources>
