@@ -26,8 +26,8 @@ data class LoginRequest(
     }
 
     constructor(login: Login) : this(
-        userNameOrEmail = login.userNameOrEmail,
-        password = login.password
+        userNameOrEmail = login.userNameOrEmail!!,
+        password = login.password!!
     )
 
 }
