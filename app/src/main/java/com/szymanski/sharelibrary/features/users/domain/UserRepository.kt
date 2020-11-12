@@ -5,8 +5,8 @@ import com.szymanski.sharelibrary.features.users.domain.model.User
 
 interface UserRepository {
 
-    suspend fun registerUser(user: User)
+    suspend fun registerUser(user: User): User
 
-    suspend fun login(login: Login)
+    suspend fun login(login: Login): Login
 
 }
