@@ -5,6 +5,5 @@ import com.szymanski.sharelibrary.core.exceptions.ErrorMapper
 
 class BooksViewModel(
     private val errorMapper: ErrorMapper,
-
     ) : BaseViewModel(errorMapper) {
 }
