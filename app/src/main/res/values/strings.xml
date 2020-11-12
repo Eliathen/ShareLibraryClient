@@ -17,4 +17,17 @@
     <string name="register_button_text">REGISTER</string>
     <string name="have_an_account_text">You have an account?</string>
     <string name="sign_in_text">Sign in</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_books">Books</string>
+    <string name="title_exchanges">Exchanges</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_profile">Profile</string>
+    <string name="field_required_error">This field is required</string>
+    <string name="invalid_password_error">Password have to contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:</string>
+    <string name="invalid_email_error">This email address is invalid</string>
+    <string name="login_title_text">Login</string>
+    <string name="not_account">Don\'t have an account?</string>
+    <string name="sign_up_text">Sign up</string>
+    <string name="login_button">Login</string>
+    <string name="username_or_email_hint">Username or email</string>
 </resources>

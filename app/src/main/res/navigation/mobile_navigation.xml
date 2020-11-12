@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/login_screen">
+
+    <fragment
+        android:id="@+id/chat_screen"
+        android:name="com.szymanski.sharelibrary.features.chat.presentation.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/books_screen"
+        android:name="com.szymanski.sharelibrary.features.books.presentation.BooksFragment"
+        android:label="fragment_books"
+        tools:layout="@layout/fragment_books" />
+    <fragment
+        android:id="@+id/register_screen"
+        android:name="com.szymanski.sharelibrary.features.users.registration.presentation.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register"></fragment>
+    <fragment
+        android:id="@+id/login_screen"
+        android:name="com.szymanski.sharelibrary.features.users.login.presentation.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_navigate_from_login_screen_to_register_screen"
+            app:destination="@id/register_screen" />
+        <action
+            android:id="@+id/action_navigate_from_login_screen_to_book_screen"
+            app:popUpToInclusive="true"
+            app:destination="@id/books_screen" />
+    </fragment>
+    <fragment
+        android:id="@+id/exchanges_screen"
+        android:name="com.szymanski.sharelibrary.features.exchanges.presentation.ExchangesFragment"
+        android:label="fragment_exchange"
+        tools:layout="@layout/fragment_exchange" />
+    <fragment
+        android:id="@+id/profile_screen"
+        android:name="com.szymanski.sharelibrary.features.users.profile.presentation.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>

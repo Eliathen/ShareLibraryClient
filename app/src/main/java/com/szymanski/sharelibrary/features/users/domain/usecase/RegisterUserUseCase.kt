@@ -6,9 +6,9 @@ import com.szymanski.sharelibrary.features.users.domain.model.User
 
 class RegisterUserUseCase(
     private val userRepository: UserRepository,
-) : BaseUseCase<Unit, User>() {
+) : BaseUseCase<User, User>() {
 
-    override suspend fun action(params: User) {
-        userRepository.registerUser(params)
+    override suspend fun action(params: User): User {
+        return userRepository.registerUser(params)
     }
 }

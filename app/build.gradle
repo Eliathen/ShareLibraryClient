@@ -26,6 +26,13 @@ android {
     buildFeatures {
         dataBinding true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
@@ -54,6 +61,9 @@ dependencies {
     implementation networkDependencies.values()
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
+
+    //fragment dependencies
+    implementation fragmenDependencies.values()
 
     //room dependencies
     def roomVersion = "2.2.5"
