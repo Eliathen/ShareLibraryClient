@@ -7,6 +7,7 @@ data class AddressResponse(
     @SerializedName("city") val city: String,
     @SerializedName("coordinates") val coordinates: CoordinatesResponse,
     @SerializedName("country") val country: String,
+    @SerializedName("postalCode") val postalCode: String,
     @SerializedName("id") val id: Int,
     @SerializedName("street") val street: String,
 )
