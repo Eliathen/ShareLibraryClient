@@ -12,12 +12,8 @@ class UserRepositoryImpl(
 ) : UserRepository {
 
 
-    override suspend fun registerUser(user: User) {
-        api.registerUser(RegisterRequest(user))
-    }
+    override suspend fun registerUser(user: User) = api.registerUser(RegisterRequest(user)).toUser()
 
-    override suspend fun login(login: Login) {
-        api.login(LoginRequest(login))
-    }
+    override suspend fun login(login: Login) = api.login(LoginRequest(login)).toLogin()
 
 }
