@@ -1,6 +1,6 @@
 package com.szymanski.sharelibrary.core.api.model.request
 
-import com.szymanski.sharelibrary.features.users.domain.model.User
+import com.szymanski.sharelibrary.features.user.domain.model.User
 
 
 data class RegisterRequest(

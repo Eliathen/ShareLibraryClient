@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.users.profile.presentation.ProfileFragment">
+    tools:context=".features.user.profile.presentation.ProfileFragment">
 
     <TextView
         android:layout_width="match_parent"

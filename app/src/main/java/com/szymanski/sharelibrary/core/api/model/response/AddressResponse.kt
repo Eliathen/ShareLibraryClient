@@ -1,7 +1,7 @@
 package com.szymanski.sharelibrary.core.api.model.response
 
 import com.google.gson.annotations.SerializedName
-import com.szymanski.sharelibrary.features.users.domain.model.Address
+import com.szymanski.sharelibrary.features.user.domain.model.Address
 
 data class AddressResponse(
     @SerializedName("buildingNumber") val buildingNumber: String,

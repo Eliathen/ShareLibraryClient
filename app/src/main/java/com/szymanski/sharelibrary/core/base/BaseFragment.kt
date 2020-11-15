@@ -27,7 +27,6 @@ abstract class BaseFragment<T : BaseViewModel>(@LayoutRes layoutRes: Int) : Frag
 
     open fun initObservers() {
         observeUiState()
-        observeMessage()
     }
 
     private fun observeMessage() {
@@ -35,6 +34,10 @@ abstract class BaseFragment<T : BaseViewModel>(@LayoutRes layoutRes: Int) : Frag
             showToast(it)
         }
     }
+
+    open fun onIdleState() {}
+
+    open fun onPendingState() {}
 
     private fun observeUiState() {
         viewModel.uiState.observe(viewLifecycleOwner) {
@@ -57,7 +60,4 @@ abstract class BaseFragment<T : BaseViewModel>(@LayoutRes layoutRes: Int) : Frag
         showToast(getString(stringResources))
     }
 
-    open fun onIdleState() {}
-
-    open fun onPendingState() {}
 }

@@ -1,7 +1,7 @@
 package com.szymanski.sharelibrary.core.api.model.response
 
 import com.google.gson.annotations.SerializedName
-import com.szymanski.sharelibrary.features.users.domain.model.Login
+import com.szymanski.sharelibrary.features.user.domain.model.Login
 
 
 data class LoginResponse(

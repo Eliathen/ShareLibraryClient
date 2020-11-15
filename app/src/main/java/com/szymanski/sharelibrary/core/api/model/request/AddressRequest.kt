@@ -1,6 +1,6 @@
 package com.szymanski.sharelibrary.core.api.model.request
 
-import com.szymanski.sharelibrary.features.users.domain.model.Address
+import com.szymanski.sharelibrary.features.user.domain.model.Address
 
 data class AddressRequest(
     val country: String?,

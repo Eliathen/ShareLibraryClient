@@ -1,9 +1,9 @@
-package com.szymanski.sharelibrary.features.chat.presentation
+package com.szymanski.sharelibrary.features.exchange.presentation
 
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 
-class ChatViewModel(
+class ExchangesViewModel(
     private val errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
 }
