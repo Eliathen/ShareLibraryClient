@@ -4,8 +4,9 @@ import com.szymanski.sharelibrary.core.api.model.request.LoginRequest
 import com.szymanski.sharelibrary.core.api.model.request.RegisterRequest
 import com.szymanski.sharelibrary.core.api.model.response.LoginResponse
 import com.szymanski.sharelibrary.core.api.model.response.RegisterResponse
-import retrofit2.http.Body
-import retrofit2.http.POST
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.*
 
 interface Api {
 
@@ -15,5 +16,12 @@ interface Api {
     @POST("login")
     suspend fun login(@Body loginRequest: LoginRequest): LoginResponse
 
-
+    @POST("books")
+    @Multipart
+    @JvmSuppressWildcards
+    suspend fun saveBook(
+        @Part("title") title: String,
+        @Part image: MultipartBody.Part,
+        @PartMap authors: Map<String, RequestBody>,
+    )
 }
