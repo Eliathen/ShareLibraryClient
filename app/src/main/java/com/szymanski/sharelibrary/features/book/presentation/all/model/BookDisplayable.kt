@@ -1,4 +1,4 @@
-package com.szymanski.sharelibrary.features.book.presentation.model
+package com.szymanski.sharelibrary.features.book.presentation.all.model
 
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 

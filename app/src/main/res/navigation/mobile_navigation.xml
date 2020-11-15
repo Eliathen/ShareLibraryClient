@@ -12,9 +12,14 @@
         tools:layout="@layout/fragment_chat" />
     <fragment
         android:id="@+id/books_screen"
-        android:name="com.szymanski.sharelibrary.features.book.presentation.BooksFragment"
+        android:name="com.szymanski.sharelibrary.features.book.presentation.all.BooksFragment"
         android:label="fragment_books"
-        tools:layout="@layout/fragment_books" />
+        tools:layout="@layout/fragment_books">
+        <action
+            android:id="@+id/action_navigate_from_books_screen_to_save_book_screen"
+            app:destination="@id/save_book_screen"
+            app:popUpTo="@id/books_screen" />
+    </fragment>
     <fragment
         android:id="@+id/register_screen"
         android:name="com.szymanski.sharelibrary.features.user.registration.presentation.RegisterFragment"
@@ -30,6 +35,7 @@
             app:destination="@id/register_screen" />
         <action
             android:id="@+id/action_navigate_from_login_screen_to_book_screen"
+            app:popUpTo="@id/login_screen"
             app:popUpToInclusive="true"
             app:destination="@id/books_screen" />
     </fragment>
@@ -43,5 +49,14 @@
         android:name="com.szymanski.sharelibrary.features.user.profile.presentation.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/save_book_screen"
+        android:name="com.szymanski.sharelibrary.features.book.presentation.save.SaveBookFragment"
+        android:label="fragment_save_book"
+        tools:layout="@layout/fragment_save_book">
+        <action
+            android:id="@+id/action_navigate_from_save_book_screen_to_books_screen"
+            app:destination="@id/books_screen" />
+    </fragment>
 
 </navigation>

@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".features.book.presentation.BooksFragment">
+    tools:context=".features.book.presentation.all.BooksFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/books_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BOOKS"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/save_book_floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_24"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_marginBottom="@dimen/floating_action_button_margin"
+            android:layout_marginEnd="@dimen/floating_action_button_margin"
+            android:layout_gravity="bottom|end" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </FrameLayout>
