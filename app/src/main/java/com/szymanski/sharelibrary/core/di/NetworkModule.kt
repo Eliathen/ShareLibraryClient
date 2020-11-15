@@ -3,6 +3,7 @@ package com.szymanski.sharelibrary.core.di
 import com.szymanski.sharelibrary.BuildConfig
 import com.szymanski.sharelibrary.core.api.Api
 import com.szymanski.sharelibrary.core.api.Constant
+import com.szymanski.sharelibrary.core.network.HeaderInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -38,8 +39,10 @@ val networkModule = module {
     single {
         OkHttpClient.Builder()
             .addInterceptor(get<Interceptor>())
+            .addInterceptor(HeaderInterceptor(get()))
             .build()
     }
+
 
     single {
         get<Retrofit>().create(Api::class.java)

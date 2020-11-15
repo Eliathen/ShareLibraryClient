@@ -1,19 +1,23 @@
 package com.szymanski.sharelibrary.core.di
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.szymanski.sharelibrary.R
-import com.szymanski.sharelibrary.core.exceptions.ErrorMapper
-import com.szymanski.sharelibrary.core.exceptions.ErrorMapperImpl
+import com.szymanski.sharelibrary.core.exception.ErrorMapper
+import com.szymanski.sharelibrary.core.exception.ErrorMapperImpl
+import com.szymanski.sharelibrary.core.exception.ErrorWrapper
+import com.szymanski.sharelibrary.core.exception.ErrorWrapperImpl
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigatorImpl
 import com.szymanski.sharelibrary.core.provider.ActivityProvider
+import com.szymanski.sharelibrary.core.storage.local.UserStorage
+import com.szymanski.sharelibrary.core.storage.local.UserStorageImpl
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val appModule = module {
 
-    factory { LinearLayoutManager(androidContext()) }
+    factory { LinearLayoutManager(get()) }
 
     single(createdAtStart = true) {
         ActivityProvider(androidApplication())
@@ -26,7 +30,16 @@ val appModule = module {
         )
     }
     factory<ErrorMapper> {
-        ErrorMapperImpl()
+        ErrorMapperImpl(get())
+    }
+    factory<ErrorWrapper> {
+        ErrorWrapperImpl()
+    }
+    factory {
+        Gson()
+    }
+    single<UserStorage> {
+        UserStorageImpl(get(), get())
     }
 
 }
