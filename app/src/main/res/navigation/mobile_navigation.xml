@@ -19,7 +19,7 @@
         android:id="@+id/register_screen"
         android:name="com.szymanski.sharelibrary.features.user.registration.presentation.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register"></fragment>
+        tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/login_screen"
         android:name="com.szymanski.sharelibrary.features.user.login.presentation.LoginFragment"
