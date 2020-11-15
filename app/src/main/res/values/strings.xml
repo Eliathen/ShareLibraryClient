@@ -30,4 +30,15 @@
     <string name="sign_up_text">Sign up</string>
     <string name="login_button">Login</string>
     <string name="username_or_email_hint">Username or email</string>
+    <string name="error_unknown">Ops… Something went wrong.</string>
+    <string name="error_bad_request">Validation error. Please check input parameters.</string>
+    <string name="error_internal">We have a server-side problem. Try again in a few minutes.</string>
+    <string name="username_exists_error">This username already exists.</string>
+    <string name="email_exists_error">This email already exists.</string>
+    <string name="user_not_found_error">Not found this user.</string>
+    <string name="invalid_user_name_email_or_password_error">Invalid username, email or password.</string>
+    <string name="error_forbidden">You need to be logged in.</string>
+    <string name="error_not_found">Could not found resource</string>
+    <string name="error_found">It\'s already exists.</string>
+    <string name="error_connect">Could not connect to server</string>
 </resources>
