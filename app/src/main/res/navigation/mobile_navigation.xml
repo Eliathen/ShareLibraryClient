@@ -12,17 +12,17 @@
         tools:layout="@layout/fragment_chat" />
     <fragment
         android:id="@+id/books_screen"
-        android:name="com.szymanski.sharelibrary.features.books.presentation.BooksFragment"
+        android:name="com.szymanski.sharelibrary.features.book.presentation.BooksFragment"
         android:label="fragment_books"
         tools:layout="@layout/fragment_books" />
     <fragment
         android:id="@+id/register_screen"
-        android:name="com.szymanski.sharelibrary.features.users.registration.presentation.RegisterFragment"
+        android:name="com.szymanski.sharelibrary.features.user.registration.presentation.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register"></fragment>
     <fragment
         android:id="@+id/login_screen"
-        android:name="com.szymanski.sharelibrary.features.users.login.presentation.LoginFragment"
+        android:name="com.szymanski.sharelibrary.features.user.login.presentation.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -35,12 +35,12 @@
     </fragment>
     <fragment
         android:id="@+id/exchanges_screen"
-        android:name="com.szymanski.sharelibrary.features.exchanges.presentation.ExchangesFragment"
+        android:name="com.szymanski.sharelibrary.features.exchange.presentation.ExchangesFragment"
         android:label="fragment_exchange"
         tools:layout="@layout/fragment_exchange" />
     <fragment
         android:id="@+id/profile_screen"
-        android:name="com.szymanski.sharelibrary.features.users.profile.presentation.ProfileFragment"
+        android:name="com.szymanski.sharelibrary.features.user.profile.presentation.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 
