@@ -1,4 +1,4 @@
-package com.szymanski.sharelibrary.core.exceptions
+package com.szymanski.sharelibrary.core.exception
 
 interface ErrorMapper {
 

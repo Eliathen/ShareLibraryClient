@@ -1,9 +1,9 @@
 package com.szymanski.sharelibrary.core.di
 
-import com.szymanski.sharelibrary.features.books.di.bookModule
+import com.szymanski.sharelibrary.features.book.di.bookModule
 import com.szymanski.sharelibrary.features.chat.di.chatModule
-import com.szymanski.sharelibrary.features.exchanges.di.exchangesModule
-import com.szymanski.sharelibrary.features.users.di.userModule
+import com.szymanski.sharelibrary.features.exchange.di.exchangesModule
+import com.szymanski.sharelibrary.features.user.di.userModule
 
 val featureModules = listOf(
     userModule,
