@@ -12,6 +12,7 @@ class ActivityProvider(application: Application) {
         application.registerActivityLifecycleCallbacks(object :
             Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                currentActivity = activity
             }
 
             override fun onActivityStarted(activity: Activity) {
