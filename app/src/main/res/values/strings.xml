@@ -41,4 +41,7 @@
     <string name="error_not_found">Could not found resource</string>
     <string name="error_found">It\'s already exists.</string>
     <string name="error_connect">Could not connect to server</string>
+    <string name="search_title">Search book</string>
+    <string name="filter_title">filter</string>
+    <string name="not_found_add_new">Book not found. Add new?</string>
 </resources>
