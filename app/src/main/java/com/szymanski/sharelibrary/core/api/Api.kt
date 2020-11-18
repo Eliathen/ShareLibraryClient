@@ -2,6 +2,7 @@ package com.szymanski.sharelibrary.core.api
 
 import com.szymanski.sharelibrary.core.api.model.request.LoginRequest
 import com.szymanski.sharelibrary.core.api.model.request.RegisterRequest
+import com.szymanski.sharelibrary.core.api.model.response.BookResponse
 import com.szymanski.sharelibrary.core.api.model.response.LoginResponse
 import com.szymanski.sharelibrary.core.api.model.response.RegisterResponse
 import okhttp3.MultipartBody
@@ -23,5 +24,12 @@ interface Api {
         @Part("title") title: String,
         @Part image: MultipartBody.Part,
         @PartMap authors: Map<String, RequestBody>,
+        @Part("userId") userId: Long,
     )
+
+    @GET("books/user/{userId}")
+    suspend fun getUsersBook(@Path("userId") userId: Long): List<BookResponse>
+
+    @GET("books")
+    suspend fun searchBooks(@Query("q") query: String): List<BookResponse>
 }
