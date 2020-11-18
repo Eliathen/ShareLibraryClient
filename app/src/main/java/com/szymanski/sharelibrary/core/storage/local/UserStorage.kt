@@ -8,4 +8,9 @@ interface UserStorage {
 
     fun getUser(): Login
 
+    fun getUserId(): Long
+
+    fun saveLoginAndPassword(login: String, password: CharArray)
+
+    fun getLoginAndPassword(): Pair<String, String>
 }

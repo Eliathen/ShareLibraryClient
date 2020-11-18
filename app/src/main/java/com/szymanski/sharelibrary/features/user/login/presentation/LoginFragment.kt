@@ -1,23 +1,28 @@
 package com.szymanski.sharelibrary.features.user.login.presentation
 
-import android.content.ContentValues.TAG
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.storage.local.UserStorage
 import com.szymanski.sharelibrary.features.user.login.presentation.model.LoginDisplayable
 import kotlinx.android.synthetic.main.fragment_login.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LoginFragment : BaseFragment<LoginViewModel>(R.layout.fragment_login) {
     override val viewModel: LoginViewModel by viewModel()
-
+    private val userStorage: UserStorage by inject()
     override fun initViews() {
         super.initViews()
         initListeners()
+        val loginData = userStorage.getLoginAndPassword()
+        if (!(loginData.first.isEmpty() && loginData.second.isEmpty())) {
+            viewModel.logIn(LoginDisplayable(loginData.first, loginData.second.toCharArray()))
+        }
     }
+
 
     override fun initObservers() {
         super.initObservers()
@@ -34,7 +39,6 @@ class LoginFragment : BaseFragment<LoginViewModel>(R.layout.fragment_login) {
     override fun onPendingState() {
         error_message_wrapper.visibility = View.GONE
         progress_bar.visibility = View.VISIBLE
-        Log.d(TAG, "onPendingState: set visibility = visible")
     }
 
     private fun initListeners() {

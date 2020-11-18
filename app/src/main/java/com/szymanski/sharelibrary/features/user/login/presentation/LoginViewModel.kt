@@ -15,14 +15,6 @@ class LoginViewModel(
     private val userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
 
-    fun navigateToRegisterScreen() {
-        userNavigation.openRegisterScreen()
-    }
-
-    private fun navigateToBookScreen() {
-        userNavigation.openBooksScreen()
-    }
-
     fun logIn(loginDisplayable: LoginDisplayable) {
         setPendingState()
         loginUserUseCase(
@@ -30,6 +22,8 @@ class LoginViewModel(
         ) { it ->
             setIdleState()
             it.onSuccess {
+                userStorage.saveLoginAndPassword(loginDisplayable.userNameOrEmail!!,
+                    loginDisplayable.password!!)
                 userStorage.saveUser(it)
                 navigateToBookScreen()
             }
@@ -37,6 +31,14 @@ class LoginViewModel(
                 handleFailure(it)
             }
         }
+    }
+
+    fun navigateToRegisterScreen() {
+        userNavigation.openRegisterScreen()
+    }
+
+    private fun navigateToBookScreen() {
+        userNavigation.openBooksScreen()
     }
 
 

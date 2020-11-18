@@ -15,15 +15,27 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
 
     override fun initViews() {
         super.initViews()
+        initListeners()
+    }
+
+    private fun initListeners() {
         setSignInTextListener()
         setRegisterButtonListener()
     }
 
     private fun setRegisterButtonListener() {
-        registerButton?.setOnClickListener {
+        register_button?.setOnClickListener {
             attemptRegistration()
         }
 
+    }
+
+    override fun initObservers() {
+        super.initObservers()
+        viewModel.message.observe(this) {
+            error_message_wrapper.visibility = View.VISIBLE
+            error_message.text = it
+        }
     }
 
     private fun attemptRegistration() {
@@ -37,7 +49,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         val city = cityEditText.text.toString()
         val country = countryEditText.text.toString()
         var cancel = false
-        var focusView: View = View(context)
+        var focusView = View(context)
 
         if (TextUtils.isEmpty(email)) {
             emailEditText.error = getString(R.string.field_required_error)
@@ -97,11 +109,11 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         if (cancel) {
             focusView.requestFocus()
         } else {
-            var name: CharSequence = ""
+            var name: CharSequence
             var surname: CharSequence = ""
             val fullNameTemp = fullNameEditText.text.toString().trim()
             if (fullNameTemp.contains(' ')) {
-                val firstSpace = fullNameTemp.indexOfFirst { it -> it == ' ' }
+                val firstSpace = fullNameTemp.indexOfFirst { it == ' ' }
                 name = fullNameTemp.subSequence(0 until firstSpace)
                 surname = fullNameTemp.subSequence((firstSpace + 1) until fullNameTemp.length)
             } else {
@@ -128,6 +140,15 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
 
     private fun registerUser(userDisplayable: UserDisplayable) {
         viewModel.registerUser(userDisplayable)
+    }
+
+    override fun onIdleState() {
+        progress_bar.visibility = View.INVISIBLE
+    }
+
+    override fun onPendingState() {
+        error_message_wrapper.visibility = View.GONE
+        progress_bar.visibility = View.VISIBLE
     }
 
     private fun isPasswordValid(password: String): Boolean {
