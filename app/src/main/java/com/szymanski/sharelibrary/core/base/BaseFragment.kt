@@ -27,6 +27,7 @@ abstract class BaseFragment<T : BaseViewModel>(@LayoutRes layoutRes: Int) : Frag
 
     open fun initObservers() {
         observeUiState()
+        observeMessage()
     }
 
     private fun observeMessage() {
