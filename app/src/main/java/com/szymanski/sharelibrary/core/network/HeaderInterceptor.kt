@@ -12,12 +12,12 @@ class HeaderInterceptor(private val userStorage: UserStorage) : Interceptor {
         Constant.apiUrl + "users/register")
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = userStorage.getUser().token!!.accessToken
-        val typeOfToken = userStorage.getUser().token!!.tokenType
-        val bearerToken = "$typeOfToken $token"
         if (urlWithNoAuthorization.contains(chain.request().url.toString())) {
             return chain.proceed(chain.request())
         }
+        val token = userStorage.getUser().token!!.accessToken
+        val typeOfToken = userStorage.getUser().token!!.tokenType
+        val bearerToken = "$typeOfToken $token"
         val request = chain.request()
             .newBuilder()
             .addHeader("Authorization", bearerToken)
