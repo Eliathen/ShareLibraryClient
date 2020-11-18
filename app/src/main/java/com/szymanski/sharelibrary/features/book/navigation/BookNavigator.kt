@@ -6,4 +6,6 @@ interface BookNavigator {
 
     fun openBooksScreen()
 
+    fun openSearchBookScreen()
+
 }
