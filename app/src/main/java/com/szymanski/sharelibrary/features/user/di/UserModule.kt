@@ -17,6 +17,9 @@ val userModule = module {
     factory<UserRepository> {
         UserRepositoryImpl(get(), get())
     }
+    factory<UserNavigation> {
+        UserNavigationImpl(get())
+    }
 
     factory {
         RegisterUserUseCase(get())
@@ -26,16 +29,14 @@ val userModule = module {
     }
 
     viewModel {
-        RegisterViewModel(get(), get())
+        RegisterViewModel(get(), get(), get(), get(), get())
     }
     viewModel {
         LoginViewModel(get(), get(), get(), get())
     }
-    factory<UserNavigation> {
-        UserNavigationImpl(get())
-    }
-
     viewModel {
         ProfileViewModel(get(), get())
     }
+
+
 }

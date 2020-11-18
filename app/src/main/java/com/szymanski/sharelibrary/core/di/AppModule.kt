@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.core.di
 
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.szymanski.sharelibrary.R
@@ -18,6 +19,8 @@ import org.koin.dsl.module
 val appModule = module {
 
     factory { LinearLayoutManager(get()) }
+
+    factory { DividerItemDecoration(get(), LinearLayoutManager.VERTICAL) }
 
     single(createdAtStart = true) {
         ActivityProvider(androidApplication())
