@@ -6,9 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".features.book.presentation.all.BooksFragment">
 
+    <include
+        layout="@layout/toolbar_books"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -21,11 +27,11 @@
             android:id="@+id/save_book_floating_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_24"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:layout_marginBottom="@dimen/floating_action_button_margin"
+            android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/floating_action_button_margin"
-            android:layout_gravity="bottom|end" />
+            android:layout_marginBottom="@dimen/floating_action_button_margin"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:src="@drawable/ic_add_24" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

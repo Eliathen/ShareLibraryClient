@@ -5,7 +5,7 @@ import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.features.book.domain.usecase.SaveBookUseCase
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
-import com.szymanski.sharelibrary.features.book.presentation.all.model.BookDisplayable
+import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 
 class SaveBookViewModel(
     errorMapper: ErrorMapper,
