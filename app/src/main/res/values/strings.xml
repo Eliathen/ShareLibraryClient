@@ -44,4 +44,8 @@
     <string name="search_title">Search book</string>
     <string name="filter_title">filter</string>
     <string name="not_found_add_new">Book not found. Add new?</string>
+    <string name="save_book">Save Book</string>
+    <string name="title_hint">title</string>
+    <string name="authors_surname_hint">surname</string>
+    <string name="author_name_hint">name</string>
 </resources>

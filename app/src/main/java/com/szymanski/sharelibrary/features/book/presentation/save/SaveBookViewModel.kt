@@ -1,5 +1,7 @@
 package com.szymanski.sharelibrary.features.book.presentation.save
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
@@ -13,6 +15,12 @@ class SaveBookViewModel(
     private val saveBookUseCase: SaveBookUseCase,
 ) : BaseViewModel(errorMapper) {
 
+    private val _book: MutableLiveData<BookDisplayable> by lazy {
+        MutableLiveData<BookDisplayable>()
+    }
+    val book: LiveData<BookDisplayable> by lazy {
+        _book
+    }
 
     fun saveBook(book: BookDisplayable) {
         val saveBook = book.toBook()
@@ -21,7 +29,6 @@ class SaveBookViewModel(
             params = saveBook
         ) {
             it.onSuccess {
-                //TODO what do else
                 bookNavigator.openBooksScreen()
             }
             it.onFailure { throwable ->
@@ -29,4 +36,5 @@ class SaveBookViewModel(
             }
         }
     }
+
 }

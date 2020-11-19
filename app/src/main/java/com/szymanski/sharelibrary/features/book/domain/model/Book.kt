@@ -11,7 +11,7 @@ data class Book(
 
     val authors: List<Author>?,
 
-    val cover: ByteArray?,
+    var cover: ByteArray?,
 
     ) : Serializable {
     override fun equals(other: Any?): Boolean {
@@ -38,5 +38,4 @@ data class Book(
         result = 31 * result + (cover?.contentHashCode() ?: 0)
         return result
     }
-
 }
