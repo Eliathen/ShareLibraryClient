@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_search_book.view.*
 
 class SearchBookAdapter : RecyclerView.Adapter<SearchBookAdapter.ViewHolder>() {
 
-    val books: MutableList<BookDisplayable> by lazy { mutableListOf() }
+    private val books: MutableList<BookDisplayable> by lazy { mutableListOf() }
 
     fun setBooks(books: List<BookDisplayable>) {
         if (this.books.isNotEmpty()) {
@@ -30,7 +30,7 @@ class SearchBookAdapter : RecyclerView.Adapter<SearchBookAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        holder.onBind(books[position])
     }
 
     override fun getItemCount() = books.size
@@ -44,7 +44,7 @@ class SearchBookAdapter : RecyclerView.Adapter<SearchBookAdapter.ViewHolder>() {
                 }
                 Glide.with(this)
                     .asBitmap()
-                    .load(bookDisplayable.image)
+                    .load(bookDisplayable.cover)
                     .into(cover)
             }
         }
