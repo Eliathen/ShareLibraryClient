@@ -22,7 +22,7 @@ class BookRepositoryImpl(
         val image = MultipartBody.Part.createFormData(
             "image", "myPic", book.cover!!
                 .toRequestBody("image/*".toMediaTypeOrNull(),
-                    0, book.cover.size)
+                    0, book.cover!!.size)
         )
         val map = createMapOfRequestBodyFromAuthorList(book.authors!!.toList())
         callOrThrow(errorWrapper) {
@@ -44,13 +44,21 @@ class BookRepositoryImpl(
 
     override suspend fun getUsersBook(userId: Long): List<Book> {
         return callOrThrow(errorWrapper) {
-            api.getUsersBook(userId).map { it.toBook() }.toList()
+            api.getUsersBook(userId).map { it.toBook() }
         }
     }
 
     override suspend fun searchBooks(query: String): List<Book> {
         return callOrThrow(errorWrapper) {
-            api.searchBooks(query).map { it.toBook() }.toList()
+            api.searchBooks(query).map {
+                it.toBook()
+            }
+        }
+    }
+
+    override suspend fun getCoverByBookId(bookId: Long): ByteArray {
+        return callOrThrow(errorWrapper) {
+            api.getCover(bookId).byteStream().readBytes()
         }
     }
 }

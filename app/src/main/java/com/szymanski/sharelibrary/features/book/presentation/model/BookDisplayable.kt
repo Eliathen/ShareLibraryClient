@@ -6,19 +6,20 @@ class BookDisplayable(
     val id: Long?,
     val title: String?,
     val authorsDisplayable: List<AuthorDisplayable>?,
-    val image: ByteArray?,
+    val coverId: Long? = null,
+    var cover: ByteArray?,
 ) {
     constructor(book: Book) : this(
         id = book.id,
         title = book.title,
         authorsDisplayable = book.authors?.map { AuthorDisplayable(it) },
-        image = book.cover
+        cover = book.cover
     )
 
     fun toBook() = Book(
         id = this.id,
         title = this.title,
         authors = this.authorsDisplayable?.map { it.toAuthor() },
-        cover = this.image
+        cover = this.cover,
     )
 }

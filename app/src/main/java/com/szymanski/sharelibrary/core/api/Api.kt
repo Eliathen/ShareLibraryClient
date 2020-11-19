@@ -7,6 +7,7 @@ import com.szymanski.sharelibrary.core.api.model.response.LoginResponse
 import com.szymanski.sharelibrary.core.api.model.response.RegisterResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface Api {
@@ -32,4 +33,8 @@ interface Api {
 
     @GET("books")
     suspend fun searchBooks(@Query("q") query: String): List<BookResponse>
+
+    @GET("books/{id}/cover")
+    @Streaming
+    suspend fun getCover(@Path("id") bookId: Long): ResponseBody
 }

@@ -4,9 +4,9 @@ import com.szymanski.sharelibrary.features.book.domain.model.Author
 import java.io.Serializable
 
 class AuthorDisplayable(
-    val id: Long?,
-    val name: String?,
-    val surname: String?,
+    val id: Long? = null,
+    var name: String?,
+    var surname: String?,
 ) : Serializable {
 
     constructor(author: Author) : this(
