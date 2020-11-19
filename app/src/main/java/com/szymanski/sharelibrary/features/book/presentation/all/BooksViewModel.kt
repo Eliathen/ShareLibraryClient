@@ -7,15 +7,15 @@ import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.local.UserStorage
 import com.szymanski.sharelibrary.features.book.domain.model.Book
+import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetUsersBookUseCase
-import com.szymanski.sharelibrary.features.book.domain.usecase.SaveBookUseCase
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 
 class BooksViewModel(
     errorMapper: ErrorMapper,
     private val bookNavigator: BookNavigator,
-    private val saveBookUseCase: SaveBookUseCase,
+    private val getCoverUseCase: GetCoverUseCase,
     private val getUsersBookUseCase: GetUsersBookUseCase,
     private val userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
@@ -35,16 +35,40 @@ class BooksViewModel(
 
     private fun getUsersBook(userId: Long) {
         setPendingState()
-        getUsersBookUseCase(scope = viewModelScope, params = userId) {
+        getUsersBookUseCase(scope = viewModelScope, params = userId) { result ->
             setIdleState()
-            it.onSuccess { books -> _books.value = books }
+            result.onSuccess { books ->
+                _books.value = books
+                downloadImage(books)
+            }
 
-            it.onFailure { throwable -> handleFailure(throwable) }
+            result.onFailure { throwable ->
+                handleFailure(throwable)
+            }
         }
     }
 
 
     fun openSearchBookScreen() {
         bookNavigator.openSearchBookScreen()
+    }
+
+    private fun downloadImage(books: List<Book>) {
+        books.forEach { book ->
+            book.id?.let {
+                getCoverUseCase(viewModelScope, params = it) { result ->
+                    result.onSuccess { cover ->
+                        val booksWithCovers = mutableSetOf<Book>()
+                        book.cover = cover
+                        booksWithCovers.add(book)
+                        _books.value?.let { it1 -> booksWithCovers.addAll(it1) }
+                        _books.value = booksWithCovers.sortedBy { it.id }.toList()
+                    }
+                    result.onFailure { throwable ->
+                    }
+                }
+            }
+        }
+
     }
 }
