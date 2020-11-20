@@ -9,4 +9,6 @@ interface UserRepository {
 
     suspend fun login(login: Login): Login
 
+    suspend fun getUser(userId: Long): User
+
 }

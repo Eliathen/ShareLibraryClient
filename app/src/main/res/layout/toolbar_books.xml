@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:titleTextColor="@color/white"
-        android:theme="@style/SearchViewStyle">
+        android:theme="@style/toolbar_style">
 
     </androidx.appcompat.widget.Toolbar>
 

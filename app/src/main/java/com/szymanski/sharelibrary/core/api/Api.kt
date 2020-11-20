@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.core.api
 
+import com.szymanski.sharelibrary.core.api.model.UserResponse
 import com.szymanski.sharelibrary.core.api.model.request.LoginRequest
 import com.szymanski.sharelibrary.core.api.model.request.RegisterRequest
 import com.szymanski.sharelibrary.core.api.model.response.BookResponse
@@ -37,4 +38,7 @@ interface Api {
     @GET("books/{id}/cover")
     @Streaming
     suspend fun getCover(@Path("id") bookId: Long): ResponseBody
+
+    @GET("/users/{id}")
+    suspend fun getUser(@Path("id") userId: Long): UserResponse
 }

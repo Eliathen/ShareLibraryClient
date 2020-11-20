@@ -59,7 +59,7 @@ class SearchBookViewModel(
                         _searchBooks.value?.let { it1 -> booksWithCovers.addAll(it1) }
                         _searchBooks.value = booksWithCovers.sortedBy { it.id }.toList()
                     }
-                    result.onFailure { throwable ->
+                    result.onFailure { _ ->
                     }
                 }
             }

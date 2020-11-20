@@ -10,5 +10,5 @@
         android:layout_height="match_parent"
         app:titleTextColor="@color/white"
         android:background="@color/colorPrimary"
-        android:theme="@style/SearchViewStyle" />
+        android:theme="@style/toolbar_style" />
 </com.google.android.material.appbar.AppBarLayout>

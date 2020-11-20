@@ -24,5 +24,11 @@ class UserRepositoryImpl(
         return callOrThrow(errorWrapper) { api.login(LoginRequest(login)).toLogin() }
     }
 
+    override suspend fun getUser(userId: Long): User {
+        return callOrThrow(errorWrapper) {
+            api.getUser(userId).toUser()
+        }
+    }
+
 
 }
