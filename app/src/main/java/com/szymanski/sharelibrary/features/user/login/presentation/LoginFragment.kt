@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.features.user.login.presentation
 
+import android.text.Editable
 import android.text.TextUtils
 import android.view.View
 import com.szymanski.sharelibrary.R
@@ -17,9 +18,16 @@ class LoginFragment : BaseFragment<LoginViewModel>(R.layout.fragment_login) {
     override fun initViews() {
         super.initViews()
         initListeners()
+        loginAutomatic()
+    }
+
+    private fun loginAutomatic() {
         val loginData = userStorage.getLoginAndPassword()
         if (!(loginData.first.isEmpty() && loginData.second.isEmpty())) {
-            viewModel.logIn(LoginDisplayable(loginData.first, loginData.second.toCharArray()))
+            userNameOrEmailEditText.text = Editable.Factory().newEditable(loginData.first)
+            passwordEditText.text = Editable.Factory().newEditable(loginData.second)
+            viewModel.logIn(LoginDisplayable(loginData.first, loginData.second.toCharArray()),
+                false)
         }
     }
 
@@ -70,7 +78,8 @@ class LoginFragment : BaseFragment<LoginViewModel>(R.layout.fragment_login) {
         if (close) {
             focusView.requestFocus()
         } else {
-            viewModel.logIn(LoginDisplayable(userNameOrEmail, password.toCharArray()))
+            viewModel.logIn(LoginDisplayable(userNameOrEmail, password.toCharArray()),
+                save_details_checkbox.isChecked)
         }
     }
 }

@@ -48,4 +48,5 @@
     <string name="title_hint">title</string>
     <string name="authors_surname_hint">surname</string>
     <string name="author_name_hint">name</string>
+    <string name="save_login_details">save login details</string>
 </resources>

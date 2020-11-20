@@ -15,16 +15,20 @@ class LoginViewModel(
     private val userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
 
-    fun logIn(loginDisplayable: LoginDisplayable) {
+    fun logIn(loginDisplayable: LoginDisplayable, isToSaveLoginDetails: Boolean) {
         setPendingState()
         loginUserUseCase(
             viewModelScope, params = loginDisplayable.toLogin()
         ) { it ->
             setIdleState()
             it.onSuccess {
-                userStorage.saveLoginAndPassword(loginDisplayable.userNameOrEmail!!,
-                    loginDisplayable.password!!)
                 userStorage.saveUser(it)
+
+                if (isToSaveLoginDetails) {
+                    userStorage.saveLoginAndPassword(loginDisplayable.userNameOrEmail!!,
+                        loginDisplayable.password!!)
+                }
+
                 navigateToBookScreen()
             }
             it.onFailure {

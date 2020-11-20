@@ -71,7 +71,6 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books) {
             adapter = booksAdapter
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         books_recyclerView.layoutManager = null
