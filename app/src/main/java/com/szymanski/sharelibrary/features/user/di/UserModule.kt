@@ -2,6 +2,7 @@ package com.szymanski.sharelibrary.features.user.di
 
 import com.szymanski.sharelibrary.features.user.data.UserRepositoryImpl
 import com.szymanski.sharelibrary.features.user.domain.UserRepository
+import com.szymanski.sharelibrary.features.user.domain.usecase.GetUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.LoginUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.RegisterUserUseCase
 import com.szymanski.sharelibrary.features.user.login.presentation.LoginViewModel
@@ -27,6 +28,9 @@ val userModule = module {
     factory {
         LoginUserUseCase(get())
     }
+    factory {
+        GetUserUseCase(get())
+    }
 
     viewModel {
         RegisterViewModel(get(), get(), get(), get(), get())
@@ -35,7 +39,7 @@ val userModule = module {
         LoginViewModel(get(), get(), get(), get())
     }
     viewModel {
-        ProfileViewModel(get(), get())
+        ProfileViewModel(get(), get(), get(), get())
     }
 
 

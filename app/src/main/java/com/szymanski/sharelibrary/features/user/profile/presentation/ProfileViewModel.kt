@@ -34,6 +34,7 @@ class ProfileViewModel(
             scope = viewModelScope,
             params = id
         ) { result ->
+            setIdleState()
             result.onSuccess {
                 _user.value = it
             }
