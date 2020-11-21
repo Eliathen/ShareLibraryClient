@@ -3,6 +3,7 @@ package com.szymanski.sharelibrary.features.user.data
 import com.szymanski.sharelibrary.core.api.Api
 import com.szymanski.sharelibrary.core.api.model.request.LoginRequest
 import com.szymanski.sharelibrary.core.api.model.request.RegisterRequest
+import com.szymanski.sharelibrary.core.api.model.request.UserRequest
 import com.szymanski.sharelibrary.core.exception.ErrorWrapper
 import com.szymanski.sharelibrary.core.exception.callOrThrow
 import com.szymanski.sharelibrary.features.user.domain.UserRepository
@@ -27,6 +28,12 @@ class UserRepositoryImpl(
     override suspend fun getUser(userId: Long): User {
         return callOrThrow(errorWrapper) {
             api.getUser(userId).toUser()
+        }
+    }
+
+    override suspend fun editUser(user: User): User {
+        return callOrThrow(errorWrapper) {
+            api.editUser(user.id!!, UserRequest(user)).toUser()
         }
     }
 

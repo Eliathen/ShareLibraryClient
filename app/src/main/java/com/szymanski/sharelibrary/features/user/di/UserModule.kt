@@ -2,6 +2,7 @@ package com.szymanski.sharelibrary.features.user.di
 
 import com.szymanski.sharelibrary.features.user.data.UserRepositoryImpl
 import com.szymanski.sharelibrary.features.user.domain.UserRepository
+import com.szymanski.sharelibrary.features.user.domain.usecase.EditUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.GetUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.LoginUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.RegisterUserUseCase
@@ -30,6 +31,9 @@ val userModule = module {
     }
     factory {
         GetUserUseCase(get())
+    }
+    factory {
+        EditUserUseCase(get())
     }
 
     viewModel {

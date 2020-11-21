@@ -3,8 +3,8 @@ package com.szymanski.sharelibrary.core.api.model.request
 import com.szymanski.sharelibrary.features.user.domain.model.User
 
 
-data class RegisterRequest(
-    val coordinatesRequest: CoordinatesRequest?,
+data class UserRequest(
+    val coordinates: CoordinatesRequest?,
     val email: String?,
     val name: String?,
     val password: CharArray?,
@@ -12,20 +12,21 @@ data class RegisterRequest(
     val username: String?,
 ) {
     constructor(user: User) : this(
-        coordinatesRequest = user.coordinate?.let { CoordinatesRequest(it) },
-        email = user.email,
         name = user.name,
-        password = user.password,
         surname = user.surname,
-        username = user.username
+        username = user.username,
+        password = user.password,
+        email = user.email,
+        coordinates = user.coordinate?.let { CoordinatesRequest(it) }
     )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as RegisterRequest
+        other as UserRequest
 
+        if (coordinates != other.coordinates) return false
         if (email != other.email) return false
         if (name != other.name) return false
         if (!password.contentEquals(other.password)) return false
@@ -36,14 +37,13 @@ data class RegisterRequest(
     }
 
     override fun hashCode(): Int {
-        var result = coordinatesRequest?.hashCode() ?: 0
-        result = 31 * result + (email?.hashCode() ?: 0)
-        result = 31 * result + (name?.hashCode() ?: 0)
-        result = 31 * result + (password?.contentHashCode() ?: 0)
-        result = 31 * result + (surname?.hashCode() ?: 0)
-        result = 31 * result + (username?.hashCode() ?: 0)
+        var result = coordinates.hashCode()
+        result = 31 * result + email.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + password.contentHashCode()
+        result = 31 * result + surname.hashCode()
+        result = 31 * result + username.hashCode()
         return result
     }
-
 }
 

@@ -4,7 +4,7 @@ import android.text.TextUtils
 import android.view.View
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
-import com.szymanski.sharelibrary.features.user.registration.presentation.model.AddressDisplayable
+import com.szymanski.sharelibrary.features.user.registration.presentation.model.CoordinateDisplayable
 import com.szymanski.sharelibrary.features.user.registration.presentation.model.UserDisplayable
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,6 +21,11 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
     private fun initListeners() {
         setSignInTextListener()
         setRegisterButtonListener()
+        setGetCoordinateButtonListener()
+    }
+
+    private fun setGetCoordinateButtonListener() {
+
     }
 
     private fun setRegisterButtonListener() {
@@ -43,11 +48,6 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         val userName = userNameEditText.text.toString()
         val email = emailEditText.text.toString()
         val password = passwordEditText.text.toString().toCharArray()
-        val street = streetEditText.text.toString()
-        val buildingNumber = buildingNumberEditText.text.toString()
-        val postalCode = postalCodeEditText.text.toString()
-        val city = cityEditText.text.toString()
-        val country = countryEditText.text.toString()
         var cancel = false
         var focusView = View(context)
 
@@ -80,31 +80,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
             cancel = true
             focusView = passwordEditText
         }
-        if (TextUtils.isEmpty(street)) {
-            streetEditText.error = getString(R.string.field_required_error)
-            cancel = true
-            focusView = streetEditText
-        }
-        if (TextUtils.isEmpty(buildingNumber)) {
-            buildingNumberEditText.error = getString(R.string.field_required_error)
-            cancel = true
-            focusView = buildingNumberEditText
-        }
-        if (TextUtils.isEmpty(city)) {
-            cityEditText.error = getString(R.string.field_required_error)
-            cancel = true
-            focusView = cityEditText
-        }
-        if (TextUtils.isEmpty(postalCode)) {
-            postalCodeEditText.error = getString(R.string.field_required_error)
-            cancel = true
-            focusView = postalCodeEditText
-        }
-        if (TextUtils.isEmpty(country)) {
-            countryEditText.error = getString(R.string.field_required_error)
-            cancel = true
-            focusView = countryEditText
-        }
+
 
         if (cancel) {
             focusView.requestFocus()
@@ -126,13 +102,8 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
                 username = userName,
                 email = email,
                 password = password,
-                address = AddressDisplayable(
-                    street = street,
-                    buildingNumber = buildingNumber,
-                    postalCode = postalCode,
-                    city = city,
-                    country = country,
-                    coordinate = null
+                coordinate = CoordinateDisplayable(
+                    null, null, null
                 )
             ))
         }

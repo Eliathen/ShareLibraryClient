@@ -9,7 +9,7 @@ data class UserDisplayable(
     val password: CharArray?,
     val name: String?,
     val surname: String?,
-    val address: AddressDisplayable?,
+    var coordinate: CoordinateDisplayable?,
 ) {
 
     constructor(user: User) : this(
@@ -19,7 +19,7 @@ data class UserDisplayable(
         password = user.password,
         name = user.name,
         surname = user.surname,
-        address = user.address?.let { AddressDisplayable(it) }
+        coordinate = user.coordinate?.let { CoordinateDisplayable(it) }
     )
 
     fun toUser() = User(
@@ -29,7 +29,7 @@ data class UserDisplayable(
         password = this.password,
         name = this.name,
         surname = this.surname,
-        address = this.address?.toAddress()
+        coordinate = this.coordinate?.toCoordinate()
     )
 
 
@@ -44,7 +44,6 @@ data class UserDisplayable(
         if (!password.contentEquals(other.password)) return false
         if (name != other.name) return false
         if (surname != other.surname) return false
-        if (address != other.address) return false
 
         return true
     }
@@ -55,7 +54,6 @@ data class UserDisplayable(
         result = 31 * result + password.contentHashCode()
         result = 31 * result + name.hashCode()
         result = 31 * result + surname.hashCode()
-        result = 31 * result + address.hashCode()
         return result
     }
 

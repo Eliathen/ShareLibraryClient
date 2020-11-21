@@ -1,11 +1,12 @@
 package com.szymanski.sharelibrary.core.api
 
-import com.szymanski.sharelibrary.core.api.model.UserResponse
 import com.szymanski.sharelibrary.core.api.model.request.LoginRequest
 import com.szymanski.sharelibrary.core.api.model.request.RegisterRequest
+import com.szymanski.sharelibrary.core.api.model.request.UserRequest
 import com.szymanski.sharelibrary.core.api.model.response.BookResponse
 import com.szymanski.sharelibrary.core.api.model.response.LoginResponse
 import com.szymanski.sharelibrary.core.api.model.response.RegisterResponse
+import com.szymanski.sharelibrary.core.api.model.response.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -39,6 +40,9 @@ interface Api {
     @Streaming
     suspend fun getCover(@Path("id") bookId: Long): ResponseBody
 
-    @GET("/users/{id}")
+    @GET("users/{id}")
     suspend fun getUser(@Path("id") userId: Long): UserResponse
+
+    @PUT("users/{id}")
+    suspend fun editUser(@Path("id") userId: Long, @Body userRequest: UserRequest): UserResponse
 }

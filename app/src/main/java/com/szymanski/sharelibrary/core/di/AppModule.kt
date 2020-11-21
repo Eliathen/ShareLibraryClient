@@ -44,5 +44,4 @@ val appModule = module {
     single<UserStorage> {
         UserStorageImpl(get(), get())
     }
-
 }

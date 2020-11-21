@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ShareLibrary</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logo_image_description">Logo Image</string>
     <string name="registration_label">REGISTRATION</string>
@@ -50,5 +49,7 @@
     <string name="author_name_hint">name</string>
     <string name="save_login_details">save login details</string>
     <string name="coordinates_label">Your coordinates:</string>
-    <string name="get_new_coordinates">Change to you current coordinates</string>
+    <string name="change_details">Edit</string>
+    <string name="save_changes">Save changes</string>
+    <string name="cancel_changes">Cancel</string>
 </resources>

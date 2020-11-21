@@ -4,21 +4,21 @@ import com.google.gson.annotations.SerializedName
 import com.szymanski.sharelibrary.features.user.domain.model.User
 
 
-data class RegisterResponse(
-    @SerializedName("coordinatesResponse") val coordinatesResponse: CoordinatesResponse,
-    @SerializedName("email") val email: String,
+data class UserResponse(
     @SerializedName("id") val id: Long,
+    @SerializedName("email") val email: String,
+    @SerializedName("username") val username: String,
     @SerializedName("name") val name: String,
     @SerializedName("surname") val surname: String,
-    @SerializedName("username") val username: String,
+    @SerializedName("coordinatesResponse") val coordinatesResponse: CoordinatesResponse,
 ) {
     fun toUser() = User(
-        email = this.email,
         id = this.id,
-        name = this.name,
-        surname = this.surname,
+        email = this.email,
         username = this.username,
         password = null,
-        coordinate = coordinatesResponse.toCoordinates()
+        name = this.name,
+        surname = this.surname,
+        coordinate = this.coordinatesResponse.toCoordinates()
     )
 }

@@ -74,4 +74,9 @@ ext {
     fragmenDependencies = [
             fragmentKtx: "androidx.fragment:fragment-ktx:" + fragmentVersion
     ]
+
+    def playServicesVersion = "17.1.0"
+    locationDependencies = [
+            playServicesLocation: "com.google.android.gms:play-services-location:" + playServicesVersion
+    ]
 }
