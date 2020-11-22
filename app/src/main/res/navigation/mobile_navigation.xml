@@ -53,7 +53,13 @@
         android:id="@+id/profile_screen"
         android:name="com.szymanski.sharelibrary.features.user.profile.presentation.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_navigate_from_profile_screen_to_login_screen"
+            app:popUpTo="@id/profile_screen"
+            app:popUpToInclusive="true"
+            app:destination="@id/login_screen" />
+    </fragment>
     <fragment
         android:id="@+id/save_book_screen"
         android:name="com.szymanski.sharelibrary.features.book.presentation.save.SaveBookFragment"

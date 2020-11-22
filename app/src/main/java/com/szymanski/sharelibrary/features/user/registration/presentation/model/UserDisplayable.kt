@@ -9,7 +9,7 @@ data class UserDisplayable(
     val password: CharArray?,
     val name: String?,
     val surname: String?,
-    var coordinate: CoordinateDisplayable?,
+    var coordinates: CoordinateDisplayable?,
 ) {
 
     constructor(user: User) : this(
@@ -19,7 +19,7 @@ data class UserDisplayable(
         password = user.password,
         name = user.name,
         surname = user.surname,
-        coordinate = user.coordinate?.let { CoordinateDisplayable(it) }
+        coordinates = user.coordinates?.let { CoordinateDisplayable(it) }
     )
 
     fun toUser() = User(
@@ -29,7 +29,7 @@ data class UserDisplayable(
         password = this.password,
         name = this.name,
         surname = this.surname,
-        coordinate = this.coordinate?.toCoordinate()
+        coordinates = this.coordinates?.toCoordinate()
     )
 
 

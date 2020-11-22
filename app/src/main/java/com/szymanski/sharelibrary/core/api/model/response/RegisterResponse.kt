@@ -19,6 +19,6 @@ data class RegisterResponse(
         surname = this.surname,
         username = this.username,
         password = null,
-        coordinate = coordinatesResponse.toCoordinates()
+        coordinates = coordinatesResponse.toCoordinates()
     )
 }

@@ -49,7 +49,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
         }
         viewModel.coordinate.observe(this) {
             val coordinates = "${it?.latitude} ${it?.longitude}"
-            coordinates_value.text = coordinates
+            coordinates_value_profile.text = coordinates
         }
         observeEditModeState()
     }
@@ -72,11 +72,15 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
         save_details_button.setOnClickListener {
             saveDataChanges()
         }
-        coordinates_button.setOnClickListener {
+        coordinates_button_profile.setOnClickListener {
+            changeElementsDuringGettingCoordinates()
             getLastLocation()
         }
         cancel_details_changes_button.setOnClickListener {
             viewModel.cancelChanges()
+        }
+        logout_button.setOnClickListener {
+            viewModel.logout()
         }
     }
 
@@ -180,12 +184,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
         val coordinates =
             CoordinateDisplayable(latitude = latitude, longitude = longitude, id = null)
         viewModel.setNewCoordinates(coordinates)
-
+        changeElementsDuringGettingCoordinates()
     }
 
     private fun saveDataChanges() {
-        var name = ""
-        var surname = ""
+        val name: String
+        val surname: String
         val fullNameTemp = full_name_editText.text.toString().trim()
         if (fullNameTemp.contains(' ')) {
             val firstSpace = fullNameTemp.indexOfFirst { it == ' ' }
@@ -193,6 +197,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
             surname = fullNameTemp.substring((firstSpace + 1) until fullNameTemp.length)
         } else {
             name = fullNameTemp
+            surname = ""
         }
         Log.d(TAG, "saveDataChanges: $name")
         Log.d(TAG, "saveDataChanges: $surname")
@@ -204,7 +209,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
                 password = charArrayOf(),
                 username = user?.username,
                 email = user?.email,
-                coordinate = viewModel.coordinate.value)
+                coordinates = viewModel.coordinate.value)
         )
     }
 
@@ -227,10 +232,11 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
     private fun onActiveEditModeState() {
         full_name.visibility = View.GONE
         full_name_editText.visibility = View.VISIBLE
-        coordinates_button.visibility = View.VISIBLE
+        coordinates_button_profile.visibility = View.VISIBLE
         save_cancel_buttons_wrapper.visibility = View.VISIBLE
         change_details_button.visibility = View.GONE
         full_name_editText.requestFocus()
+        logout_button.visibility = View.GONE
         with(viewModel.user.value) {
             full_name_editText.text =
                 Editable.Factory.getInstance().newEditable("${this?.name} ${this?.surname}")
@@ -240,8 +246,19 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
     private fun onInactiveEditModeState() {
         full_name.visibility = View.VISIBLE
         full_name_editText.visibility = View.GONE
-        coordinates_button.visibility = View.GONE
+        coordinates_button_profile.visibility = View.GONE
         save_cancel_buttons_wrapper.visibility = View.GONE
         change_details_button.visibility = View.VISIBLE
+        logout_button.visibility = View.VISIBLE
+    }
+
+    private fun changeElementsDuringGettingCoordinates() {
+        if (coordinates_button_profile.visibility == View.VISIBLE) {
+            coordinates_button_profile.visibility = View.GONE
+            progress_bar_coordinates_profile.visibility = View.VISIBLE
+        } else {
+            coordinates_button_profile.visibility = View.VISIBLE
+            progress_bar_coordinates_profile.visibility = View.GONE
+        }
     }
 }

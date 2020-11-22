@@ -52,4 +52,12 @@
     <string name="change_details">Edit</string>
     <string name="save_changes">Save changes</string>
     <string name="cancel_changes">Cancel</string>
+    <string name="location_access_title">Location access</string>
+    <string name="get_location_message">We need access to location to get your current coordinate</string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="accept_button_text">Accept</string>
+    <string name="empty_coordinates">0.0, 0.0</string>
+    <string name="logout_text">Logout</string>
+    <string name="get_photo_image_description">Image of camera</string>
+    <string name="books_cover_description">Image of book\'s cover</string>
 </resources>

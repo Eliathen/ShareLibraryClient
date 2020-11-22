@@ -20,6 +20,10 @@ class UserNavigationImpl(
             null)
     }
 
+    override fun openLoginScreenAfterLogout() {
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_profile_screen_to_login_screen, null)
+    }
+
     override fun openLoginScreen() {
         fragmentNavigator.navigateTo(R.id.login_screen, null)
     }

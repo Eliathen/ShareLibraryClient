@@ -43,7 +43,7 @@ val userModule = module {
         LoginViewModel(get(), get(), get(), get())
     }
     viewModel {
-        ProfileViewModel(get(), get(), get(), get())
+        ProfileViewModel(get(), get(), get(), get(), get())
     }
 
 

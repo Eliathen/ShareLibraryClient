@@ -19,6 +19,6 @@ data class UserResponse(
         password = null,
         name = this.name,
         surname = this.surname,
-        coordinate = this.coordinatesResponse.toCoordinates()
+        coordinates = this.coordinatesResponse.toCoordinates()
     )
 }

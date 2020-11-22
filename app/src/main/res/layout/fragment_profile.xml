@@ -59,7 +59,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Name and surname" />
+                    tools:text="Name and surname"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar_profile"
@@ -83,41 +85,58 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/full_name_wrapper">
 
-                <TextView
-                    android:id="@+id/coordinates_label"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/coordinates_wrapper_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/coordinates_label"
-                    android:textColor="@color/black"
-                    android:textSize="30sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp">
 
                     <TextView
-                        android:id="@+id/coordinates_value"
+                        android:id="@+id/coordinates_label_profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/tab_indicator_text"
-                        android:textSize="25sp"
-                        tools:text="50.1231241, 5.2342434" />
+                        android:text="@string/coordinates_label"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
-                        android:id="@+id/coordinates_button"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
+                        android:id="@+id/coordinates_button_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:background="@color/transparentBackground"
                         android:src="@drawable/ic_gps_fixed_24"
-                        android:visibility="invisible" />
+                        app:layout_constraintBottom_toBottomOf="@+id/coordinates_label_profile"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
 
-                </RelativeLayout>
+                    <ProgressBar
+                        android:id="@+id/progress_bar_coordinates_profile"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/transparentBackground"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/coordinates_label_profile"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coordinates_value_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_coordinates"
+                        android:textColor="@android:color/tab_indicator_text"
+                        android:textSize="25sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/coordinates_label_profile" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
                     android:id="@+id/change_details_button"
@@ -129,6 +148,17 @@
                     android:paddingHorizontal="10dp"
                     android:text="@string/change_details"
                     android:textColor="@color/colorPrimaryDark" />
+
+                <Button
+                    android:id="@+id/logout_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/login_button_background"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/logout_text"
+                    android:textColor="@color/white" />
 
                 <LinearLayout
                     android:id="@+id/save_cancel_buttons_wrapper"
@@ -148,7 +178,8 @@
                         android:paddingHorizontal="10dp"
                         android:text="@string/save_changes"
                         android:textColor="@color/colorPrimaryDark"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        tools:ignore="ButtonStyle" />
 
                     <Button
                         android:id="@+id/cancel_details_changes_button"
@@ -160,7 +191,8 @@
                         android:paddingHorizontal="10dp"
                         android:text="@string/cancel_changes"
                         android:textColor="@color/colorPrimaryDark"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        tools:ignore="ButtonStyle" />
                 </LinearLayout>
 
 

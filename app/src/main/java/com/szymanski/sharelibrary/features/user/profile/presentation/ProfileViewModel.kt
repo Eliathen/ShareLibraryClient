@@ -12,11 +12,13 @@ import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.User
 import com.szymanski.sharelibrary.features.user.domain.usecase.EditUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.GetUserUseCase
+import com.szymanski.sharelibrary.features.user.navigation.UserNavigation
 import com.szymanski.sharelibrary.features.user.registration.presentation.model.CoordinateDisplayable
 import com.szymanski.sharelibrary.features.user.registration.presentation.model.UserDisplayable
 
 class ProfileViewModel(
     errorMapper: ErrorMapper,
+    private val userNavigation: UserNavigation,
     private val userStorage: UserStorage,
     private val getUserUseCase: GetUserUseCase,
     private val editUserUseCase: EditUserUseCase,
@@ -61,7 +63,7 @@ class ProfileViewModel(
             setIdleState()
             result.onSuccess {
                 _user.value = it
-                _coordinate.value = it.coordinate
+                _coordinate.value = it.coordinates
             }
             result.onFailure {
                 handleFailure(it)
@@ -79,7 +81,7 @@ class ProfileViewModel(
             }
             result.onFailure {
                 handleFailure(it)
-                _coordinate.value = _user.value?.coordinate
+                _coordinate.value = _user.value?.coordinates
             }
         }
     }
@@ -97,7 +99,12 @@ class ProfileViewModel(
     }
 
     fun cancelChanges() {
-        this._coordinate.value = _user.value?.coordinate
+        this._coordinate.value = _user.value?.coordinates
         changeEditModeState()
+    }
+
+    fun logout() {
+        userStorage.clearData()
+        userNavigation.openLoginScreenAfterLogout()
     }
 }

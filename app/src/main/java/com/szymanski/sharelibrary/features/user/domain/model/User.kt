@@ -7,7 +7,7 @@ data class User(
     val password: CharArray?,
     val name: String?,
     val surname: String?,
-    val coordinate: Coordinate?,
+    val coordinates: Coordinate?,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

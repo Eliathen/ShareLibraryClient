@@ -1,14 +1,18 @@
 package com.szymanski.sharelibrary.features.user.registration.presentation
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.local.UserStorage
+import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.Login
 import com.szymanski.sharelibrary.features.user.domain.usecase.LoginUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.RegisterUserUseCase
 import com.szymanski.sharelibrary.features.user.navigation.UserNavigation
+import com.szymanski.sharelibrary.features.user.registration.presentation.model.CoordinateDisplayable
 import com.szymanski.sharelibrary.features.user.registration.presentation.model.UserDisplayable
 
 class RegisterViewModel(
@@ -18,6 +22,15 @@ class RegisterViewModel(
     private val userStorage: UserStorage,
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
+
+    private val _coordinate: MutableLiveData<Coordinate> by lazy {
+        MutableLiveData()
+    }
+    val coordinate: LiveData<CoordinateDisplayable> by lazy {
+        _coordinate.map {
+            CoordinateDisplayable(it)
+        }
+    }
 
     fun registerUser(userDisplayable: UserDisplayable) {
         val user = userDisplayable.toUser()
@@ -40,13 +53,16 @@ class RegisterViewModel(
             token = null)
         loginUserUseCase(viewModelScope, params = login) { result ->
             result.onSuccess {
-                Log.d("RegisterViewModel", userDisplayable.password.contentToString())
                 userStorage.saveLoginAndPassword(userDisplayable.username!!,
                     userDisplayable.password!!)
                 userStorage.saveUser(it)
                 navigateToBookScreen()
             }
         }
+    }
+
+    fun setNewCoordinates(coordinateDisplayable: CoordinateDisplayable) {
+        this._coordinate.value = coordinateDisplayable.toCoordinate()
     }
 
     fun navigateToLoginScreen() {

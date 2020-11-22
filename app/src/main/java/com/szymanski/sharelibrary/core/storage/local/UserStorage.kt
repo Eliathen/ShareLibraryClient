@@ -13,4 +13,6 @@ interface UserStorage {
     fun saveLoginAndPassword(login: String, password: CharArray)
 
     fun getLoginAndPassword(): Pair<String, String>
+
+    fun clearData()
 }

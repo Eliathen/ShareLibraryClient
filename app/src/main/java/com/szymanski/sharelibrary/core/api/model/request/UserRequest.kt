@@ -17,7 +17,7 @@ data class UserRequest(
         username = user.username,
         password = user.password,
         email = user.email,
-        coordinates = user.coordinate?.let { CoordinatesRequest(it) }
+        coordinates = user.coordinates?.let { CoordinatesRequest(it) }
     )
 
     override fun equals(other: Any?): Boolean {

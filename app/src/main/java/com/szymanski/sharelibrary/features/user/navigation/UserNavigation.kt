@@ -10,6 +10,8 @@ interface UserNavigation {
 
     fun openBooksScreenAfterRegister()
 
+    fun openLoginScreenAfterLogout()
+
     fun goBack()
 
 }

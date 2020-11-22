@@ -64,7 +64,7 @@ class BooksViewModel(
                         _books.value?.let { it1 -> booksWithCovers.addAll(it1) }
                         _books.value = booksWithCovers.sortedBy { it.id }.toList()
                     }
-                    result.onFailure { throwable ->
+                    result.onFailure { _ ->
                     }
                 }
             }

@@ -37,6 +37,10 @@ class UserStorageImpl(
         return Pair(login, password)
     }
 
+    override fun clearData() {
+        getSharedPreferences()?.edit()?.clear()?.apply()
+    }
+
     override fun saveUser(login: Login) {
         getSharedPreferences()?.edit()?.putString(USER_KEY, gson.toJson(login))?.apply()
     }
