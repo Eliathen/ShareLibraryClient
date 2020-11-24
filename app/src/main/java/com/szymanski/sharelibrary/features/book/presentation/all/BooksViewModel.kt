@@ -1,14 +1,17 @@
 package com.szymanski.sharelibrary.features.book.presentation.all
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.szymanski.sharelibrary.core.api.model.request.WithdrawBookRequest
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.local.UserStorage
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetUsersBookUseCase
+import com.szymanski.sharelibrary.features.book.domain.usecase.WithdrawBookUseCase
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 
@@ -17,8 +20,11 @@ class BooksViewModel(
     private val bookNavigator: BookNavigator,
     private val getCoverUseCase: GetCoverUseCase,
     private val getUsersBookUseCase: GetUsersBookUseCase,
+    private val withdrawBookUseCase: WithdrawBookUseCase,
     private val userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
+
+    private val TAG = "BooksViewModel"
 
     private val _books by lazy {
         MutableLiveData<List<Book>>()
@@ -62,7 +68,7 @@ class BooksViewModel(
                         book.cover = cover
                         booksWithCovers.add(book)
                         _books.value?.let { it1 -> booksWithCovers.addAll(it1) }
-                        _books.value = booksWithCovers.sortedBy { it.id }.toList()
+                        _books.value = booksWithCovers.sortedBy { book -> book.id }.toList()
                     }
                     result.onFailure { _ ->
                     }
@@ -70,5 +76,15 @@ class BooksViewModel(
             }
         }
 
+    }
+
+    fun withdrawBook(bookDisplayable: BookDisplayable?) {
+        Log.d(TAG, "withdrawBook: BeforeUseCase")
+        withdrawBookUseCase(
+            scope = viewModelScope,
+            params = WithdrawBookRequest(userStorage.getUserId(), bookDisplayable?.id!!)
+        ) { result ->
+            result.onSuccess { _books.value = it.books }
+        }
     }
 }

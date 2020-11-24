@@ -1,7 +1,10 @@
 package com.szymanski.sharelibrary.features.book.presentation.all
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -15,7 +18,8 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books) {
+class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
+    BooksAdapter.BooksViewOptions {
 
     override val viewModel: BooksViewModel by viewModel()
 
@@ -70,7 +74,9 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books) {
             addItemDecoration(dividerItemDecoration)
             adapter = booksAdapter
         }
+        booksAdapter.setListener(this)
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         books_recyclerView.layoutManager = null
@@ -85,15 +91,38 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books) {
         searchView.queryHint = getString(R.string.search_title)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+                booksAdapter.filter(query)
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
+                booksAdapter.filter(newText)
                 return true
             }
 
         })
+    }
+
+    override fun onClick(context: Context, view: View, position: Int) {
+        val popupMenu = PopupMenu(context, view)
+        popupMenu.inflate(R.menu.menu_books_item)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.books_item_remove -> {
+                    viewModel.withdrawBook(viewModel.books.value?.get(position))
+                    Log.d(TAG, "onClick: remove")
+                    true
+                }
+                R.id.books_item_share -> {
+                    Log.d(TAG, "onClick: share")
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+        popupMenu.show()
     }
 
 

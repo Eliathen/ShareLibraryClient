@@ -60,4 +60,9 @@
     <string name="logout_text">Logout</string>
     <string name="get_photo_image_description">Image of camera</string>
     <string name="books_cover_description">Image of book\'s cover</string>
+    <string name="new_book_menu_title">NEW</string>
+    <string name="save_new_book_toolbar_subtitle">Save new book</string>
+    <string name="remove_book">Remove</string>
+    <string name="share_book">Share</string>
+    <string name="three_dots">⋮</string>
 </resources>

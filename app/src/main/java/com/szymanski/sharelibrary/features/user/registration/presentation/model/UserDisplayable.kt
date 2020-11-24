@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.features.user.registration.presentation.model
 
+import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.user.domain.model.User
 
 data class UserDisplayable(
@@ -10,6 +11,7 @@ data class UserDisplayable(
     val name: String?,
     val surname: String?,
     var coordinates: CoordinateDisplayable?,
+    var books: List<BookDisplayable>?,
 ) {
 
     constructor(user: User) : this(
@@ -19,7 +21,8 @@ data class UserDisplayable(
         password = user.password,
         name = user.name,
         surname = user.surname,
-        coordinates = user.coordinates?.let { CoordinateDisplayable(it) }
+        coordinates = user.coordinates?.let { CoordinateDisplayable(it) },
+        books = user.books?.map { BookDisplayable(it) }
     )
 
     fun toUser() = User(
@@ -29,7 +32,8 @@ data class UserDisplayable(
         password = this.password,
         name = this.name,
         surname = this.surname,
-        coordinates = this.coordinates?.toCoordinate()
+        coordinates = this.coordinates?.toCoordinate(),
+        books = this.books?.map { it.toBook() }
     )
 
 

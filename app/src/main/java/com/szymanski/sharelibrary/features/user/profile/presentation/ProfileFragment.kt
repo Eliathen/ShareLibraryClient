@@ -2,7 +2,9 @@ package com.szymanski.sharelibrary.features.user.profile.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -13,7 +15,6 @@ import android.provider.Settings
 import android.text.Editable
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import com.szymanski.sharelibrary.MainActivity
@@ -108,9 +109,21 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
     }
 
     private fun enableLocation() {
-        Toast.makeText(requireContext(), "Turn on location", Toast.LENGTH_LONG).show()
-        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-        startActivity(intent)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setCancelable(false)
+            .setTitle(getString(R.string.location_access_title))
+            .setMessage(getString(R.string.get_location_message))
+            .setNegativeButton(getString(R.string.cancel_button_text)) { dialog: DialogInterface, _: Int ->
+                dialog.cancel()
+                changeElementsDuringGettingCoordinates()
+            }
+            .setNeutralButton(getString(R.string.accept_button_text)) { _: DialogInterface, _: Int ->
+                changeElementsDuringGettingCoordinates()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+            .create()
+            .show()
     }
 
     @SuppressLint("MissingPermission")
@@ -138,9 +151,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
             requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     private fun checkPermissions(): Boolean {
@@ -209,7 +220,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
                 password = charArrayOf(),
                 username = user?.username,
                 email = user?.email,
-                coordinates = viewModel.coordinate.value)
+                coordinates = viewModel.coordinate.value,
+                books = listOf())
         )
     }
 
@@ -217,6 +229,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
         val toolbar = toolbar_profile_screen
         (activity as MainActivity).setSupportActionBar(toolbar)
         toolbar.title = ""
+        (activity as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).supportActionBar!!.setDisplayShowHomeEnabled(true)
     }
 
     override fun onIdleState() {

@@ -32,6 +32,13 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
 
     private val TAG = "RegisterFragment"
 
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            val location: Location = locationResult.lastLocation!!
+            setNewCoordinates(latitude = location.latitude, longitude = location.longitude)
+        }
+    }
+
     override fun initViews() {
         super.initViews()
         initListeners()
@@ -135,7 +142,8 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
                 password = password,
                 coordinates = CoordinateDisplayable(
                     null, coordinate?.latitude, coordinate?.longitude
-                )
+                ),
+                books = listOf()
             ))
         }
     }
@@ -192,26 +200,21 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
 
     private fun enableLocation() {
         val builder = AlertDialog.Builder(requireContext())
-
         builder.setCancelable(false)
             .setTitle(getString(R.string.location_access_title))
             .setMessage(getString(R.string.get_location_message))
             .setNegativeButton(getString(R.string.cancel_button_text)) { dialog: DialogInterface, _: Int ->
                 dialog.cancel()
+                changeElementsDuringGettingCoordinates()
             }
             .setNeutralButton(getString(R.string.accept_button_text)) { _: DialogInterface, _: Int ->
                 changeElementsDuringGettingCoordinates()
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
             }
+            .create()
+            .show()
 
-    }
-
-    private val mLocationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            val location: Location = locationResult.lastLocation!!
-            setNewCoordinates(latitude = location.latitude, longitude = location.longitude)
-        }
     }
 
     @SuppressLint("MissingPermission")
@@ -232,9 +235,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
             requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     private fun checkPermissions(): Boolean {

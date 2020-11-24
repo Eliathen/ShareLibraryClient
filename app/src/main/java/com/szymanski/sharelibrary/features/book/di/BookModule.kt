@@ -2,10 +2,7 @@ package com.szymanski.sharelibrary.features.book.di
 
 import com.szymanski.sharelibrary.features.book.data.BookRepositoryImpl
 import com.szymanski.sharelibrary.features.book.domain.BookRepository
-import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
-import com.szymanski.sharelibrary.features.book.domain.usecase.GetUsersBookUseCase
-import com.szymanski.sharelibrary.features.book.domain.usecase.SaveBookUseCase
-import com.szymanski.sharelibrary.features.book.domain.usecase.SearchBookUseCase
+import com.szymanski.sharelibrary.features.book.domain.usecase.*
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigatorImpl
 import com.szymanski.sharelibrary.features.book.presentation.all.BooksAdapter
@@ -19,9 +16,9 @@ import org.koin.dsl.module
 
 val bookModule = module {
 
-    viewModel { SearchBookViewModel(get(), get(), get(), get()) }
+    viewModel { SearchBookViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SaveBookViewModel(get(), get(), get()) }
-    viewModel { BooksViewModel(get(), get(), get(), get(), get()) }
+    viewModel { BooksViewModel(get(), get(), get(), get(), get(), get()) }
 
     factory<BookRepository> { BookRepositoryImpl(get(), get(), get()) }
 
@@ -31,6 +28,7 @@ val bookModule = module {
     factory { GetUsersBookUseCase(get()) }
     factory { SearchBookUseCase(get()) }
     factory { GetCoverUseCase(get()) }
+    factory { AssignBookToUserUseCase(get()) }
 
     factory { SearchBookAdapter() }
     factory { AddAuthorAdapter() }

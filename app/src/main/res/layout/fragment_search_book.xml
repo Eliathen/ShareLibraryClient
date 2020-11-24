@@ -8,41 +8,37 @@
 
     <include
         android:id="@+id/toolbar_wrapper"
-        layout="@layout/toolbar_base" />
+        layout="@layout/toolbar_search_books" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar_wrapper">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/books_search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            app:queryHint="@string/search_title"
-            android:background="@drawable/register_button_background" />
+        <!--        <androidx.appcompat.widget.SearchView-->
+        <!--            android:id="@+id/books_search_view"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="15dp"-->
+        <!--            app:queryHint="@string/search_title"-->
+        <!--            android:background="@drawable/register_button_background" />-->
 
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:visibility="gone"
-            android:id="@+id/progress_bar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/books_search_view"
-            android:layout_centerHorizontal="true" />
+        <!--        <androidx.core.widget.ContentLoadingProgressBar-->
+        <!--            android:visibility="gone"-->
+        <!--            android:id="@+id/progress_bar"-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_centerHorizontal="true" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_books_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/books_search_view"
-            android:layout_alignBaseline="@id/books_search_view" />
+            android:layout_height="wrap_content" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/searchView_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/books_search_view"
             android:gravity="center_horizontal"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

@@ -1,8 +1,6 @@
 package com.szymanski.sharelibrary.core.api
 
-import com.szymanski.sharelibrary.core.api.model.request.LoginRequest
-import com.szymanski.sharelibrary.core.api.model.request.RegisterRequest
-import com.szymanski.sharelibrary.core.api.model.request.UserRequest
+import com.szymanski.sharelibrary.core.api.model.request.*
 import com.szymanski.sharelibrary.core.api.model.response.BookResponse
 import com.szymanski.sharelibrary.core.api.model.response.LoginResponse
 import com.szymanski.sharelibrary.core.api.model.response.RegisterResponse
@@ -45,4 +43,10 @@ interface Api {
 
     @PUT("users/{id}")
     suspend fun editUser(@Path("id") userId: Long, @Body userRequest: UserRequest): UserResponse
+
+    @POST("users/assignment")
+    suspend fun assignBook(@Body assignBookRequest: AssignBookRequest): UserResponse
+
+    @POST("users/withdrawal")
+    suspend fun withdrawBook(@Body withdrawBookRequest: WithdrawBookRequest): UserResponse
 }

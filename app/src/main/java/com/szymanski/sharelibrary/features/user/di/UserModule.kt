@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.features.user.di
 
+import com.szymanski.sharelibrary.features.book.domain.usecase.WithdrawBookUseCase
 import com.szymanski.sharelibrary.features.user.data.UserRepositoryImpl
 import com.szymanski.sharelibrary.features.user.domain.UserRepository
 import com.szymanski.sharelibrary.features.user.domain.usecase.EditUserUseCase
@@ -34,6 +35,9 @@ val userModule = module {
     }
     factory {
         EditUserUseCase(get())
+    }
+    factory {
+        WithdrawBookUseCase(get())
     }
 
     viewModel {
