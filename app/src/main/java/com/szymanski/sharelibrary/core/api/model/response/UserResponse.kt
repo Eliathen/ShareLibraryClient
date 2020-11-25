@@ -11,7 +11,7 @@ data class UserResponse(
     @SerializedName("name") val name: String,
     @SerializedName("surname") val surname: String,
     @SerializedName("coordinatesResponse") val coordinatesResponse: CoordinatesResponse,
-    @SerializedName("books") val books: List<BookResponse>,
+    @SerializedName("books") val books: List<BookResponse>?,
 ) {
     fun toUser() = User(
         id = this.id,
@@ -21,6 +21,6 @@ data class UserResponse(
         name = this.name,
         surname = this.surname,
         coordinates = this.coordinatesResponse.toCoordinates(),
-        books = this.books.map { it.toBook() }
+        books = this.books?.map { it.toBook() }
     )
 }

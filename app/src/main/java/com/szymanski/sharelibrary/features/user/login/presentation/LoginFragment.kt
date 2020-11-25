@@ -31,7 +31,6 @@ class LoginFragment : BaseFragment<LoginViewModel>(R.layout.fragment_login) {
         }
     }
 
-
     override fun initObservers() {
         super.initObservers()
         viewModel.message.observe(this) {

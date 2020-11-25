@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.book.presentation.all
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -79,7 +78,6 @@ class BooksViewModel(
     }
 
     fun withdrawBook(bookDisplayable: BookDisplayable?) {
-        Log.d(TAG, "withdrawBook: BeforeUseCase")
         withdrawBookUseCase(
             scope = viewModelScope,
             params = WithdrawBookRequest(userStorage.getUserId(), bookDisplayable?.id!!)

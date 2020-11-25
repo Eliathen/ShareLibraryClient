@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.user.data
 
-import android.util.Log
 import com.szymanski.sharelibrary.core.api.Api
 import com.szymanski.sharelibrary.core.api.model.request.*
 import com.szymanski.sharelibrary.core.exception.ErrorWrapper
@@ -42,9 +41,7 @@ class UserRepositoryImpl(
         }
     }
 
-    private val TAG = "UserRepositoryImpl"
     override suspend fun withdrawBook(withdrawBookRequest: WithdrawBookRequest): User {
-        Log.d(TAG, "withdrawBook: in repository")
         return callOrThrow(errorWrapper) {
             api.withdrawBook(withdrawBookRequest).toUser()
         }

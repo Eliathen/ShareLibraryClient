@@ -46,10 +46,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
     override fun initObservers() {
         viewModel.user.observe(this) {
             val fullName = "${it.name} ${it.surname}"
-            full_name.text = fullName
+            Log.d(TAG, "initObservers: $fullName")
+            full_name_profile.text = fullName
         }
         viewModel.coordinate.observe(this) {
             val coordinates = "${it?.latitude} ${it?.longitude}"
+            Log.d(TAG, "initObservers: $coordinates")
             coordinates_value_profile.text = coordinates
         }
         observeEditModeState()
@@ -59,10 +61,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
         viewModel.editMode.observe(this) {
             when (it) {
                 EditModeState.Inactive -> {
-                    onInactiveEditModeState()
+                    setInactiveEditModeState()
                 }
                 EditModeState.Active -> {
-                    onActiveEditModeState()
+                    setActiveEditModeState()
                 }
             }
         }
@@ -210,8 +212,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
             name = fullNameTemp
             surname = ""
         }
-        Log.d(TAG, "saveDataChanges: $name")
-        Log.d(TAG, "saveDataChanges: $surname")
         val user = viewModel.user.value
         viewModel.editUserDetails(
             UserDisplayable(name = name,
@@ -243,8 +243,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
         progress_bar_profile.visibility = View.VISIBLE
     }
 
-    private fun onActiveEditModeState() {
-        full_name.visibility = View.GONE
+    private fun setActiveEditModeState() {
+        full_name_profile.visibility = View.GONE
         full_name_editText.visibility = View.VISIBLE
         coordinates_button_profile.visibility = View.VISIBLE
         save_cancel_buttons_wrapper.visibility = View.VISIBLE
@@ -257,8 +257,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
         }
     }
 
-    private fun onInactiveEditModeState() {
-        full_name.visibility = View.VISIBLE
+    private fun setInactiveEditModeState() {
+        full_name_profile.visibility = View.VISIBLE
         full_name_editText.visibility = View.GONE
         coordinates_button_profile.visibility = View.GONE
         save_cancel_buttons_wrapper.visibility = View.GONE
