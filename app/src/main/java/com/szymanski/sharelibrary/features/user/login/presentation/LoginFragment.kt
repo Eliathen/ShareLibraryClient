@@ -5,7 +5,7 @@ import android.text.TextUtils
 import android.view.View
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
-import com.szymanski.sharelibrary.core.storage.local.UserStorage
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.user.login.presentation.model.LoginDisplayable
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject

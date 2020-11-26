@@ -11,8 +11,8 @@ import com.szymanski.sharelibrary.core.exception.ErrorWrapperImpl
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigatorImpl
 import com.szymanski.sharelibrary.core.provider.ActivityProvider
-import com.szymanski.sharelibrary.core.storage.local.UserStorage
-import com.szymanski.sharelibrary.core.storage.local.UserStorageImpl
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorageImpl
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 

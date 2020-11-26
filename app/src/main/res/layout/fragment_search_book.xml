@@ -7,6 +7,7 @@
     tools:context=".features.book.presentation.searchbook.SearchBookFragment">
 
     <include
+        style="@style/toolbar_style"
         android:id="@+id/toolbar_wrapper"
         layout="@layout/toolbar_search_books" />
 

@@ -51,7 +51,6 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         val toolbar = toolbar_base
         (activity as MainActivity).setSupportActionBar(toolbar)
         toolbar.title = ""
-        toolbar.subtitle = getString(R.string.save_new_book_toolbar_subtitle)
         (activity as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         (activity as MainActivity).supportActionBar!!.setDisplayShowHomeEnabled(true)
     }

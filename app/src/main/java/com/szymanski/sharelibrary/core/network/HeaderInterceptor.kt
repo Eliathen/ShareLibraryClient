@@ -1,7 +1,7 @@
 package com.szymanski.sharelibrary.core.network
 
 import com.szymanski.sharelibrary.core.api.Constant
-import com.szymanski.sharelibrary.core.storage.local.UserStorage
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -15,8 +15,8 @@ class HeaderInterceptor(private val userStorage: UserStorage) : Interceptor {
         if (urlWithNoAuthorization.contains(chain.request().url.toString())) {
             return chain.proceed(chain.request())
         }
-        val token = userStorage.getUser().token!!.accessToken
-        val typeOfToken = userStorage.getUser().token!!.tokenType
+        val token = userStorage.getLoginDetails().token!!.accessToken
+        val typeOfToken = userStorage.getLoginDetails().token!!.tokenType
         val bearerToken = "$typeOfToken $token"
         val request = chain.request()
             .newBuilder()

@@ -1,10 +1,7 @@
 package com.szymanski.sharelibrary.core.api
 
 import com.szymanski.sharelibrary.core.api.model.request.*
-import com.szymanski.sharelibrary.core.api.model.response.BookResponse
-import com.szymanski.sharelibrary.core.api.model.response.LoginResponse
-import com.szymanski.sharelibrary.core.api.model.response.RegisterResponse
-import com.szymanski.sharelibrary.core.api.model.response.UserResponse
+import com.szymanski.sharelibrary.core.api.model.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -49,4 +46,7 @@ interface Api {
 
     @POST("users/withdrawal")
     suspend fun withdrawBook(@Body withdrawBookRequest: WithdrawBookRequest): UserResponse
+
+    @POST("exchanges")
+    suspend fun saveExchange(@Body exchangeRequest: SaveExchangeRequest): ExchangeResponse
 }

@@ -4,13 +4,13 @@ import com.szymanski.sharelibrary.features.book.domain.model.Book
 
 data class User(
     val id: Long?,
-    val email: String?,
-    val username: String?,
-    val password: CharArray?,
-    val name: String?,
-    val surname: String?,
+    val email: String? = "",
+    val username: String? = "",
+    val password: CharArray? = charArrayOf(),
+    val name: String? = "",
+    val surname: String? = "",
     val coordinates: Coordinate?,
-    val books: List<Book>?,
+    val books: List<Book>? = listOf(),
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

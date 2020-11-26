@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.api.model.request.AssignBookRequest
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
-import com.szymanski.sharelibrary.core.storage.local.UserStorage
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.usecase.AssignBookToUserUseCase
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase

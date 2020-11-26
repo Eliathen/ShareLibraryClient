@@ -7,7 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".features.book.presentation.save.SaveBookFragment">
 
-    <include layout="@layout/toolbar_base" />
+    <include
+        layout="@layout/toolbar_base"
+        style="@style/toolbar_style" />
 
     <ScrollView
         android:layout_width="match_parent"

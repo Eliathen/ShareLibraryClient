@@ -2,7 +2,6 @@ package com.szymanski.sharelibrary.features.book.presentation.all
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
@@ -84,10 +83,13 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_books, menu)
+        inflater.inflate(R.menu.books_menu, menu)
         val searchItem = menu.findItem(R.id.search)
         searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+
         val searchView = searchItem.actionView as SearchView
+        val displayMetrics = requireActivity().resources.displayMetrics
+        searchView.maxWidth = displayMetrics.widthPixels
         searchView.queryHint = getString(R.string.search_title)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -105,16 +107,15 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
 
     override fun onClick(context: Context, view: View, position: Int) {
         val popupMenu = PopupMenu(context, view)
-        popupMenu.inflate(R.menu.menu_books_item)
+        popupMenu.inflate(R.menu.item_books_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.books_item_remove -> {
                     viewModel.withdrawBook(viewModel.books.value?.get(position))
-                    Log.d(TAG, "onClick: remove")
                     true
                 }
                 R.id.books_item_share -> {
-                    Log.d(TAG, "onClick: share")
+                    viewModel.shareBook(viewModel.books.value?.get(position))
                     true
                 }
                 else -> {

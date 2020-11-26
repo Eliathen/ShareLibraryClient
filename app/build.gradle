@@ -64,14 +64,18 @@ dependencies {
 
     //fragment dependencies
     implementation fragmenDependencies.values()
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     //room dependencies
-    def roomVersion = "2.2.5"
-    implementation databaseDependencies.values()
-    kapt "androidx.room:room-compiler:$roomVersion"
+//    def roomVersion = "2.2.5"
+//    implementation databaseDependencies.values()
+//    kapt "androidx.room:room-compiler:$roomVersion"
 
+    //location dependencies
     implementation locationDependencies.values()
 
+    //map dependencies
+    implementation mapDependencies.values()
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

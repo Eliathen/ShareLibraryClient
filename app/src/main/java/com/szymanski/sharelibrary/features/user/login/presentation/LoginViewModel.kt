@@ -3,7 +3,7 @@ package com.szymanski.sharelibrary.features.user.login.presentation
 import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
-import com.szymanski.sharelibrary.core.storage.local.UserStorage
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.user.domain.usecase.LoginUserUseCase
 import com.szymanski.sharelibrary.features.user.login.presentation.model.LoginDisplayable
 import com.szymanski.sharelibrary.features.user.navigation.UserNavigation
@@ -22,7 +22,7 @@ class LoginViewModel(
         ) { it ->
             setIdleState()
             it.onSuccess {
-                userStorage.saveUser(it)
+                userStorage.saveLoginDetails(it)
 
                 if (isToSaveLoginDetails) {
                     userStorage.saveLoginAndPassword(loginDisplayable.userNameOrEmail!!,

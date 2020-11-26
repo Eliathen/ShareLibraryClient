@@ -48,10 +48,13 @@ class SearchBookFragment : BaseFragment<SearchBookViewModel>(R.layout.fragment_s
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_books_menu, menu)
+
         val searchItem = menu.findItem(R.id.search_book)
         searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+
         val searchView = searchItem.actionView as SearchView
         searchView.queryHint = getString(R.string.search_title)
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.searchBook(query!!.trim())
@@ -76,19 +79,6 @@ class SearchBookFragment : BaseFragment<SearchBookViewModel>(R.layout.fragment_s
             }
         }
     }
-
-//    private fun initSearchView() {
-//        books_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                viewModel.searchBook(query!!.trim())
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                return false
-//            }
-//        })
-//    }
 
     override fun initObservers() {
         super.initObservers()

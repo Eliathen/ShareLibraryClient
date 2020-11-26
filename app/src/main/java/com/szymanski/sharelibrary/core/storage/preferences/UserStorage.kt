@@ -1,12 +1,12 @@
-package com.szymanski.sharelibrary.core.storage.local
+package com.szymanski.sharelibrary.core.storage.preferences
 
 import com.szymanski.sharelibrary.features.user.domain.model.Login
 
 interface UserStorage {
 
-    fun saveUser(login: Login)
+    fun saveLoginDetails(login: Login)
 
-    fun getUser(): Login
+    fun getLoginDetails(): Login
 
     fun getUserId(): Long
 

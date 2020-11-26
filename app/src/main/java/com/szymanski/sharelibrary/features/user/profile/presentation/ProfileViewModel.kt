@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.base.EditModeState
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
-import com.szymanski.sharelibrary.core.storage.local.UserStorage
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.User
 import com.szymanski.sharelibrary.features.user.domain.usecase.EditUserUseCase

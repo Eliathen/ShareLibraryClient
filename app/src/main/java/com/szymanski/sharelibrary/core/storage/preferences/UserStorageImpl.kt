@@ -1,4 +1,4 @@
-package com.szymanski.sharelibrary.core.storage.local
+package com.szymanski.sharelibrary.core.storage.preferences
 
 import com.google.gson.Gson
 import com.szymanski.sharelibrary.core.provider.ActivityProvider
@@ -41,15 +41,15 @@ class UserStorageImpl(
         getSharedPreferences()?.edit()?.clear()?.apply()
     }
 
-    override fun saveUser(login: Login) {
+    override fun saveLoginDetails(login: Login) {
         getSharedPreferences()?.edit()?.putString(USER_KEY, gson.toJson(login))?.apply()
     }
 
-    override fun getUser(): Login {
+    override fun getLoginDetails(): Login {
         val json = getSharedPreferences()?.getString(USER_KEY, "")
         return gson.fromJson(json, Login::class.java)
     }
 
-    override fun getUserId() = getUser().id!!
+    override fun getUserId() = getLoginDetails().id!!
 
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
-import com.szymanski.sharelibrary.core.storage.local.UserStorage
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.Login
 import com.szymanski.sharelibrary.features.user.domain.usecase.LoginUserUseCase
@@ -55,7 +55,7 @@ class RegisterViewModel(
             result.onSuccess {
                 userStorage.saveLoginAndPassword(userDisplayable.username!!,
                     userDisplayable.password!!)
-                userStorage.saveUser(it)
+                userStorage.saveLoginDetails(it)
                 navigateToBookScreen()
             }
         }

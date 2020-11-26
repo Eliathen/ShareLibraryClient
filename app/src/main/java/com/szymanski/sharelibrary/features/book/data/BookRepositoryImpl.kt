@@ -3,7 +3,7 @@ package com.szymanski.sharelibrary.features.book.data
 import com.szymanski.sharelibrary.core.api.Api
 import com.szymanski.sharelibrary.core.exception.ErrorWrapper
 import com.szymanski.sharelibrary.core.exception.callOrThrow
-import com.szymanski.sharelibrary.core.storage.local.UserStorage
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.book.domain.BookRepository
 import com.szymanski.sharelibrary.features.book.domain.model.Author
 import com.szymanski.sharelibrary.features.book.domain.model.Book

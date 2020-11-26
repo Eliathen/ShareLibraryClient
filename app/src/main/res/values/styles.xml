@@ -14,6 +14,8 @@
         <item name="android:title">@color/white</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:editTextColor">@color/white</item>
+        <item name="color">@color/white</item>
+        <item name="backgroundColor">@color/colorPrimary</item>
     </style>
 
 </resources>
