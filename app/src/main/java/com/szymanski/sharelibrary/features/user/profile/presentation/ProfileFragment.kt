@@ -91,6 +91,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
     private fun getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
+
                 fusedLocationClient =
                     LocationServices.getFusedLocationProviderClient(requireActivity())
                 fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->

@@ -63,13 +63,6 @@ ext {
             loggingInterceptor    : "com.squareup.okhttp3:logging-interceptor:" + okHttp3Version,
     ]
 
-//    def roomVersion = "2.2.5"
-//
-//    databaseDependencies = [
-//            roomRuntime: "androidx.room:room-runtime:" + roomVersion,
-//            roomKtx    : "androidx.room:room-ktx:" + roomVersion
-//    ]
-
     def fragmentVersion = "1.2.2"
     fragmenDependencies = [
             fragmentKtx: "androidx.fragment:fragment-ktx:" + fragmentVersion
@@ -85,6 +78,5 @@ ext {
             android   : "org.osmdroid:osmdroid-android:" + openMapVersion,
             wms       : "org.osmdroid:osmdroid-wms:" + openMapVersion,
             mapforge  : "org.osmdroid:osmdroid-mapsforge:" + openMapVersion,
-            geopackage: "org.osmdroid:osmdroid-geopackage:" + openMapVersion
     ]
 }
