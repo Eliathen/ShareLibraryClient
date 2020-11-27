@@ -1,8 +1,10 @@
 package com.szymanski.sharelibrary.features.user.registration.presentation.model
 
-import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
+import android.os.Parcelable
 import com.szymanski.sharelibrary.features.user.domain.model.User
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class UserDisplayable(
     val id: Long?,
     val email: String?,
@@ -11,8 +13,7 @@ data class UserDisplayable(
     val name: String?,
     val surname: String?,
     var coordinates: CoordinateDisplayable?,
-    var books: List<BookDisplayable>?,
-) {
+) : Parcelable {
 
     constructor(user: User) : this(
         id = user.id,
@@ -22,7 +23,6 @@ data class UserDisplayable(
         name = user.name,
         surname = user.surname,
         coordinates = user.coordinates?.let { CoordinateDisplayable(it) },
-        books = user.books?.map { BookDisplayable(it) }
     )
 
     fun toUser() = User(
@@ -33,9 +33,7 @@ data class UserDisplayable(
         name = this.name,
         surname = this.surname,
         coordinates = this.coordinates?.toCoordinate(),
-        books = this.books?.map { it.toBook() }
     )
-
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

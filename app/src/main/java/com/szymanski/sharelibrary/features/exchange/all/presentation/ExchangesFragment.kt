@@ -47,8 +47,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         val searchItem = menu.findItem(R.id.exchange_searchView)
         val filterItem = menu.findItem(R.id.exchange_filter)
 
-        searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-
         val searchView = searchItem.actionView as SearchView
         searchView.queryHint = getString(R.string.search_title)
 

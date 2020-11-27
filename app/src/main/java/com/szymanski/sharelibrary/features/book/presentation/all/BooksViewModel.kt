@@ -8,7 +8,7 @@ import com.szymanski.sharelibrary.core.api.model.request.WithdrawBookRequest
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
-import com.szymanski.sharelibrary.core.utils.ExchangeType
+import com.szymanski.sharelibrary.core.utils.ExchangeStatus
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetUsersBookUseCase
@@ -56,6 +56,7 @@ class BooksViewModel(
             }
 
             result.onFailure { throwable ->
+                Log.d(TAG, "getUsersBook: ${throwable.message}")
                 handleFailure(throwable)
             }
         }
@@ -95,13 +96,12 @@ class BooksViewModel(
     }
 
     fun shareBook(bookDisplayable: BookDisplayable?) {
-        var user: User
         getUserUseCase(
             scope = viewModelScope,
             params = userStorage.getUserId()
         ) { result ->
-            result.onSuccess {
-                bookDisplayable?.toBook()?.let { it1 -> createExchange(it, it1) }
+            result.onSuccess { user ->
+                bookDisplayable?.toBook()?.let { book -> createExchange(user, book) }
             }
             result.onFailure {
                 handleFailure(Throwable())
@@ -115,7 +115,7 @@ class BooksViewModel(
             book = book,
             user = user,
             deposit = 0.0,
-            exchangeType = ExchangeType.FOR_BOOK,
+            exchangeStatus = ExchangeStatus.STARTED,
             isFinished = false,
             coordinates = user.coordinates!!,
         )
@@ -130,5 +130,9 @@ class BooksViewModel(
                 handleFailure(it)
             }
         }
+    }
+
+    fun openBookDetailsScreen(bookDisplayable: BookDisplayable) {
+        bookNavigator.openBookDetailsScreen(bookDisplayable)
     }
 }

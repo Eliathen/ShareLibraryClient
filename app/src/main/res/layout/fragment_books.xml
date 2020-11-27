@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.book.presentation.all.BooksFragment">
+    tools:context=".features.book.presentation.all.BooksFragmentView">
 
     <include
         layout="@layout/toolbar_books"
@@ -32,7 +32,8 @@
             android:layout_marginEnd="@dimen/floating_action_button_margin"
             android:layout_marginBottom="@dimen/floating_action_button_margin"
             android:backgroundTint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_add_24" />
+            android:src="@drawable/ic_add_24"
+            tools:ignore="ContentDescription" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

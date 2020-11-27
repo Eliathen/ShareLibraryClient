@@ -221,8 +221,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
                 password = charArrayOf(),
                 username = user?.username,
                 email = user?.email,
-                coordinates = viewModel.coordinate.value,
-                books = listOf())
+                coordinates = viewModel.coordinate.value
+            )
         )
     }
 

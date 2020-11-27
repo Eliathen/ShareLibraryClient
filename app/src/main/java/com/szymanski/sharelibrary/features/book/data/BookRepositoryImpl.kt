@@ -44,7 +44,7 @@ class BookRepositoryImpl(
 
     override suspend fun getUsersBook(userId: Long): List<Book> {
         return callOrThrow(errorWrapper) {
-            api.getUsersBook(userId).map { it.toBook() }
+            api.getUsersBook(userId).map { it.toBook() }.toList()
         }
     }
 

@@ -1,5 +1,7 @@
 package com.szymanski.sharelibrary.features.book.domain.model
 
+import com.szymanski.sharelibrary.core.utils.BookStatus
+import com.szymanski.sharelibrary.features.user.domain.model.User
 import java.io.Serializable
 
 
@@ -13,7 +15,12 @@ data class Book(
 
     var cover: ByteArray?,
 
+    var status: BookStatus?,
+
+    var atUser: User?,
+
     ) : Serializable {
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -27,6 +34,8 @@ data class Book(
             if (other.cover == null) return false
             if (!cover.contentEquals(other.cover)) return false
         } else if (other.cover != null) return false
+        if (status != other.status) return false
+        if (atUser != other.atUser) return false
 
         return true
     }
@@ -36,6 +45,8 @@ data class Book(
         result = 31 * result + (title?.hashCode() ?: 0)
         result = 31 * result + (authors?.hashCode() ?: 0)
         result = 31 * result + (cover?.contentHashCode() ?: 0)
+        result = 31 * result + (status?.hashCode() ?: 0)
+        result = 31 * result + (atUser?.hashCode() ?: 0)
         return result
     }
 }

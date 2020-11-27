@@ -65,4 +65,5 @@
     <string name="remove_book">Remove</string>
     <string name="share_book">Share</string>
     <string name="three_dots">⋮</string>
+    <string name="authors_label">authors:</string>
 </resources>

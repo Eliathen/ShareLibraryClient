@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.fragment_save_book.*
 import kotlinx.android.synthetic.main.item_author.view.*
@@ -115,7 +116,9 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
                 id = null,
                 title = title,
                 authorsDisplayable = authors,
-                cover = this.cover
+                cover = this.cover,
+                status = BookStatus.AT_OWNER,
+                atUserDisplayable = null
             )
             viewModel.saveBook(book)
         }

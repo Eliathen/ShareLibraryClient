@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.R
-import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.item_book.view.*
 import java.util.*
@@ -16,7 +15,7 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
 
     private val books: MutableList<BookDisplayable> by lazy { mutableListOf() }
 
-    private lateinit var listener: BooksViewOptions
+    private lateinit var optionListener: BooksAdapterListener
 
     private val booksCopy: MutableList<BookDisplayable> by lazy { mutableListOf() }
 
@@ -30,14 +29,14 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setListener(listener: BooksViewOptions) {
-        this.listener = listener
+    fun setListener(listener: BooksAdapterListener) {
+        this.optionListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_book, parent, false)
-        return ViewHolder(view, listener)
+        return ViewHolder(view, optionListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -58,38 +57,42 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val view: View, private val listener: BooksViewOptions) :
+    class ViewHolder(private val view: View, private val listener: BooksAdapterListener) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
         fun onBind(bookDisplayable: BookDisplayable) {
             with(view) {
                 title.text = bookDisplayable.title!!.replace("\"", "")
-                authors.text = bookDisplayable.authorsDisplayable?.let {
-                    convertAuthorDisplayableListToString(it)
+                bookDisplayable.atUserDisplayable?.let {
+                    val fullName =
+                        "${bookDisplayable.atUserDisplayable.name} ${bookDisplayable.atUserDisplayable.surname}"
+                    atUser_full_name.text = fullName
+                    atUser_username.text = bookDisplayable.atUserDisplayable.username
                 }
                 if (bookDisplayable.cover!!.isNotEmpty()) {
                     Glide.with(this)
                         .load(bookDisplayable.cover)
                         .into(cover)
                 }
+                setOnClickListener(this@ViewHolder)
                 item_book_menu_options.setOnClickListener(this@ViewHolder)
             }
         }
 
-        private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {
-            var endString = ""
-            list.forEach { author ->
-                endString += "${author.name} ${author.surname}, "
-            }
-            endString = endString.trim()
-            return endString.substring(0 until endString.length - 1)
-        }
-
         override fun onClick(v: View?) {
-            listener.onClick(v!!.context, v, adapterPosition)
+            when (v?.id) {
+                R.id.item_book_menu_options -> {
+                    listener.onOptionClick(v.context, v, adapterPosition)
+                }
+                else -> {
+                    listener.onItemClick(v!!.context, v, adapterPosition)
+                }
+            }
         }
     }
 
-    interface BooksViewOptions {
-        fun onClick(context: Context, view: View, position: Int)
+
+    interface BooksAdapterListener {
+        fun onOptionClick(context: Context, view: View, position: Int)
+        fun onItemClick(context: Context, view: View, position: Int)
     }
 }

@@ -1,12 +1,15 @@
 package com.szymanski.sharelibrary.features.user.registration.presentation.model
 
+import android.os.Parcelable
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CoordinateDisplayable(
     val id: Long?,
     val latitude: Double?,
     val longitude: Double?,
-) {
+) : Parcelable {
     constructor(coordinate: Coordinate) : this(
         id = coordinate.id,
         latitude = coordinate.latitude,

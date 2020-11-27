@@ -11,14 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.utils.BookStatus
 import kotlinx.android.synthetic.main.fragment_books.*
 import kotlinx.android.synthetic.main.toolbar_books.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
-    BooksAdapter.BooksViewOptions {
+class BooksFragmentView : BaseFragment<BooksViewModel>(R.layout.fragment_books),
+    BooksAdapter.BooksAdapterListener {
 
     override val viewModel: BooksViewModel by viewModel()
 
@@ -105,8 +106,25 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         })
     }
 
-    override fun onClick(context: Context, view: View, position: Int) {
+    override fun onOptionClick(context: Context, view: View, position: Int) {
         val popupMenu = PopupMenu(context, view)
+        when (viewModel.books.value?.get(position)?.status) {
+            BookStatus.DURING_EXCHANGE -> {
+                displayMenuForDuringExchangeStatus(popupMenu, position)
+            }
+            BookStatus.EXCHANGED -> {
+                displayMenuForExchangedStatus(popupMenu, position)
+            }
+            else -> {
+                displayMenuForAtOwnerState(popupMenu, position)
+            }
+        }
+    }
+
+    private fun displayMenuForAtOwnerState(
+        popupMenu: PopupMenu,
+        position: Int,
+    ) {
         popupMenu.inflate(R.menu.item_books_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -126,5 +144,39 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         popupMenu.show()
     }
 
+    private fun displayMenuForDuringExchangeStatus(
+        popupMenu: PopupMenu,
+        position: Int,
+    ) {
+        //TODO create new menu for duringExchangeStatus
+        popupMenu.inflate(R.menu.item_books_menu)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                else -> {
+                    false
+                }
+            }
+        }
+        popupMenu.show()
+    }
 
+    private fun displayMenuForExchangedStatus(
+        popupMenu: PopupMenu,
+        position: Int,
+    ) {
+        //TODO create new menu for ExchangedStatus
+        popupMenu.inflate(R.menu.item_books_menu)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                else -> {
+                    false
+                }
+            }
+        }
+        popupMenu.show()
+    }
+
+    override fun onItemClick(context: Context, view: View, position: Int) {
+        viewModel.openBookDetailsScreen(viewModel.books.value!!.get(position))
+    }
 }
