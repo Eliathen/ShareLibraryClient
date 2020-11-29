@@ -7,12 +7,11 @@ class UserNavigationImpl(
     private val fragmentNavigator: FragmentNavigator,
 ) : UserNavigation {
     override fun openRegisterScreen() {
-        fragmentNavigator.navigateTo(R.id.action_navigate_from_login_screen_to_register_screen,
-            null)
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_login_screen_to_register_screen)
     }
 
     override fun openBooksScreen() {
-        fragmentNavigator.navigateTo(R.id.action_navigate_from_login_screen_to_book_screen, null)
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_login_screen_to_book_screen)
     }
 
     override fun openBooksScreenAfterRegister() {
@@ -21,11 +20,11 @@ class UserNavigationImpl(
     }
 
     override fun openLoginScreenAfterLogout() {
-        fragmentNavigator.navigateTo(R.id.action_navigate_from_profile_screen_to_login_screen, null)
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_profile_screen_to_login_screen)
     }
 
     override fun openLoginScreen() {
-        fragmentNavigator.navigateTo(R.id.login_screen, null)
+        fragmentNavigator.navigateTo(R.id.login_screen)
     }
 
     override fun goBack() {

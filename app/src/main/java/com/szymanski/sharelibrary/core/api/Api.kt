@@ -49,4 +49,7 @@ interface Api {
 
     @POST("exchanges")
     suspend fun saveExchange(@Body exchangeRequest: SaveExchangeRequest): ExchangeResponse
+
+    @GET("exchanges/{userId}")
+    suspend fun getExchanges(@Path("userId") userId: Long): List<ExchangeResponse>
 }

@@ -1,5 +1,7 @@
 package com.szymanski.sharelibrary.core.storage.preferences
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.szymanski.sharelibrary.core.provider.ActivityProvider
 import com.szymanski.sharelibrary.features.user.domain.model.Login
@@ -13,40 +15,42 @@ class UserStorageImpl(
     private val USER_KEY = "user"
     private val LOGIN_DATA_KEY = "login"
     private val PASSWORD_DATA_KEY = "password"
+    private lateinit var sharedPreferences: SharedPreferences
 
-
-    private fun getSharedPreferences() = activityProvider.currentActivity?.getSharedPreferences(
-        preferencesKey,
-        android.content.Context.MODE_PRIVATE)
+    init {
+        sharedPreferences = activityProvider.currentActivity?.getSharedPreferences(
+            preferencesKey,
+            MODE_PRIVATE)!!
+    }
 
     override fun saveLoginAndPassword(login: String, password: CharArray) {
         var passwd = password.contentToString().replace(" ", "").replace(",", "")
         passwd = passwd.substring(1, passwd.length - 1)
-        getSharedPreferences()?.edit()?.putString(LOGIN_DATA_KEY, login)?.apply()
-        getSharedPreferences()?.edit()?.putString(PASSWORD_DATA_KEY, passwd)?.apply()
+        sharedPreferences.edit()?.putString(LOGIN_DATA_KEY, login)?.apply()
+        sharedPreferences.edit()?.putString(PASSWORD_DATA_KEY, passwd)?.apply()
     }
 
     override fun getLoginAndPassword(): Pair<String, String> {
-        if (!(getSharedPreferences()!!.contains(LOGIN_DATA_KEY) && getSharedPreferences()!!.contains(
+        if (!(sharedPreferences.contains(LOGIN_DATA_KEY) && sharedPreferences.contains(
                 PASSWORD_DATA_KEY))
         ) {
             return Pair("", "")
         }
-        val login = getSharedPreferences()!!.getString(LOGIN_DATA_KEY, "")!!
-        val password = getSharedPreferences()!!.getString(PASSWORD_DATA_KEY, "")!!
+        val login = sharedPreferences.getString(LOGIN_DATA_KEY, "")!!
+        val password = sharedPreferences.getString(PASSWORD_DATA_KEY, "")!!
         return Pair(login, password)
     }
 
     override fun clearData() {
-        getSharedPreferences()?.edit()?.clear()?.apply()
+        sharedPreferences.edit()?.clear()?.apply()
     }
 
     override fun saveLoginDetails(login: Login) {
-        getSharedPreferences()?.edit()?.putString(USER_KEY, gson.toJson(login))?.apply()
+        sharedPreferences.edit()?.putString(USER_KEY, gson.toJson(login))?.apply()
     }
 
     override fun getLoginDetails(): Login {
-        val json = getSharedPreferences()?.getString(USER_KEY, "")
+        val json = sharedPreferences.getString(USER_KEY, "")!!
         return gson.fromJson(json, Login::class.java)
     }
 

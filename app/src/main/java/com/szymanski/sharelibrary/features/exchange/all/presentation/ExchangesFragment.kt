@@ -28,13 +28,20 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         setViewPager()
     }
 
-
     private fun initAppBar() {
         val toolbar = toolbar_base
         (activity as MainActivity).setSupportActionBar(toolbar)
         with((activity as MainActivity).supportActionBar!!) {
             setHasOptionsMenu(true)
             title = ""
+        }
+    }
+
+    override fun initObservers() {
+        viewModel.exchanges.observe(this) {
+            it.forEach {
+                Log.d(TAG, "initObservers: $it")
+            }
         }
     }
 

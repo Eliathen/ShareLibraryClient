@@ -9,7 +9,7 @@ class UserWithoutBooks(
     @SerializedName("username") val username: String,
     @SerializedName("name") val name: String,
     @SerializedName("surname") val surname: String,
-    @SerializedName("coordinatesResponse") val coordinatesResponse: CoordinatesResponse,
+    @SerializedName("coordinates") val coordinates: CoordinatesResponse,
 
     ) {
     fun toUser() = User(
@@ -19,6 +19,6 @@ class UserWithoutBooks(
         password = null,
         name = this.name,
         surname = this.surname,
-        coordinates = this.coordinatesResponse.toCoordinates(),
+        coordinates = this.coordinates.toCoordinates(),
     )
 }

@@ -8,6 +8,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExchangesListViewFragment :
     BaseFragment<ExchangesViewModel>(R.layout.fragment_exchanges_list_view) {
+
     override val viewModel: ExchangesViewModel by viewModel()
 
 }

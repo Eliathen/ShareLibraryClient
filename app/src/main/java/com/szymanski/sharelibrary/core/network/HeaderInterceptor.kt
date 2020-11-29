@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.core.network
 
+import android.util.Log
 import com.szymanski.sharelibrary.core.api.Constant
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import okhttp3.Interceptor
@@ -12,6 +13,7 @@ class HeaderInterceptor(private val userStorage: UserStorage) : Interceptor {
         Constant.apiUrl + "users/register")
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        Log.d("HeaderInterceptor", "${chain.request().url}")
         if (urlWithNoAuthorization.contains(chain.request().url.toString())) {
             return chain.proceed(chain.request())
         }

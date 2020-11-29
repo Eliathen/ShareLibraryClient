@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.text.Editable
-import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
@@ -46,12 +45,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
     override fun initObservers() {
         viewModel.user.observe(this) {
             val fullName = "${it.name} ${it.surname}"
-            Log.d(TAG, "initObservers: $fullName")
             full_name_profile.text = fullName
         }
         viewModel.coordinate.observe(this) {
             val coordinates = "${it?.latitude} ${it?.longitude}"
-            Log.d(TAG, "initObservers: $coordinates")
             coordinates_value_profile.text = coordinates
         }
         observeEditModeState()
@@ -91,7 +88,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
     private fun getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
-
                 fusedLocationClient =
                     LocationServices.getFusedLocationProviderClient(requireActivity())
                 fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->

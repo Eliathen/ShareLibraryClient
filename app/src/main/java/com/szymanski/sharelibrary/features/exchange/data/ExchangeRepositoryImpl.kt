@@ -17,5 +17,11 @@ class ExchangeRepositoryImpl(
         }
     }
 
-
+    override suspend fun getExchanges(userId: Long): List<Exchange> {
+        return callOrThrow(errorWrapper) {
+            api.getExchanges(userId).map {
+                it.toExchange()
+            }
+        }
+    }
 }

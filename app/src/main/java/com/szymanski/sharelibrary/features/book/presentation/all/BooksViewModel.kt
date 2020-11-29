@@ -17,8 +17,10 @@ import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.ShareBookUseCase
+import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.User
 import com.szymanski.sharelibrary.features.user.domain.usecase.GetUserUseCase
+import com.szymanski.sharelibrary.features.user.registration.presentation.model.CoordinateDisplayable
 
 class BooksViewModel(
     errorMapper: ErrorMapper,
@@ -35,7 +37,9 @@ class BooksViewModel(
 
     private val _books by lazy {
         MutableLiveData<List<Book>>()
-            .also { getUsersBook(userStorage.getUserId()) }
+            .also {
+                getUsersBook(userStorage.getUserId())
+            }
     }
 
     val books by lazy {
@@ -56,15 +60,9 @@ class BooksViewModel(
             }
 
             result.onFailure { throwable ->
-                Log.d(TAG, "getUsersBook: ${throwable.message}")
                 handleFailure(throwable)
             }
         }
-    }
-
-
-    fun openSearchBookScreen() {
-        bookNavigator.openSearchBookScreen()
     }
 
     private fun downloadImage(books: List<Book>) {
@@ -78,12 +76,18 @@ class BooksViewModel(
                         _books.value?.let { it1 -> booksWithCovers.addAll(it1) }
                         _books.value = booksWithCovers.sortedBy { book -> book.id }.toList()
                     }
-                    result.onFailure { _ ->
+                    result.onFailure { it ->
+                        handleFailure(it)
+
                     }
                 }
             }
         }
 
+    }
+
+    fun openSearchBookScreen() {
+        bookNavigator.openSearchBookScreen()
     }
 
     fun withdrawBook(bookDisplayable: BookDisplayable?) {
@@ -95,13 +99,20 @@ class BooksViewModel(
         }
     }
 
-    fun shareBook(bookDisplayable: BookDisplayable?) {
+    fun shareBook(
+        bookDisplayable: BookDisplayable,
+        deposit: Double,
+        coordinateDisplayable: CoordinateDisplayable,
+    ) {
         getUserUseCase(
             scope = viewModelScope,
             params = userStorage.getUserId()
         ) { result ->
             result.onSuccess { user ->
-                bookDisplayable?.toBook()?.let { book -> createExchange(user, book) }
+                createExchange(user,
+                    bookDisplayable.toBook(),
+                    coordinateDisplayable.toCoordinate(),
+                    deposit)
             }
             result.onFailure {
                 handleFailure(Throwable())
@@ -109,15 +120,29 @@ class BooksViewModel(
         }
     }
 
-    private fun createExchange(user: User, book: Book) {
+    fun shareBook(bookDisplayable: BookDisplayable, deposit: Double) {
+        getUserUseCase(
+            scope = viewModelScope,
+            params = userStorage.getUserId()
+        ) { result ->
+            result.onSuccess { user ->
+                createExchange(user, bookDisplayable.toBook(), user.coordinates!!, deposit)
+            }
+            result.onFailure {
+                handleFailure(Throwable())
+            }
+        }
+    }
+
+
+    private fun createExchange(user: User, book: Book, coordinate: Coordinate, deposit: Double) {
         val exchange = Exchange(
             id = null,
             book = book,
             user = user,
-            deposit = 0.0,
+            deposit = deposit,
             exchangeStatus = ExchangeStatus.STARTED,
-            isFinished = false,
-            coordinates = user.coordinates!!,
+            coordinates = coordinate,
         )
         shareBookUseCase(
             scope = viewModelScope,
@@ -127,6 +152,7 @@ class BooksViewModel(
                 Log.d("BooksViewModel", it.toString())
             }
             result.onFailure {
+                Log.d(TAG, "createExchange: ${it.message}")
                 handleFailure(it)
             }
         }

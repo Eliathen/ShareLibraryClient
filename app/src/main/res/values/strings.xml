@@ -66,4 +66,9 @@
     <string name="share_book">Share</string>
     <string name="three_dots">⋮</string>
     <string name="authors_label">authors:</string>
+    <string name="deposit_label_text">Deposit: </string>
+    <string name="deposit_value_hint">0.00</string>
+    <string name="default_location">default location</string>
+    <string name="current_location">current location</string>
+    <string name="location_label">Your location:</string>
 </resources>

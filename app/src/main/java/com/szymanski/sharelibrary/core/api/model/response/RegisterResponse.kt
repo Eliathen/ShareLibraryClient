@@ -5,7 +5,7 @@ import com.szymanski.sharelibrary.features.user.domain.model.User
 
 
 data class RegisterResponse(
-    @SerializedName("coordinatesResponse") val coordinatesResponse: CoordinatesResponse,
+    @SerializedName("coordinates") val coordinatesResponse: CoordinatesResponse,
     @SerializedName("email") val email: String,
     @SerializedName("id") val id: Long,
     @SerializedName("name") val name: String,

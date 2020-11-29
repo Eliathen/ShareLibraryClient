@@ -12,6 +12,5 @@ data class Exchange(
     val deposit: Double,
     val exchangeStatus: ExchangeStatus,
     val id: Long?,
-    val isFinished: Boolean,
     val user: User,
 )

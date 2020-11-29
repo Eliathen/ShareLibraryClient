@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ProgressBar
+        android:id="@+id/save_exchange_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/coordinates_wrapper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/deposit_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/deposit_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/deposit_label_text"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/deposit_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:hint="@string/deposit_value_hint"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/coordinates_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/deposit_wrapper">
+
+        <TextView
+            android:id="@+id/location_label_exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location_label"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/location_radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/default_location_checkbox"
+                android:layout_width="wrap_content"
+                android:checked="true"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:text="@string/default_location" />
+
+            <RadioButton
+                android:id="@+id/current_location_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:text="@string/current_location" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
