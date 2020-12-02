@@ -1,5 +1,7 @@
 package com.szymanski.sharelibrary.features.user.navigation
 
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.navOptions
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
 
@@ -19,8 +21,9 @@ class UserNavigationImpl(
     }
 
     override fun openLoginScreenAfterLogout() {
-        fragmentNavigator.navigateTo(R.id.action_navigate_from_profile_screen_to_login_screen)
-
+        fragmentNavigator.navigateTo(
+            R.id.action_navigate_from_profile_screen_to_login_screen,
+        )
     }
 
     override fun openLoginScreen() {

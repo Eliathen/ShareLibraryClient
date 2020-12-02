@@ -373,4 +373,5 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     override fun onPendingState() {
         books_progressbar.visibility = View.VISIBLE
     }
+
 }
