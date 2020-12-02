@@ -20,7 +20,7 @@
             app:popUpTo="@id/books_screen" />
         <action
             android:id="@+id/action_navigate_from_books_screen_to_book_details_screen"
-            app:destination="@+id/screen_book_details"
+            app:destination="@id/screen_book_details"
             app:popUpTo="@id/books_screen" />
     </fragment>
     <fragment
@@ -41,7 +41,9 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_navigate_from_login_screen_to_register_screen"
-            app:destination="@id/register_screen" />
+            app:destination="@id/register_screen"
+            app:popUpTo="@id/login_screen"
+            />
         <action
             android:id="@+id/action_navigate_from_login_screen_to_book_screen"
             app:destination="@id/books_screen"
