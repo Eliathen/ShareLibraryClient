@@ -62,13 +62,16 @@
     <string name="books_cover_description">Image of book\'s cover</string>
     <string name="new_book_menu_title">NEW</string>
     <string name="save_new_book_toolbar_subtitle">Save new book</string>
-    <string name="remove_book">Remove</string>
+    <string name="books_item_remove_book">Remove</string>
     <string name="share_book">Share</string>
     <string name="three_dots">⋮</string>
-    <string name="authors_label">authors:</string>
+    <string name="authors_label">Authors:</string>
     <string name="deposit_label_text">Deposit: </string>
     <string name="deposit_value_hint">0.00</string>
     <string name="default_location">default location</string>
     <string name="current_location">current location</string>
     <string name="location_label">Your location:</string>
+    <string name="book_status_exchanged">exchanged</string>
+    <string name="book_status_during_exchange">shared</string>
+    <string name="books_item_cancel_exchange">Cancel</string>
 </resources>

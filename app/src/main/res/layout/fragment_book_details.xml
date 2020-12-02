@@ -15,20 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/book_details_cover"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_launcher_foreground"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/book_details_title"
-                tools:ignore="ContentDescription" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/book_details_title"
@@ -37,10 +27,16 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:textSize="40sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:text="Title" />
+
+            <ImageView
+                android:id="@+id/book_details_cover"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_launcher_foreground"
+                android:layout_gravity="center_horizontal"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -57,8 +53,8 @@
                     android:id="@+id/authorsLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginStart="20dp"
+                    android:textSize="20sp"
                     android:text="@string/authors_label" />
 
                 <TextView
@@ -66,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@id/authorsLabel"
+                    android:textSize="18sp"
                     android:background="@null"
                     tools:text="Authors" />
 
@@ -79,6 +75,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

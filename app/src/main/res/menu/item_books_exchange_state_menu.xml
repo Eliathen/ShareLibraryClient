@@ -4,10 +4,10 @@
 
     <item
         android:id="@+id/books_item_remove"
-        android:title="@string/remove_book"
+        android:title="@string/books_item_remove_book"
         app:showAsAction="never" />
     <item
-        android:id="@+id/books_item_share"
-        android:title="@string/share_book"
+        android:id="@+id/books_item_cancel_exchange"
+        android:title="@string/books_item_cancel_exchange"
         app:showAsAction="never" />
 </menu>

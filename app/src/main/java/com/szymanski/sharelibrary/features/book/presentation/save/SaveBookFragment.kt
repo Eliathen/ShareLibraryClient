@@ -174,10 +174,6 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         author_list.layoutManager = null
     }
 
-    override fun initObservers() {
-        super.initObservers()
-    }
-
     override fun onIdleState() {
         progress_bar.visibility = View.GONE
     }

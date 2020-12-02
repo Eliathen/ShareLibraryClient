@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.R
+import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.item_book.view.*
 import java.util.*
@@ -62,11 +63,8 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
         fun onBind(bookDisplayable: BookDisplayable) {
             with(view) {
                 title.text = bookDisplayable.title!!.replace("\"", "")
-                bookDisplayable.atUserDisplayable?.let {
-                    val fullName =
-                        "${bookDisplayable.atUserDisplayable.name} ${bookDisplayable.atUserDisplayable.surname}"
-                    atUser_full_name.text = fullName
-                    atUser_username.text = bookDisplayable.atUserDisplayable.username
+                bookDisplayable.status?.let {
+                    book_status.text = getStringByBookStatus(it)
                 }
                 if (bookDisplayable.cover!!.isNotEmpty()) {
                     Glide.with(this)
@@ -75,6 +73,14 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
                 }
                 setOnClickListener(this@ViewHolder)
                 item_book_menu_options.setOnClickListener(this@ViewHolder)
+            }
+        }
+
+        private fun getStringByBookStatus(status: BookStatus): String {
+            return when (status) {
+                BookStatus.EXCHANGED -> view.context.resources.getString(R.string.book_status_exchanged)
+                BookStatus.DURING_EXCHANGE -> view.context.resources.getString(R.string.book_status_during_exchange)
+                else -> ""
             }
         }
 

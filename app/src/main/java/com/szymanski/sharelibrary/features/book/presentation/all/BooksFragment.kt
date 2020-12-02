@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
@@ -61,6 +60,8 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     private lateinit var dialogContent: View
 
     private lateinit var alertDialog: AlertDialog
+
+    private var bookId: Long? = null
 
     private val TAG = "BooksFragment"
 
@@ -156,7 +157,7 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         popupMenu: PopupMenu,
         position: Int,
     ) {
-        popupMenu.inflate(R.menu.item_books_menu)
+        popupMenu.inflate(R.menu.item_books_at_owner_state_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.books_item_remove -> {
@@ -194,6 +195,7 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
                 R.id.current_location_checkbox -> {
                     dialogContent.save_exchange_progressbar.visibility = View.VISIBLE
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isClickable = false
+                    bookId = bookDisplayable.id
                     getLastLocation()
                 }
             }
@@ -219,9 +221,17 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         position: Int,
     ) {
         //TODO create new menu for duringExchangeStatus
-        popupMenu.inflate(R.menu.item_books_menu)
+        popupMenu.inflate(R.menu.item_books_exchange_state_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.books_item_remove -> {
+                    viewModel.withdrawBook(viewModel.books.value!![position])
+                    true
+                }
+                R.id.books_item_cancel_exchange -> {
+                    viewModel.finishExchange(viewModel.books.value!![position])
+                    true
+                }
                 else -> {
                     false
                 }
@@ -235,7 +245,7 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         position: Int,
     ) {
         //TODO create new menu for ExchangedStatus
-        popupMenu.inflate(R.menu.item_books_menu)
+        popupMenu.inflate(R.menu.item_books_at_owner_state_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 else -> {
@@ -263,8 +273,6 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
                     } else {
                         setNewCoordinates(latitude = location.latitude,
                             longitude = location.longitude)
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isClickable = true
-                        alertDialog.save_exchange_progressbar.visibility = View.GONE
                     }
                 }
             } else {
@@ -350,11 +358,8 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.d(TAG, "onRequestPermissionsResult: ")
         if (requestCode == REQUEST_LOCATION_CODE) {
-            Log.d(TAG, "onRequestPermissionsResult: codes are the same")
             if (grantResults.isEmpty() || grantResults[0] == PermissionChecker.PERMISSION_DENIED) {
-                Log.d(TAG, "onRequestPermissionsResult: permissions denied")
                 requireActivity().finish()
             }
         }
@@ -363,8 +368,16 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     private fun setNewCoordinates(latitude: Double, longitude: Double) {
         coordinateDisplayable =
             CoordinateDisplayable(latitude = latitude, longitude = longitude, id = null)
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isClickable = true
+        alertDialog.save_exchange_progressbar.visibility = View.GONE
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ENABLE_LOCATION_CODE) {
+            displayDialogForShareBookOption(viewModel.books.value!!.first { it.id == bookId })
+        }
+    }
 
     override fun onIdleState() {
         books_progressbar.visibility = View.GONE

@@ -49,6 +49,7 @@ class AddAuthorAdapter : RecyclerView.Adapter<AddAuthorAdapter.ViewHolder>() {
                     authors.add(AuthorDisplayable(name = "", surname = ""))
                     notifyDataSetChanged()
                 }
+
                 this.author_surname.addTextChangedListener { surname ->
                     authors[position].surname = surname.toString()
                 }

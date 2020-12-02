@@ -40,34 +40,12 @@
         app:layout_constraintTop_toTopOf="@+id/title" />
 
     <TextView
-        android:id="@+id/atUser_full_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:gravity="start"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/atUser_username"
-        app:layout_constraintEnd_toStartOf="@id/item_book_menu_options"
-        app:layout_constraintStart_toEndOf="@id/cover" />
-
-    <TextView
-        android:id="@+id/atUser_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:gravity="start"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@id/book_status"
-        app:layout_constraintStart_toEndOf="@id/cover" />
-
-    <TextView
         android:id="@+id/book_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/cover"
-        app:layout_constraintStart_toStartOf="@+id/cover"
-        app:layout_constraintTop_toBottomOf="@id/cover"
+        app:layout_constraintStart_toEndOf="@id/cover"
+        app:layout_constraintBottom_toBottomOf="@id/cover"
         android:gravity="center_horizontal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

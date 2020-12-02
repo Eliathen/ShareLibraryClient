@@ -50,6 +50,9 @@ interface Api {
     @POST("exchanges")
     suspend fun saveExchange(@Body exchangeRequest: SaveExchangeRequest): ExchangeResponse
 
-    @GET("exchanges/{userId}")
-    suspend fun getExchanges(@Path("userId") userId: Long): List<ExchangeResponse>
+    @GET("exchanges")
+    suspend fun getExchanges(): List<ExchangeResponse>
+
+    @POST("exchanges/{id}/end")
+    suspend fun finishExchange(@Path("id") exchangeId: Long?)
 }

@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.book.presentation.all
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -8,6 +7,7 @@ import com.szymanski.sharelibrary.core.api.model.request.WithdrawBookRequest
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
+import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.core.utils.ExchangeStatus
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
@@ -16,6 +16,7 @@ import com.szymanski.sharelibrary.features.book.domain.usecase.WithdrawBookUseCa
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
+import com.szymanski.sharelibrary.features.exchange.domain.usecase.FinishExchangeUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.ShareBookUseCase
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.User
@@ -30,6 +31,7 @@ class BooksViewModel(
     private val withdrawBookUseCase: WithdrawBookUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val shareBookUseCase: ShareBookUseCase,
+    private val finishExchangeUseCase: FinishExchangeUseCase,
     private val userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
 
@@ -148,11 +150,14 @@ class BooksViewModel(
             scope = viewModelScope,
             params = exchange
         ) { result ->
-            result.onSuccess {
-                Log.d("BooksViewModel", it.toString())
+            result.onSuccess { exchange ->
+                val newBooks = _books.value!!.toMutableList()
+                newBooks.forEachIndexed { index, book ->
+                    if (book.id == exchange.book.id) newBooks[index] = exchange.book
+                }
+                _books.value = newBooks
             }
             result.onFailure {
-                Log.d(TAG, "createExchange: ${it.message}")
                 handleFailure(it)
             }
         }
@@ -160,5 +165,26 @@ class BooksViewModel(
 
     fun openBookDetailsScreen(bookDisplayable: BookDisplayable) {
         bookNavigator.openBookDetailsScreen(bookDisplayable)
+    }
+
+    fun finishExchange(booksDisplayable: BookDisplayable) {
+        booksDisplayable.id?.let { bookId ->
+            finishExchangeUseCase(
+                scope = viewModelScope,
+                params = bookId
+            ) { result ->
+                result.onSuccess {
+                    val book = _books.value!!.first { it.id == booksDisplayable.id }
+                    val newBooks = _books.value!!
+                    newBooks.forEach {
+                        if (it.id == book.id) {
+                            book.status = BookStatus.AT_OWNER
+                        }
+                    }
+                    _books.value = newBooks
+                }
+                result.onFailure { throwable -> handleFailure(throwable) }
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@ class GetExchangesUseCase(
     private val exchangeRepository: ExchangeRepository,
 ) : BaseUseCase<List<Exchange>, Long>() {
     override suspend fun action(params: Long): List<Exchange> {
-        return exchangeRepository.getExchanges(params)
+        return exchangeRepository.getNotUserExchanges(params)
     }
 
 }

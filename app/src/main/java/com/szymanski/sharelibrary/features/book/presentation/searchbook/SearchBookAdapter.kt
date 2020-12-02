@@ -77,7 +77,7 @@ class SearchBookAdapter : RecyclerView.Adapter<SearchBookAdapter.ViewHolder>() {
         private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {
             var endString = ""
             list.forEach { author ->
-                endString += "${author.name} ${author.surname}, "
+                endString += "${author.name} ${author.surname}\n"
             }
             return endString.substring(0 until endString.length - 1)
         }

@@ -3,6 +3,7 @@ package com.szymanski.sharelibrary.features.exchange.di
 import com.szymanski.sharelibrary.features.exchange.all.presentation.ExchangesViewModel
 import com.szymanski.sharelibrary.features.exchange.data.ExchangeRepositoryImpl
 import com.szymanski.sharelibrary.features.exchange.domain.ExchangeRepository
+import com.szymanski.sharelibrary.features.exchange.domain.usecase.FinishExchangeUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.ShareBookUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -18,4 +19,5 @@ val exchangesModule = module {
 
     factory { ShareBookUseCase(get()) }
     factory { GetExchangesUseCase(get()) }
+    factory { FinishExchangeUseCase(get(), get()) }
 }
