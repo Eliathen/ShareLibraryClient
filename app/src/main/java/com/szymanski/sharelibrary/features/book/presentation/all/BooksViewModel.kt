@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.features.book.presentation.all
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -153,7 +154,10 @@ class BooksViewModel(
             result.onSuccess { exchange ->
                 val newBooks = _books.value!!.toMutableList()
                 newBooks.forEachIndexed { index, book ->
-                    if (book.id == exchange.book.id) newBooks[index] = exchange.book
+                    if (book.id == exchange.book.id) {
+                        exchange.book.cover = book.cover
+                        newBooks[index] = exchange.book
+                    }
                 }
                 _books.value = newBooks
             }
@@ -183,7 +187,10 @@ class BooksViewModel(
                     }
                     _books.value = newBooks
                 }
-                result.onFailure { throwable -> handleFailure(throwable) }
+                result.onFailure { throwable ->
+                    Log.d(TAG, "finishExchange: ${throwable.message}")
+                    handleFailure(throwable)
+                }
             }
         }
     }

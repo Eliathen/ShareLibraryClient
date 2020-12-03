@@ -5,6 +5,7 @@ import com.szymanski.sharelibrary.core.api.model.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
 
 interface Api {
@@ -54,5 +55,5 @@ interface Api {
     suspend fun getExchanges(): List<ExchangeResponse>
 
     @POST("exchanges/{id}/end")
-    suspend fun finishExchange(@Path("id") exchangeId: Long?)
+    suspend fun finishExchange(@Path("id") exchangeId: Long?): Response<Unit>
 }
