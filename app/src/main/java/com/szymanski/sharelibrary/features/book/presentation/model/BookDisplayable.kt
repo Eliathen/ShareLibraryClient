@@ -13,7 +13,7 @@ class BookDisplayable(
     val authorsDisplayable: List<AuthorDisplayable>?,
     val coverId: Long? = null,
     var cover: ByteArray?,
-    val status: BookStatus?,
+    var status: BookStatus?,
     val atUserDisplayable: UserDisplayable?,
 ) : Parcelable {
     constructor(book: Book) : this(

@@ -21,7 +21,7 @@
         <action
             android:id="@+id/action_navigate_from_books_screen_to_book_details_screen"
             app:destination="@id/screen_book_details"
-            app:popUpTo="@id/books_screen" />
+            />
     </fragment>
     <fragment
         android:id="@+id/register_screen"
@@ -62,7 +62,7 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_navigate_from_profile_screen_to_login_screen"
-            app:popUpTo="@id/mobile_navigation"
+            app:popUpTo="@id/login_screen"
             app:popUpToInclusive="true"
             app:destination="@id/login_screen" />
     </fragment>
@@ -91,5 +91,9 @@
         android:id="@+id/screen_book_details"
         android:name="com.szymanski.sharelibrary.features.book.presentation.details.BookDetailsFragment"
         android:label="fragment_book_details"
-        tools:layout="@layout/fragment_book_details" />
+        tools:layout="@layout/fragment_book_details">
+        <action
+            android:id="@+id/action_navigate_from_details_book_screen_to_book_screen"
+            app:destination="@id/books_screen" />
+    </fragment>
 </navigation>

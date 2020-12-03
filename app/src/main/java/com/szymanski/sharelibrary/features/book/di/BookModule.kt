@@ -20,7 +20,7 @@ val bookModule = module {
     viewModel { SearchBookViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SaveBookViewModel(get(), get(), get()) }
     viewModel { BooksViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { BookDetailsViewModel(get()) }
+    viewModel { BookDetailsViewModel(get(), get(), get()) }
 
     factory<BookRepository> { BookRepositoryImpl(get(), get(), get()) }
 

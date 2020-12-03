@@ -12,4 +12,6 @@ interface BookNavigator {
 
     fun openBookDetailsScreen(bookDisplayable: BookDisplayable)
 
+    fun returnFromBookDetailsScreen()
+
 }

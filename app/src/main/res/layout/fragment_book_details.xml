@@ -7,9 +7,7 @@
     android:orientation="vertical"
     tools:context=".features.book.presentation.details.BookDetailsFragment">
 
-    <include
-        android:id="@+id/book_details_toolbar"
-        layout="@layout/toolbar_base" />
+    <include layout="@layout/toolbar_base_with_back_arrow" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,9 +31,9 @@
                 android:id="@+id/book_details_cover"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/ic_launcher_foreground"
-                android:layout_gravity="center_horizontal"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
@@ -44,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="20dp"
+                android:layout_marginHorizontal="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/book_details_cover">
@@ -53,28 +52,140 @@
                     android:id="@+id/authorsLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:textSize="20sp"
-                    android:text="@string/authors_label" />
+                    android:text="@string/authors_label"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/book_details_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:textSize="18sp"
                     android:background="@null"
+                    android:textSize="18sp"
                     tools:text="Authors" />
 
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="10dp">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_label"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/status_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/holo_orange_dark"
+                    tools:text="At owner"
+                    android:layout_marginStart="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_details_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/user_details"
+                    android:textSize="25sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginVertical="20dp">
+
+                    <ImageView
+                        android:id="@+id/profile_imageView"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_person_24"
+                        android:background="@drawable/register_button_background"
+                        android:tint="@color/colorPrimaryDark" />
+
+                    <TextView
+                        android:id="@+id/user_name_book_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_centerVertical="true"
+                        android:textSize="18sp"
+                        android:layout_toEndOf="@id/profile_imageView"
+                        tools:text="Adam" />
+
+                    <TextView
+                        android:id="@+id/user_surname_book_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/user_name_book_details"
+                        android:layout_centerVertical="true"
+                        android:textSize="18sp"
+                        tools:text="Nowak" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/status_during_exchange_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/cancel_exchange_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="@string/cancel_button_text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:background="@drawable/register_button_background"
+                    android:paddingHorizontal="10dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/status_exchanged_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/display_user_profile_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:background="@drawable/register_button_background"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/title_profile" />
+
+                <Button
+                    android:id="@+id/finish_exchange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="@string/finish_exchange"
+                    android:background="@drawable/login_button_background"
+                    android:textColor="@color/white"
+                    android:paddingHorizontal="10dp" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

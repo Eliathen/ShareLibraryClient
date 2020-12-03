@@ -71,7 +71,11 @@
     <string name="default_location">default location</string>
     <string name="current_location">current location</string>
     <string name="location_label">Your location:</string>
-    <string name="book_status_exchanged">exchanged</string>
-    <string name="book_status_during_exchange">shared</string>
+    <string name="book_status_exchanged">Exchanged</string>
+    <string name="book_status_during_exchange">Shared</string>
+    <string name="book_status_at_owner">At owner</string>
     <string name="books_item_cancel_exchange">Cancel</string>
+    <string name="user_details">User Details</string>
+    <string name="status_label">Status:</string>
+    <string name="finish_exchange">Finish</string>
 </resources>

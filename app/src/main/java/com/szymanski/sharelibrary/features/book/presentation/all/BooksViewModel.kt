@@ -41,7 +41,7 @@ class BooksViewModel(
     private val _books by lazy {
         MutableLiveData<List<Book>>()
             .also {
-                getUsersBook(userStorage.getUserId())
+                getUsersBook()
             }
     }
 
@@ -53,7 +53,8 @@ class BooksViewModel(
         }
     }
 
-    private fun getUsersBook(userId: Long) {
+    private fun getUsersBook() {
+        val userId = userStorage.getUserId()
         setPendingState()
         getUsersBookUseCase(scope = viewModelScope, params = userId) { result ->
             setIdleState()

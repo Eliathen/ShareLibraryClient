@@ -15,7 +15,7 @@ class UserStorageImpl(
     private val USER_KEY = "user"
     private val LOGIN_DATA_KEY = "login"
     private val PASSWORD_DATA_KEY = "password"
-    private lateinit var sharedPreferences: SharedPreferences
+    private var sharedPreferences: SharedPreferences
 
     init {
         sharedPreferences = activityProvider.currentActivity?.getSharedPreferences(

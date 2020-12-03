@@ -292,4 +292,8 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        coordinates_button.performClick()
+    }
 }

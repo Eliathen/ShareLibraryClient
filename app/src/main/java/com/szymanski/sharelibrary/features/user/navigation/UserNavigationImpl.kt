@@ -1,7 +1,5 @@
 package com.szymanski.sharelibrary.features.user.navigation
 
-import androidx.navigation.NavOptionsBuilder
-import androidx.navigation.navOptions
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
 
@@ -14,6 +12,7 @@ class UserNavigationImpl(
 
     override fun openBooksScreen() {
         fragmentNavigator.navigateTo(R.id.action_navigate_from_login_screen_to_book_screen)
+
     }
 
     override fun openBooksScreenAfterRegister() {

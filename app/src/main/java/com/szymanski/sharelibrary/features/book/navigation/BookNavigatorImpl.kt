@@ -9,6 +9,7 @@ import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayab
 class BookNavigatorImpl(
     private val fragmentNavigator: FragmentNavigator,
 ) : BookNavigator {
+
     override fun openSaveBookScreen() {
         fragmentNavigator.navigateTo(R.id.action_navigate_from_search_book_screen_to_save_book_screen)
     }
@@ -24,5 +25,9 @@ class BookNavigatorImpl(
     override fun openBookDetailsScreen(bookDisplayable: BookDisplayable) {
         fragmentNavigator.navigateTo(R.id.action_navigate_from_books_screen_to_book_details_screen,
             BookDetailsFragment.BOOK_DETAILS_KEY to bookDisplayable)
+    }
+
+    override fun returnFromBookDetailsScreen() {
+        fragmentNavigator.clearHistory()
     }
 }
