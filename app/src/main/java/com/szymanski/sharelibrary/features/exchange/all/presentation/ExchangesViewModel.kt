@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.exchange.all.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -11,10 +10,12 @@ import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.exchange.all.presentation.model.ExchangeDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesUseCase
+import com.szymanski.sharelibrary.features.exchange.navigation.ExchangeNavigation
 
 class ExchangesViewModel(
     errorMapper: ErrorMapper,
     private val getExchangesUseCase: GetExchangesUseCase,
+    private val exchangeNavigation: ExchangeNavigation,
     userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
 
@@ -32,7 +33,6 @@ class ExchangesViewModel(
             }
         }
     }
-    private val TAG = "ExchangesViewModel"
     private fun getExchanges() {
         getExchangesUseCase(
             scope = viewModelScope,
@@ -42,9 +42,13 @@ class ExchangesViewModel(
                 _exchanges.value = it
             }
             result.onFailure {
-                Log.d(TAG, "getExchanges: ${it.message}")
+                handleFailure(it)
             }
         }
+    }
+
+    fun displayExchangeDetails() {
+        exchangeNavigation.openExchangeDetails()
     }
 
 }

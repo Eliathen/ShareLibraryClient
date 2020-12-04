@@ -59,8 +59,6 @@ dependencies {
 
     //network dependencies
     implementation networkDependencies.values()
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
 
     //fragment dependencies
     implementation fragmenDependencies.values()
@@ -70,6 +68,8 @@ dependencies {
 
     //map dependencies
     implementation mapDependencies.values()
+
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

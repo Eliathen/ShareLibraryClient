@@ -26,11 +26,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_register) {
     override val viewModel: RegisterViewModel by viewModel()
 
+    private val TAG = "RegisterFragment"
+
     private val REQUEST_LOCATION_CODE = 110
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
-    private val TAG = "RegisterFragment"
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
@@ -108,7 +108,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
             passwordEditText.error = getString(R.string.field_required_error)
             cancel = true
             focusView = passwordEditText
-        } else if (isPasswordValid(password.toString())) {
+        } else if (!isPasswordValid(password.toString())) {
             passwordEditText.error =
                 getString(R.string.invalid_password_error)
             cancel = true

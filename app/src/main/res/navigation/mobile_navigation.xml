@@ -20,7 +20,7 @@
             app:popUpTo="@id/books_screen" />
         <action
             android:id="@+id/action_navigate_from_books_screen_to_book_details_screen"
-            app:destination="@id/screen_book_details"
+            app:destination="@id/book_details_screen"
             />
     </fragment>
     <fragment
@@ -54,7 +54,11 @@
         android:id="@+id/exchanges_screen"
         android:name="com.szymanski.sharelibrary.features.exchange.all.presentation.ExchangesFragment"
         android:label="fragment_exchange"
-        tools:layout="@layout/fragment_exchange" />
+        tools:layout="@layout/fragment_exchange">
+        <action
+            android:id="@+id/action_navigate_from_exchange_screen_to_exchange_details_screen"
+            app:destination="@id/exchange_details_screen" />
+    </fragment>
     <fragment
         android:id="@+id/profile_screen"
         android:name="com.szymanski.sharelibrary.features.user.profile.presentation.ProfileFragment"
@@ -88,7 +92,7 @@
 
     </fragment>
     <fragment
-        android:id="@+id/screen_book_details"
+        android:id="@+id/book_details_screen"
         android:name="com.szymanski.sharelibrary.features.book.presentation.details.BookDetailsFragment"
         android:label="fragment_book_details"
         tools:layout="@layout/fragment_book_details">
@@ -96,4 +100,11 @@
             android:id="@+id/action_navigate_from_details_book_screen_to_book_screen"
             app:destination="@id/books_screen" />
     </fragment>
+
+    <fragment
+        android:id="@+id/exchange_details_screen"
+        android:name="com.szymanski.sharelibrary.features.exchange.details.presentation.ExchangeDetailsFragment"
+        android:label="fragment_exchange_details"
+        tools:layout="@layout/fragment_exchange_details" />
+
 </navigation>

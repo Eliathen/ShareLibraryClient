@@ -88,6 +88,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
     private fun setViewPager() {
         val viewPager = exchange_viewPager
         val pagerAdapter = ExchangesViewPagerAdapter(requireActivity())
+        viewPager.isUserInputEnabled = false
         viewPager.adapter = pagerAdapter
         TabLayoutMediator(exchangeTabLayout, viewPager) { tab: TabLayout.Tab, position: Int ->
             tab.icon = when (position) {
