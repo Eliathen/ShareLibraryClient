@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Paint
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -28,6 +29,7 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polygon
 import org.osmdroid.wms.BuildConfig
 
 
@@ -237,7 +239,6 @@ class ExchangesMapViewFragment :
         marker.icon = requireContext().getDrawable(R.drawable.ic_current_location_on_24)
         marker.position = startPoint
         mapView.overlays.add(marker)
-        drawCircleAroundPointWithRadius(latitude, longitude, 1000.0)
     }
 
     private fun displayLocation(latitude: Double, longitude: Double) {
@@ -245,7 +246,7 @@ class ExchangesMapViewFragment :
         val marker = Marker(map)
         marker.position = point
         marker.icon = requireContext().getDrawable(R.drawable.ic_exchange_location_on_24)
-        mapView.overlays.add(marker)
+        map.overlays.add(marker)
         marker.setOnMarkerClickListener(this)
     }
 
@@ -254,7 +255,18 @@ class ExchangesMapViewFragment :
         longitude: Double,
         radius: Double,
     ) {
-        //TO DO Implement drawing circle
+        val circle = Polygon.pointsAsCircle(GeoPoint(latitude, longitude), radius)
+        val polygon = Polygon(mapView)
+        polygon.fillPaint.color =
+            ContextCompat.getColor(requireContext(), R.color.mapCircleInnerColor)
+        polygon.fillPaint.strokeCap = Paint.Cap.ROUND
+        polygon.fillPaint.strokeJoin = Paint.Join.ROUND
+        polygon.outlinePaint.color =
+            ContextCompat.getColor(requireContext(), R.color.mapCircleInnerColor)
+        polygon.outlinePaint.strokeWidth = 5.0F
+        polygon.points = circle
+        map.overlayManager.add(polygon)
+        map.invalidate()
     }
 
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {

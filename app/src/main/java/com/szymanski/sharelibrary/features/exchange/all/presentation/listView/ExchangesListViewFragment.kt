@@ -47,7 +47,7 @@ class ExchangesListViewFragment :
     }
 
     override fun onItemClick(position: Int) {
-        viewModel.displayExchangeDetails()
+        viewModel.displayExchangeDetails(viewModel.exchanges.value?.get(position)?.id!!)
     }
 
     override fun onDestroyView() {

@@ -47,8 +47,8 @@ class ExchangesViewModel(
         }
     }
 
-    fun displayExchangeDetails() {
-        exchangeNavigation.openExchangeDetails()
+    fun displayExchangeDetails(exchangeId: Long) {
+        exchangeNavigation.openExchangeDetails(exchangeId)
     }
 
 }

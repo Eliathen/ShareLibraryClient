@@ -8,5 +8,6 @@ interface ExchangeRepository {
     suspend fun getNotUserExchanges(userId: Long): List<Exchange>
     suspend fun finishExchange(exchangeId: Long?)
     suspend fun getUserExchanges(userId: Long): List<Exchange>
+    suspend fun getExchangeById(exchangeId: Long): Exchange
 
 }

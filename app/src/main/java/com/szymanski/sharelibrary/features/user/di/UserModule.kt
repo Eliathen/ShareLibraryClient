@@ -10,6 +10,7 @@ import com.szymanski.sharelibrary.features.user.domain.usecase.RegisterUserUseCa
 import com.szymanski.sharelibrary.features.user.login.presentation.LoginViewModel
 import com.szymanski.sharelibrary.features.user.navigation.UserNavigation
 import com.szymanski.sharelibrary.features.user.navigation.UserNavigationImpl
+import com.szymanski.sharelibrary.features.user.otheruser.presentation.OtherUserViewModel
 import com.szymanski.sharelibrary.features.user.profile.presentation.ProfileViewModel
 import com.szymanski.sharelibrary.features.user.registration.presentation.RegisterViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -48,6 +49,9 @@ val userModule = module {
     }
     viewModel {
         ProfileViewModel(get(), get(), get(), get(), get())
+    }
+    viewModel {
+        OtherUserViewModel(get(), get(), get())
     }
 
 

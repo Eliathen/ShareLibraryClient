@@ -38,4 +38,10 @@ class ExchangeRepositoryImpl(
             }
         }
     }
+
+    override suspend fun getExchangeById(exchangeId: Long): Exchange {
+        return callOrThrow(errorWrapper) {
+            api.getExchangeById(exchangeId).toExchange()
+        }
+    }
 }

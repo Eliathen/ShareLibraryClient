@@ -78,4 +78,8 @@
     <string name="user_details">User Details</string>
     <string name="status_label">Status:</string>
     <string name="finish_exchange">Finish</string>
+    <string name="request_book">Request Book</string>
+    <string name="user_profile">Show profile</string>
+    <string name="send_message">Send a message</string>
+    <string name="view_books">View books</string>
 </resources>

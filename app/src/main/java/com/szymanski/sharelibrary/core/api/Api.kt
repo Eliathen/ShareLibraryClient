@@ -56,4 +56,7 @@ interface Api {
 
     @POST("exchanges/{id}/end")
     suspend fun finishExchange(@Path("id") exchangeId: Long?): Response<Unit>
+
+    @GET("exchanges/{id}")
+    suspend fun getExchangeById(@Path("id") exchangeId: Long): ExchangeResponse
 }
