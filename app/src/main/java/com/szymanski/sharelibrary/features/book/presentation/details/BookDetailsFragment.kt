@@ -124,7 +124,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
             endString += "${author.name} ${author.surname}\n"
         }
         endString = endString.trim()
-        return endString.substring(0 until endString.length - 1)
+        return endString.substring(endString.indices)
     }
 
 

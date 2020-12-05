@@ -17,6 +17,7 @@ import android.provider.Settings
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.google.android.gms.location.*
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_exchanges_map_view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -60,10 +62,11 @@ class ExchangesMapViewFragment :
         super.onViewCreated(view, savedInstanceState)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
-
         val ctx: Context = requireActivity().applicationContext
-        Configuration.getInstance()
-            .load(ctx, androidx.preference.PreferenceManager.getDefaultSharedPreferences(ctx))
+        Configuration.getInstance().apply {
+            load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
+        }
+
     }
 
     override fun initViews() {
@@ -81,15 +84,27 @@ class ExchangesMapViewFragment :
     }
 
     private fun initMap() {
-        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
-        map = mapView
-        map.setMultiTouchControls(true)
         requestPermissionsIfNecessary(listOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         ))
+        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
+        map = mapView
+        map.setTileSource(TileSourceFactory.MAPNIK);
+        map.setMultiTouchControls(true)
         getLastLocation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        map.onResume()
+
+    }
+
+    override fun onPause() {
+        map.onPause()
+        super.onPause()
     }
 
     override fun onRequestPermissionsResult(
