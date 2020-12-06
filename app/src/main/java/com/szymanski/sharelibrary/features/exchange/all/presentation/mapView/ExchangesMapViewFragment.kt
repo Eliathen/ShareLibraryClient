@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Paint
 import android.location.Location
@@ -30,9 +31,11 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.CopyrightOverlay
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polygon
 import org.osmdroid.wms.BuildConfig
+import java.io.File
 
 
 class ExchangesMapViewFragment :
@@ -41,7 +44,7 @@ class ExchangesMapViewFragment :
 
     override val viewModel: ExchangesViewModel by viewModel()
 
-    private lateinit var map: MapView
+    private var map: MapView? = null
 
     private val REQUEST_PERMISSION_CODE = 101
 
@@ -50,6 +53,10 @@ class ExchangesMapViewFragment :
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val TAG = "ExchangesMapViewFragment"
+
+    private val PREFS_NAME = "org.andnav.osm.prefs"
+    private val PREFS_TILE_SOURCE = "tilesource"
+    private var mPrefs: SharedPreferences? = null
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
@@ -60,11 +67,19 @@ class ExchangesMapViewFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
-        val ctx: Context = requireActivity().applicationContext
-        Configuration.getInstance().apply {
-            load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
+        mPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        if (map != null) {
+            val ctx: Context = requireActivity().applicationContext
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+            StrictMode.setThreadPolicy(policy)
+            Configuration.getInstance().apply {
+                load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
+                userAgentValue = BuildConfig.APPLICATION_ID
+                osmdroidTileCache = File(osmdroidBasePath.absolutePath, "tile")
+            }
+            val copyrightOverlay = CopyrightOverlay(activity)
+            copyrightOverlay.setTextSize(10)
+            map?.overlays?.add(copyrightOverlay)
         }
 
     }
@@ -73,6 +88,7 @@ class ExchangesMapViewFragment :
         super.initViews()
         initMap()
     }
+
 
     override fun initObservers() {
         super.initObservers()
@@ -89,22 +105,31 @@ class ExchangesMapViewFragment :
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         ))
-        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         map = mapView
-        map.setTileSource(TileSourceFactory.MAPNIK);
-        map.setMultiTouchControls(true)
+        map?.setDestroyMode(false)
+        map?.setTileSource(TileSourceFactory.MAPNIK)
+        map?.setMultiTouchControls(true)
         getLastLocation()
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    override fun onPause() {
+        if (map != null) {
+            val edit: SharedPreferences.Editor = mPrefs!!.edit()
+            edit.putString(PREFS_TILE_SOURCE, map!!.tileProvider.tileSource.name())
+            edit.apply()
+            map?.onPause()
+        }
+        super.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        map.onResume()
-
-    }
-
-    override fun onPause() {
-        map.onPause()
-        super.onPause()
+        val tileSourceName = mPrefs?.getString(PREFS_TILE_SOURCE,
+            TileSourceFactory.DEFAULT_TILE_SOURCE.name())
+        val tileSource = TileSourceFactory.getTileSource(tileSourceName)
+        map?.setTileSource(tileSource)
+        map?.onResume()
     }
 
     override fun onRequestPermissionsResult(
@@ -147,8 +172,8 @@ class ExchangesMapViewFragment :
         }
     }
 
-    private fun refreshMap(exchanges: List<ExchangeDisplayable>) {
-        val mapController = map.controller
+    private fun setMarkers(exchanges: List<ExchangeDisplayable>) {
+        val mapController = map?.controller!!
         mapController.setZoom(9.5)
         for (exchange in exchanges) {
             val geoPoint =
@@ -246,14 +271,14 @@ class ExchangesMapViewFragment :
     }
 
     private fun displayUserLocation(latitude: Double, longitude: Double) {
-        val mapController: IMapController = map.controller
+        val mapController: IMapController = map?.controller!!
         mapController.setZoom(13.0)
         val startPoint = GeoPoint(latitude, longitude)
         val marker = Marker(map)
         mapController.setCenter(startPoint)
         marker.icon = requireContext().getDrawable(R.drawable.ic_current_location_on_24)
         marker.position = startPoint
-        mapView.overlays.add(marker)
+        map?.overlays?.add(marker)
     }
 
     private fun displayLocation(latitude: Double, longitude: Double) {
@@ -261,7 +286,7 @@ class ExchangesMapViewFragment :
         val marker = Marker(map)
         marker.position = point
         marker.icon = requireContext().getDrawable(R.drawable.ic_exchange_location_on_24)
-        map.overlays.add(marker)
+        map?.overlays?.add(marker)
         marker.setOnMarkerClickListener(this)
     }
 
@@ -280,8 +305,8 @@ class ExchangesMapViewFragment :
             ContextCompat.getColor(requireContext(), R.color.mapCircleInnerColor)
         polygon.outlinePaint.strokeWidth = 5.0F
         polygon.points = circle
-        map.overlayManager.add(polygon)
-        map.invalidate()
+        map?.overlayManager?.add(polygon)
+        map?.invalidate()
     }
 
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {

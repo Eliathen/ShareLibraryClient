@@ -79,7 +79,7 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
         private fun getStringByBookStatus(status: BookStatus): String {
             return when (status) {
                 BookStatus.EXCHANGED -> view.context.resources.getString(R.string.book_status_exchanged)
-                BookStatus.DURING_EXCHANGE -> view.context.resources.getString(R.string.book_status_during_exchange)
+                BookStatus.SHARED -> view.context.resources.getString(R.string.book_status_during_exchange)
                 else -> ""
             }
         }

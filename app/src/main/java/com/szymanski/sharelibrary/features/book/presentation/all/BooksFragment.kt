@@ -68,8 +68,8 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     override fun initViews() {
         super.initViews()
         initAppBar()
-        initFabListener()
         initRecyclerView()
+        initListeners()
     }
 
     override fun initObservers() {
@@ -94,6 +94,11 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         (activity as MainActivity).setSupportActionBar(toolbar)
     }
 
+    private fun initListeners() {
+        initFabListener()
+        books_swipeRefreshLayout.setOnRefreshListener { viewModel.refreshBooks() }
+    }
+
     private fun initFabListener() {
         save_book_floating_action_button.setOnClickListener {
             viewModel.openSearchBookScreen()
@@ -107,6 +112,12 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
             adapter = booksAdapter
         }
         booksAdapter.setListener(this)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        books_swipeRefreshLayout.isRefreshing = true
     }
 
     override fun onDestroyView() {
@@ -141,7 +152,7 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     override fun onOptionClick(context: Context, view: View, position: Int) {
         val popupMenu = PopupMenu(context, view)
         when (viewModel.books.value?.get(position)?.status) {
-            BookStatus.DURING_EXCHANGE -> {
+            BookStatus.SHARED -> {
                 displayMenuForDuringExchangeStatus(popupMenu, position)
             }
             BookStatus.EXCHANGED -> {
@@ -380,11 +391,14 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     }
 
     override fun onIdleState() {
-        books_progressbar.visibility = View.GONE
+//        books_progressbar.visibility = View.GONE
+        books_swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onPendingState() {
-        books_progressbar.visibility = View.VISIBLE
+//        books_progressbar.visibility = View.VISIBLE
+        books_swipeRefreshLayout.isRefreshing = true
+
     }
 
 }

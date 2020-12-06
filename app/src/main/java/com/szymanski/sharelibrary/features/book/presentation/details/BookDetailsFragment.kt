@@ -64,7 +64,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
                 BookStatus.AT_OWNER -> {
                     displayAtOwnerStatus()
                 }
-                BookStatus.DURING_EXCHANGE -> {
+                BookStatus.SHARED -> {
                     displayDuringExchangeStatus()
                 }
                 BookStatus.EXCHANGED -> {
@@ -103,7 +103,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
             book_details_author.text = convertAuthorDisplayableListToString(it)
         }
         status_value.text = when (bookDisplayable.status) {
-            BookStatus.DURING_EXCHANGE -> {
+            BookStatus.SHARED -> {
                 getString(R.string.book_status_during_exchange)
             }
             BookStatus.EXCHANGED -> {

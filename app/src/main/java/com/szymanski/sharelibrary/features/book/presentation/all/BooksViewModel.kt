@@ -69,6 +69,10 @@ class BooksViewModel(
         }
     }
 
+    fun refreshBooks() {
+        getUsersBook()
+    }
+
     private fun downloadImage(books: List<Book>) {
         books.forEach { book ->
             book.id?.let {

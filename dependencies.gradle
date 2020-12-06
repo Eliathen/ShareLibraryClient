@@ -12,12 +12,14 @@ ext {
     def materialVersion = "1.1.0"
     def recyclerViewVersion = "1.1.0"
     def glideVersion = "4.11.0"
-
+    def legacySupportVersion = "1.0.0"
     uiDependencies = [
             constraintLayout: "androidx.constraintlayout:constraintlayout:" + constraintLayoutVersion,
             material        : "com.google.android.material:material:" + materialVersion,
             recyclerView    : "androidx.recyclerview:recyclerview:" + recyclerViewVersion,
-            glide           : "com.github.bumptech.glide:glide:" + glideVersion
+            glide           : "com.github.bumptech.glide:glide:" + glideVersion,
+            lagacySupport   : "androidx.legacy:legacy-support-v4:" + legacySupportVersion
+
     ]
 
     def navigationVersion = "2.3.0"
@@ -75,8 +77,12 @@ ext {
 
     def openMapVersion = "6.1.6"
     mapDependencies = [
-            android   : "org.osmdroid:osmdroid-android:" + openMapVersion,
-            wms       : "org.osmdroid:osmdroid-wms:" + openMapVersion,
-            mapforge  : "org.osmdroid:osmdroid-mapsforge:" + openMapVersion,
+            android : "org.osmdroid:osmdroid-android:" + openMapVersion,
+            wms     : "org.osmdroid:osmdroid-wms:" + openMapVersion,
+            mapforge: "org.osmdroid:osmdroid-mapsforge:" + openMapVersion,
+    ]
+    def preferenceVersion = "1.1.1"
+    preferencesDependencies = [
+            preference: "androidx.preference:preference-ktx:" + preferenceVersion
     ]
 }
