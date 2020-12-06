@@ -22,4 +22,13 @@ data class ExchangeDisplayable(
         exchangeStatus = exchange.exchangeStatus,
         id = exchange.id,
     )
+
+    fun toExchange() = Exchange(
+        book = book.toBook(),
+        coordinates = coordinates.toCoordinate(),
+        deposit = deposit,
+        exchangeStatus = exchangeStatus,
+        id = id,
+        user = user.toUser(),
+    )
 }

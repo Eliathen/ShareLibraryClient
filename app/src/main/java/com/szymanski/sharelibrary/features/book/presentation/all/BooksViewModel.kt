@@ -152,6 +152,7 @@ class BooksViewModel(
             exchangeStatus = ExchangeStatus.STARTED,
             coordinates = coordinate,
         )
+
         shareBookUseCase(
             scope = viewModelScope,
             params = exchange

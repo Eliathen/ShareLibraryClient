@@ -7,10 +7,10 @@ import com.szymanski.sharelibrary.features.user.domain.model.User
 
 
 data class Exchange(
-    val book: Book,
-    val coordinates: Coordinate,
-    val deposit: Double,
-    val exchangeStatus: ExchangeStatus,
-    val id: Long?,
-    val user: User,
+    var book: Book,
+    var coordinates: Coordinate,
+    var deposit: Double,
+    var exchangeStatus: ExchangeStatus,
+    var id: Long?,
+    var user: User,
 )

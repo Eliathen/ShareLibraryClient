@@ -59,4 +59,10 @@ interface Api {
 
     @GET("exchanges/{id}")
     suspend fun getExchangeById(@Path("id") exchangeId: Long): ExchangeResponse
+
+    @POST("requirements")
+    suspend fun createRequirement(@Body createRequirementRequest: CreateRequirementRequest): RequirementResponse
+
+    @GET("exchanges/{id}/requirements")
+    suspend fun getRequirementByExchangeId(@Path("id") exchangeId: Long): List<RequirementResponse>
 }

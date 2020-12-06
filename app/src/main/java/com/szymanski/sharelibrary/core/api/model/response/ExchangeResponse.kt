@@ -19,6 +19,6 @@ data class ExchangeResponse(
         deposit = this.deposit,
         exchangeStatus = this.exchangeStatus,
         id = this.id,
-        user = this.user.toUser()
+        user = this.user.toUser(),
     )
 }
