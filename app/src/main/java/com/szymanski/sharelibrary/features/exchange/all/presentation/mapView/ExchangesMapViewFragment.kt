@@ -54,8 +54,9 @@ class ExchangesMapViewFragment :
 
     private val TAG = "ExchangesMapViewFragment"
 
-    private val PREFS_NAME = "org.andnav.osm.prefs"
+    private val PREFERENCES_KEY = "ShareLibraryPreferences"
     private val PREFS_TILE_SOURCE = "tilesource"
+
     private var mPrefs: SharedPreferences? = null
 
     private val mLocationCallback = object : LocationCallback() {
@@ -67,7 +68,7 @@ class ExchangesMapViewFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        mPrefs = requireContext().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE)
         if (map != null) {
             val ctx: Context = requireActivity().applicationContext
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()

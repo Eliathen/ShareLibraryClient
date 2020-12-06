@@ -85,6 +85,7 @@ class SearchBookFragment : BaseFragment<SearchBookViewModel>(R.layout.fragment_s
         viewModel.searchBooks.observe(this) {
             if (it.isEmpty()) {
                 searchView_wrapper.visibility = View.VISIBLE
+                searchBooksAdapter.setSearchResult(listOf())
 
             } else {
                 searchView_wrapper.visibility = View.INVISIBLE

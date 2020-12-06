@@ -60,14 +60,14 @@ class SearchBookViewModel(
 
     fun searchBook(query: String) {
         setPendingState()
-        searchBookUseCase(viewModelScope, params = query) {
+        searchBookUseCase(viewModelScope, params = query) { result ->
             setIdleState()
-            it.onSuccess { books ->
+            result.onSuccess { books ->
                 _searchBooks.value = books
                 downloadImage(books)
             }
-            it.onFailure {
-
+            result.onFailure {
+                handleFailure(it)
             }
         }
     }

@@ -20,7 +20,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.*
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
@@ -107,6 +109,7 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
 
     private fun initRecyclerView() {
         books_recyclerView.apply {
+            ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(this)
             layoutManager = linearLayoutManager
             addItemDecoration(dividerItemDecoration)
             adapter = booksAdapter
@@ -117,7 +120,7 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
 
     override fun onResume() {
         super.onResume()
-        books_swipeRefreshLayout.isRefreshing = true
+        viewModel.refreshBooks()
     }
 
     override fun onDestroyView() {
@@ -171,10 +174,10 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         popupMenu.inflate(R.menu.item_books_at_owner_state_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.books_item_remove -> {
-                    viewModel.withdrawBook(viewModel.books.value?.get(position))
-                    true
-                }
+//                R.id.books_item_remove -> {
+//                    viewModel.withdrawBook(viewModel.books.value?.get(position))
+//                    true
+//                }
                 R.id.books_item_share -> {
                     viewModel.books.value?.get(position)
                         ?.let { displayDialogForShareBookOption(it) }
@@ -295,6 +298,49 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     }
 
 
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION),
+            REQUEST_LOCATION_CODE
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_LOCATION_CODE) {
+            if (grantResults.isEmpty() || grantResults[0] == PermissionChecker.PERMISSION_DENIED) {
+                requireActivity().finish()
+            }
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
     private fun enableLocation() {
         val builder = android.app.AlertDialog.Builder(requireContext())
         builder.setCancelable(false)
@@ -333,46 +379,10 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         }
     }
 
-    private fun isLocationEnabled(): Boolean {
-        val locationManager: LocationManager =
-            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-    }
-
-    private fun checkPermissions(): Boolean {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            return true
-        }
-        return false
-    }
-
-    private fun requestPermissions() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION),
-            REQUEST_LOCATION_CODE
-        )
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_LOCATION_CODE) {
-            if (grantResults.isEmpty() || grantResults[0] == PermissionChecker.PERMISSION_DENIED) {
-                requireActivity().finish()
-            }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ENABLE_LOCATION_CODE) {
+            displayDialogForShareBookOption(viewModel.books.value!!.first { it.id == bookId })
         }
     }
 
@@ -383,13 +393,6 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         alertDialog.save_exchange_progressbar.visibility = View.GONE
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == ENABLE_LOCATION_CODE) {
-            displayDialogForShareBookOption(viewModel.books.value!!.first { it.id == bookId })
-        }
-    }
-
     override fun onIdleState() {
 //        books_progressbar.visibility = View.GONE
         books_swipeRefreshLayout.isRefreshing = false
@@ -397,8 +400,40 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
 
     override fun onPendingState() {
 //        books_progressbar.visibility = View.VISIBLE
-        books_swipeRefreshLayout.isRefreshing = true
+//        books_swipeRefreshLayout.isRefreshing = true
 
+    }
+
+    private val itemTouchHelperCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder,
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                displayDialogToRemoveBook(viewHolder.adapterPosition)
+            }
+
+        }
+
+    private fun displayDialogToRemoveBook(position: Int) {
+        val book = viewModel.books.value!![position]
+        AlertDialog.Builder(requireContext())
+            .setCancelable(false)
+            .setTitle(book.title)
+            .setMessage(R.string.remove_book_message)
+            .setNegativeButton(R.string.cancel_changes) { dialog, _ ->
+                booksAdapter.notifyItemChanged(position)
+                dialog.dismiss()
+            }
+            .setPositiveButton(R.string.accept_button_text) { _, _ ->
+                viewModel.withdrawBook(book)
+            }
+            .create().show()
     }
 
 }

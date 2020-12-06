@@ -11,7 +11,7 @@ class UserStorageImpl(
     private val gson: Gson,
 ) : UserStorage {
 
-    private val preferencesKey = "ShareLibraryPreferences"
+    private val PREFERENCES_KEY = "ShareLibraryPreferences"
     private val USER_KEY = "user"
     private val LOGIN_DATA_KEY = "login"
     private val PASSWORD_DATA_KEY = "password"
@@ -19,7 +19,7 @@ class UserStorageImpl(
 
     init {
         sharedPreferences = activityProvider.currentActivity?.getSharedPreferences(
-            preferencesKey,
+            PREFERENCES_KEY,
             MODE_PRIVATE)!!
     }
 

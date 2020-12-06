@@ -41,7 +41,7 @@ class BooksViewModel(
     private val _books by lazy {
         MutableLiveData<List<Book>>()
             .also {
-                getUsersBook()
+//                getUsersBook()
             }
     }
 
