@@ -1,4 +1,4 @@
-package com.szymanski.sharelibrary.features.requirement.domain.model
+package com.szymanski.sharelibrary.features.home.domain.model
 
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.user.domain.model.User

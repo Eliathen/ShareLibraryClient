@@ -34,5 +34,6 @@ class BookNavigatorImpl(
 
     override fun returnFromBookDetailsScreen() {
         fragmentNavigator.clearHistory()
+        openBooksScreen()
     }
 }

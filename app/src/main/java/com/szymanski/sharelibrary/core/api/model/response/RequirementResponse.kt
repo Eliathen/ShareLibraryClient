@@ -2,7 +2,7 @@ package com.szymanski.sharelibrary.core.api.model.response
 
 import android.annotation.SuppressLint
 import com.google.gson.annotations.SerializedName
-import com.szymanski.sharelibrary.features.requirement.domain.model.Requirement
+import com.szymanski.sharelibrary.features.home.domain.model.Requirement
 import java.time.LocalDateTime
 
 data class RequirementResponse(

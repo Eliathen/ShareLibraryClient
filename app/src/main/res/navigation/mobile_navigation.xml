@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/login_screen">
+
     <fragment
         android:id="@+id/chat_screen"
         android:name="com.szymanski.sharelibrary.features.chat.presentation.ChatFragment"
@@ -29,8 +30,8 @@
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
-            android:id="@+id/action_navigate_from_register_screen_to_books_screen"
-            app:destination="@id/books_screen"
+            android:id="@+id/action_navigate_from_register_screen_to_home_screen"
+            app:destination="@id/home_screen"
             app:popUpTo="@id/register_screen"
             app:popUpToInclusive="true" />
     </fragment>
@@ -44,11 +45,10 @@
             app:destination="@id/register_screen"
             />
         <action
-            android:id="@+id/action_navigate_from_login_screen_to_book_screen"
-            app:destination="@id/books_screen"
+            android:id="@+id/action_navigate_from_login_screen_to_home_screen"
+            app:destination="@id/home_screen"
             app:popUpTo="@id/login_screen"
-            app:popUpToInclusive="true"
-            />
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/exchanges_screen"
@@ -129,4 +129,9 @@
             android:id="@+id/action_navigate_from_other_user_books_screen_to_book_details_screen"
             app:destination="@id/book_details_screen" />
     </fragment>
+    <fragment
+        android:id="@+id/home_screen"
+        android:name="com.szymanski.sharelibrary.features.home.presentation.all.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

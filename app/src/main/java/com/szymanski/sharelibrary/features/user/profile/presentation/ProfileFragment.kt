@@ -233,11 +233,17 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
     override fun onIdleState() {
         super.onIdleState()
         progress_bar_profile.visibility = View.GONE
+        full_name_wrapper.visibility = View.VISIBLE
+        linearLayout.visibility = View.VISIBLE
+
     }
 
     override fun onPendingState() {
         super.onPendingState()
         progress_bar_profile.visibility = View.VISIBLE
+        full_name_wrapper.visibility = View.INVISIBLE
+        linearLayout.visibility = View.INVISIBLE
+
     }
 
     private fun setActiveEditModeState() {

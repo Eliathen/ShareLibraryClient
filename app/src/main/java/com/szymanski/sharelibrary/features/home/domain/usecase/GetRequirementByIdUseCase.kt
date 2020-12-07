@@ -1,14 +1,13 @@
-package com.szymanski.sharelibrary.features.requirement.domain.usecase
+package com.szymanski.sharelibrary.features.home.domain.usecase
 
 import com.szymanski.sharelibrary.core.base.BaseUseCase
-import com.szymanski.sharelibrary.features.requirement.domain.RequirementRepository
-import com.szymanski.sharelibrary.features.requirement.domain.model.Requirement
+import com.szymanski.sharelibrary.features.home.domain.RequirementRepository
+import com.szymanski.sharelibrary.features.home.domain.model.Requirement
 
-class GetRequirementsUseCase(
+class GetRequirementByIdUseCase(
     private val requirementRepository: RequirementRepository,
 ) : BaseUseCase<List<Requirement>, Long>() {
     override suspend fun action(params: Long): List<Requirement> {
         return requirementRepository.getRequirementsByExchangeId(params)
-
     }
 }

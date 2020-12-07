@@ -65,4 +65,7 @@ interface Api {
 
     @GET("exchanges/{id}/requirements")
     suspend fun getRequirementByExchangeId(@Path("id") exchangeId: Long): List<RequirementResponse>
+
+    @GET("requirements/{id}")
+    suspend fun getUserRequirements(@Path("id") userId: Long): List<RequirementResponse>
 }

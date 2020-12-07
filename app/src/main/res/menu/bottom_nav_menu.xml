@@ -14,6 +14,12 @@
         android:title="@string/title_exchanges" />
 
     <item
+        android:id="@+id/home_screen"
+        android:icon="@drawable/ic_home_24"
+        android:menuCategory="secondary"
+        android:title="@string/title_home" />
+
+    <item
         android:id="@+id/chat_screen"
         android:icon="@drawable/ic_chat_24"
         android:menuCategory="secondary"

@@ -1,8 +1,8 @@
-package com.szymanski.sharelibrary.features.requirement.domain.usecase
+package com.szymanski.sharelibrary.features.home.domain.usecase
 
 import com.szymanski.sharelibrary.core.base.BaseUseCase
-import com.szymanski.sharelibrary.features.requirement.domain.RequirementRepository
-import com.szymanski.sharelibrary.features.requirement.domain.model.Requirement
+import com.szymanski.sharelibrary.features.home.domain.RequirementRepository
+import com.szymanski.sharelibrary.features.home.domain.model.Requirement
 
 class CreateRequirementUseCase(
     private val requirementRepository: RequirementRepository,

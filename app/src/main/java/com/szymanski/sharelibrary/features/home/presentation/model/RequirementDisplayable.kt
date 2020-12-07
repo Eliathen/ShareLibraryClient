@@ -1,7 +1,7 @@
-package com.szymanski.sharelibrary.features.requirement.presentation.model
+package com.szymanski.sharelibrary.features.home.presentation.model
 
 import com.szymanski.sharelibrary.features.exchange.all.presentation.model.ExchangeDisplayable
-import com.szymanski.sharelibrary.features.requirement.domain.model.Requirement
+import com.szymanski.sharelibrary.features.home.domain.model.Requirement
 import com.szymanski.sharelibrary.features.user.registration.presentation.model.UserDisplayable
 import java.time.LocalDateTime
 

@@ -12,12 +12,12 @@ class UserNavigationImpl(
     }
 
     override fun openBooksScreen() {
-        fragmentNavigator.navigateTo(R.id.action_navigate_from_login_screen_to_book_screen)
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_login_screen_to_home_screen)
 
     }
 
     override fun openBooksScreenAfterRegister() {
-        fragmentNavigator.navigateTo(R.id.action_navigate_from_register_screen_to_books_screen)
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_register_screen_to_home_screen)
     }
 
     override fun openLoginScreenAfterLogout() {

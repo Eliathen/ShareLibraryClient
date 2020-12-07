@@ -13,17 +13,17 @@ import com.szymanski.sharelibrary.features.exchange.all.presentation.model.Excha
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangeByIdUseCase
 import com.szymanski.sharelibrary.features.exchange.navigation.ExchangeNavigation
-import com.szymanski.sharelibrary.features.requirement.domain.model.Requirement
-import com.szymanski.sharelibrary.features.requirement.domain.usecase.CreateRequirementUseCase
-import com.szymanski.sharelibrary.features.requirement.domain.usecase.GetRequirementsUseCase
-import com.szymanski.sharelibrary.features.requirement.presentation.model.RequirementDisplayable
+import com.szymanski.sharelibrary.features.home.domain.model.Requirement
+import com.szymanski.sharelibrary.features.home.domain.usecase.CreateRequirementUseCase
+import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByIdUseCase
+import com.szymanski.sharelibrary.features.home.presentation.model.RequirementDisplayable
 
 class ExchangeDetailsViewModel(
     private val getExchangeByIdUseCase: GetExchangeByIdUseCase,
     private val getCoverUseCase: GetCoverUseCase,
     private val createRequirementUseCase: CreateRequirementUseCase,
     private val userStorage: UserStorage,
-    private val getRequirementUseCase: GetRequirementsUseCase,
+    private val getRequirementUseCase: GetRequirementByIdUseCase,
     private val exchangeNavigation: ExchangeNavigation,
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {

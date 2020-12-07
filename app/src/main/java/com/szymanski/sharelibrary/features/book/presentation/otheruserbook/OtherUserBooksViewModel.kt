@@ -11,17 +11,17 @@ import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetUsersBookUseCase
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesUseCase
-import com.szymanski.sharelibrary.features.requirement.domain.model.Requirement
-import com.szymanski.sharelibrary.features.requirement.domain.usecase.CreateRequirementUseCase
-import com.szymanski.sharelibrary.features.requirement.domain.usecase.GetRequirementsUseCase
-import com.szymanski.sharelibrary.features.requirement.presentation.model.RequirementDisplayable
+import com.szymanski.sharelibrary.features.home.domain.model.Requirement
+import com.szymanski.sharelibrary.features.home.domain.usecase.CreateRequirementUseCase
+import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByIdUseCase
+import com.szymanski.sharelibrary.features.home.presentation.model.RequirementDisplayable
 
 class OtherUserBooksViewModel(
     errorMapper: ErrorMapper,
     private val userStorage: UserStorage,
     private val getCoverUseCase: GetCoverUseCase,
     private val getUsersBookUseCase: GetUsersBookUseCase,
-    private val getRequirementsUseCase: GetRequirementsUseCase,
+    private val getRequirementByIdUseCase: GetRequirementByIdUseCase,
     private val getExchangesUseCase: GetExchangesUseCase,
     private val createRequirementUseCase: CreateRequirementUseCase,
 ) : BaseViewModel(errorMapper) {
@@ -110,7 +110,7 @@ class OtherUserBooksViewModel(
     }
 
     private fun getRequirementsByExchangeId(exchangeId: Long) {
-        getRequirementsUseCase(
+        getRequirementByIdUseCase(
             scope = viewModelScope,
             params = exchangeId
         ) { result ->

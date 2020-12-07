@@ -30,7 +30,7 @@ val appModule = module {
         FragmentNavigatorImpl(
             activityProvider = get(),
             navHostFragmentRes = R.id.nav_host_fragment,
-            homeHostFragmentRes = R.id.books_screen,
+            homeHostFragmentRes = R.id.home_screen,
             defaultNavOptions = get()
         )
     }
