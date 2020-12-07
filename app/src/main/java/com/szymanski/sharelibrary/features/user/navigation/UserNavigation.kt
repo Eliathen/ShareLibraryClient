@@ -14,4 +14,6 @@ interface UserNavigation {
 
     fun goBack()
 
+    fun openOtherUserBooksScreen(userId: Long)
+
 }

@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.login_screen -> hideBottomNav()
                 R.id.register_screen -> hideBottomNav()
+                R.id.other_user_books_screen -> hideBottomNav()
                 else -> showBottomNav()
             }
         }

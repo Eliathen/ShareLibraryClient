@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.requirement.data
 
-import android.util.Log
 import com.szymanski.sharelibrary.core.api.Api
 import com.szymanski.sharelibrary.core.api.model.request.CreateRequirementRequest
 import com.szymanski.sharelibrary.core.exception.ErrorWrapper
@@ -13,7 +12,6 @@ class RequirementRepositoryImpl(
     private val errorWrapper: ErrorWrapper,
 ) : RequirementRepository {
 
-    private val TAG = "RequirementRepositoryIm"
 
     override suspend fun createRequirement(exchangeId: Long, userId: Long): Requirement {
         return callOrThrow(errorWrapper) {
@@ -24,9 +22,7 @@ class RequirementRepositoryImpl(
 
     override suspend fun getRequirementsByExchangeId(exchangeId: Long): List<Requirement> {
         return callOrThrow(errorWrapper) {
-            val result = api.getRequirementByExchangeId(exchangeId).map { it.toRequirement() }
-            Log.d(TAG, "getRequirementsByExchangeId: $result")
-            result
+            api.getRequirementByExchangeId(exchangeId).map { it.toRequirement() }
         }
     }
 }

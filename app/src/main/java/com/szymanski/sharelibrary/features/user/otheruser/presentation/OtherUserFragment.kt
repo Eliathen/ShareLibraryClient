@@ -1,5 +1,8 @@
 package com.szymanski.sharelibrary.features.user.otheruser.presentation
 
+import android.os.Bundle
+import android.util.Log
+import android.view.View
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
@@ -10,9 +13,22 @@ import org.koin.android.ext.android.inject
 class OtherUserFragment : BaseFragment<OtherUserViewModel>(R.layout.fragment_other_user) {
     override val viewModel: OtherUserViewModel by inject()
 
+    private val TAG = "OtherUserFragment"
+
+    companion object {
+        val OTHER_USER_FRAGMENT_KEY = "OtherUserIdKey"
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val id = arguments?.getLong(OTHER_USER_FRAGMENT_KEY)!!
+        viewModel.loadUser(id)
+    }
+
     override fun initViews() {
         super.initViews()
         setToolbar()
+        initListeners()
     }
 
     override fun initObservers() {
@@ -29,5 +45,26 @@ class OtherUserFragment : BaseFragment<OtherUserViewModel>(R.layout.fragment_oth
         toolbar.title = ""
         (activity as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         (activity as MainActivity).supportActionBar!!.setDisplayShowHomeEnabled(true)
+    }
+
+    private fun initListeners() {
+        send_message_button.setOnClickListener {
+
+        }
+        view_books_button.setOnClickListener {
+            Log.d(TAG, "initListeners: ")
+            viewModel.openOtherUserBooksScreen(viewModel.user.value?.id!!)
+        }
+    }
+
+    override fun onIdleState() {
+        super.onIdleState()
+        otherUser_progress_bar_profile.visibility = View.GONE
+    }
+
+    override fun onPendingState() {
+        super.onPendingState()
+        otherUser_progress_bar_profile.visibility = View.VISIBLE
+
     }
 }

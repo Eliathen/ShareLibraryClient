@@ -105,6 +105,28 @@
         android:id="@+id/exchange_details_screen"
         android:name="com.szymanski.sharelibrary.features.exchange.details.presentation.ExchangeDetailsFragment"
         android:label="fragment_exchange_details"
-        tools:layout="@layout/fragment_exchange_details" />
+        tools:layout="@layout/fragment_exchange_details">
+        <action
+            android:id="@+id/action_navigate_from_exchange_details_screen_to_other_user_screen"
+            app:destination="@id/other_user_screen" />
+    </fragment>
+    <fragment
+        android:id="@+id/other_user_screen"
+        android:name="com.szymanski.sharelibrary.features.user.otheruser.presentation.OtherUserFragment"
+        android:label="fragment_other_user"
+        tools:layout="@layout/fragment_other_user">
+        <action
+            android:id="@+id/action_navigate_from_other_user_screen_to_other_user_books_screen"
+            app:destination="@id/other_user_books_screen" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/other_user_books_screen"
+        android:name="com.szymanski.sharelibrary.features.book.presentation.otheruserbook.OtherUserBooksFragment"
+        android:label="fragment_other_user_books"
+        tools:layout="@layout/fragment_other_user_books">
+        <action
+            android:id="@+id/action_navigate_from_other_user_books_screen_to_book_details_screen"
+            app:destination="@id/book_details_screen" />
+    </fragment>
 </navigation>

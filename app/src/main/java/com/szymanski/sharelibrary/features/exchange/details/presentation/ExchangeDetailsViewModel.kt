@@ -12,6 +12,7 @@ import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.exchange.all.presentation.model.ExchangeDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangeByIdUseCase
+import com.szymanski.sharelibrary.features.exchange.navigation.ExchangeNavigation
 import com.szymanski.sharelibrary.features.requirement.domain.model.Requirement
 import com.szymanski.sharelibrary.features.requirement.domain.usecase.CreateRequirementUseCase
 import com.szymanski.sharelibrary.features.requirement.domain.usecase.GetRequirementsUseCase
@@ -23,6 +24,7 @@ class ExchangeDetailsViewModel(
     private val createRequirementUseCase: CreateRequirementUseCase,
     private val userStorage: UserStorage,
     private val getRequirementUseCase: GetRequirementsUseCase,
+    private val exchangeNavigation: ExchangeNavigation,
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
 
@@ -111,10 +113,13 @@ class ExchangeDetailsViewModel(
                 _requirements.value = requirements.toList()
             }
             result.onFailure { throwable ->
-                Log.d(TAG, "requirementBook: ${throwable.message}")
                 handleFailure(throwable)
             }
         }
+    }
+
+    fun openOtherUserScreen() {
+        exchangeNavigation.openOtherUserScreen(_exchange.value?.user?.id!!)
     }
 
 

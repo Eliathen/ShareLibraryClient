@@ -27,6 +27,11 @@ class BookNavigatorImpl(
             BookDetailsFragment.BOOK_DETAILS_KEY to bookDisplayable)
     }
 
+    override fun openOtherUserBookDetailsScreen(bookDisplayable: BookDisplayable) {
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_other_user_books_screen_to_book_details_screen,
+            BookDetailsFragment.BOOK_DETAILS_KEY to bookDisplayable)
+    }
+
     override fun returnFromBookDetailsScreen() {
         fragmentNavigator.clearHistory()
     }

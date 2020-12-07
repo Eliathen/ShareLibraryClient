@@ -59,7 +59,7 @@ class ExchangeDetailsFragment :
 
     private fun initListeners() {
         exchange_details_display_profile.setOnClickListener {
-            //TODO navigate to profile with parameter
+            viewModel.openOtherUserScreen()
         }
         exchange_details_request_book.setOnClickListener {
             viewModel.exchange.value?.let { it1 -> viewModel.requirementBook(it1) }

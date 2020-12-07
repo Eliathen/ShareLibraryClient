@@ -9,17 +9,17 @@ import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.user.domain.model.User
 import com.szymanski.sharelibrary.features.user.domain.usecase.GetUserUseCase
+import com.szymanski.sharelibrary.features.user.navigation.UserNavigation
 import com.szymanski.sharelibrary.features.user.registration.presentation.model.UserDisplayable
 
 class OtherUserViewModel(
     private val getUserUseCase: GetUserUseCase,
     private val userStorage: UserStorage,
+    private val userNavigation: UserNavigation,
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
     private val _user: MutableLiveData<User> by lazy {
-        MutableLiveData<User>().also {
-            loadUser()
-        }
+        MutableLiveData<User>()
     }
 
     val user: LiveData<UserDisplayable> by lazy {
@@ -28,9 +28,8 @@ class OtherUserViewModel(
         }
     }
 
-    private fun loadUser() {
+    fun loadUser(id: Long) {
         setPendingState()
-        val id = userStorage.getUserId()
         getUserUseCase(
             scope = viewModelScope,
             params = id
@@ -43,5 +42,9 @@ class OtherUserViewModel(
                 handleFailure(it)
             }
         }
+    }
+
+    fun openOtherUserBooksScreen(id: Long) {
+        userNavigation.openOtherUserBooksScreen(id)
     }
 }

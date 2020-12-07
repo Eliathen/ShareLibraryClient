@@ -16,7 +16,7 @@ import org.koin.dsl.module
 
 val exchangesModule = module {
     viewModel { ExchangesViewModel(get(), get(), get(), get()) }
-    viewModel { ExchangeDetailsViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { ExchangeDetailsViewModel(get(), get(), get(), get(), get(), get(), get()) }
 
     factory<ExchangeRepository> { ExchangeRepositoryImpl(get(), get()) }
 

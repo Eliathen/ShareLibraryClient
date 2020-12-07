@@ -174,10 +174,6 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         popupMenu.inflate(R.menu.item_books_at_owner_state_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-//                R.id.books_item_remove -> {
-//                    viewModel.withdrawBook(viewModel.books.value?.get(position))
-//                    true
-//                }
                 R.id.books_item_share -> {
                     viewModel.books.value?.get(position)
                         ?.let { displayDialogForShareBookOption(it) }

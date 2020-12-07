@@ -2,6 +2,7 @@ package com.szymanski.sharelibrary.features.user.navigation
 
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
+import com.szymanski.sharelibrary.features.book.presentation.otheruserbook.OtherUserBooksFragment
 
 class UserNavigationImpl(
     private val fragmentNavigator: FragmentNavigator,
@@ -31,5 +32,10 @@ class UserNavigationImpl(
 
     override fun goBack() {
         fragmentNavigator.goBack()
+    }
+
+    override fun openOtherUserBooksScreen(userId: Long) {
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_other_user_screen_to_other_user_books_screen,
+            Pair(OtherUserBooksFragment.OTHER_USER_BOOKS_KEY, userId))
     }
 }
