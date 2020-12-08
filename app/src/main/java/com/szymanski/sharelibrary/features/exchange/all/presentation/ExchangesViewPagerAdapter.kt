@@ -12,9 +12,8 @@ class ExchangesViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapt
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> ExchangesMapViewFragment()
-
-            else -> ExchangesListViewFragment()
+            0 -> ExchangesListViewFragment()
+            else -> ExchangesMapViewFragment()
         }
     }
 

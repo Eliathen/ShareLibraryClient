@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".features.exchange.details.presentation.ExchangeDetailsFragment">
 
-    <include layout="@layout/toolbar_base_with_back_arrow" />
+    <include layout="@layout/toolbar_base" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,12 +39,9 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="20dp"
                 android:layout_marginHorizontal="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/exchange_details_cover">
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
 
 
                 <TextView
@@ -53,6 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/authors_label"
+                    android:layout_marginVertical="5dp"
                     android:textSize="20sp" />
 
                 <TextView
@@ -62,6 +59,35 @@
                     android:background="@null"
                     android:textSize="18sp"
                     tools:text="Authors" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/deposit_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp">
+
+
+                <TextView
+                    android:id="@+id/exchange_details_deposit_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="10dp"
+                    android:text="@string/deposit_label_text"
+                    android:textSize="20sp"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/exchange_details_deposit_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:textSize="18sp" />
+
 
             </LinearLayout>
 
@@ -78,20 +104,20 @@
                     android:text="@string/user_details"
                     android:textSize="25sp" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginVertical="20dp">
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="20dp"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/exchange_details_profile_imageView"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignParentStart="true"
                         android:layout_marginStart="10dp"
-                        android:src="@drawable/ic_person_24"
                         android:background="@drawable/register_button_background"
+                        android:src="@drawable/ic_person_24"
                         android:tint="@color/colorPrimaryDark" />
 
                     <TextView
@@ -99,20 +125,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
-                        android:layout_centerVertical="true"
                         android:textSize="18sp"
-                        android:layout_toEndOf="@id/exchange_details_profile_imageView"
                         tools:text="Adam" />
 
                     <TextView
                         android:id="@+id/exchange_details_user_surname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/exchange_details_user_name"
-                        android:layout_centerVertical="true"
                         android:textSize="18sp"
                         tools:text="Nowak" />
-                </RelativeLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -128,20 +150,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:textColor="@color/colorPrimaryDark"
                     android:background="@drawable/register_button_background"
                     android:paddingHorizontal="10dp"
-                    android:text="@string/user_profile" />
+                    android:text="@string/user_profile"
+                    android:textColor="@color/colorPrimaryDark" />
 
                 <Button
                     android:id="@+id/exchange_details_request_book"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@string/request_book"
                     android:background="@drawable/login_button_background"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/request_book"
                     android:textColor="@color/white"
-                    android:paddingHorizontal="10dp" />
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

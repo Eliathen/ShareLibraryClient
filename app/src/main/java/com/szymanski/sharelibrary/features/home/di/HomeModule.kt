@@ -6,6 +6,7 @@ import com.szymanski.sharelibrary.features.home.domain.usecase.CreateRequirement
 import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByIdUseCase
 import com.szymanski.sharelibrary.features.home.domain.usecase.GetUserRequirements
 import com.szymanski.sharelibrary.features.home.presentation.all.HomeViewModel
+import com.szymanski.sharelibrary.features.home.presentation.requirements.RequirementsAdapter
 import com.szymanski.sharelibrary.features.home.presentation.requirements.RequirementsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -13,7 +14,7 @@ import org.koin.dsl.module
 val homeModule = module {
 
 
-    //viewModels
+    //viewModel
     viewModel { HomeViewModel() }
     viewModel { RequirementsViewModel(get(), get()) }
     //repository
@@ -23,4 +24,8 @@ val homeModule = module {
     factory { CreateRequirementUseCase(get()) }
     factory { GetRequirementByIdUseCase(get()) }
     factory { GetUserRequirements(get()) }
+
+    //adapter
+    factory { RequirementsAdapter() }
+
 }

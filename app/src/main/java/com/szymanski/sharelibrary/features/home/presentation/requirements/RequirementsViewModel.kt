@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.home.presentation.requirements
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -32,18 +31,23 @@ class RequirementsViewModel(
     }
 
     private fun getRequirements() {
+        setPendingState()
         getUserRequirements(
             scope = viewModelScope,
             params = userStorage.getUserId()
         ) { result ->
+            setIdleState()
             result.onSuccess {
-                Log.d(TAG, "getRequirements: $it")
                 _requirements.value = it
             }
             result.onFailure {
                 handleFailure(it)
             }
         }
+    }
+
+    fun refreshRequirements() {
+        getRequirements()
     }
 
 

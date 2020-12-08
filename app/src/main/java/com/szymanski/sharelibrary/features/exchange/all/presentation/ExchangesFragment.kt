@@ -39,9 +39,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
     override fun initObservers() {
         viewModel.exchanges.observe(this) {
-            it.forEach {
-                Log.d(TAG, "initObservers: $it")
-            }
         }
     }
 
@@ -93,10 +90,10 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         TabLayoutMediator(exchangeTabLayout, viewPager) { tab: TabLayout.Tab, position: Int ->
             tab.icon = when (position) {
                 0 -> {
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_map_24)
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_list_24)
                 }
                 else -> {
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_list_24)
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_map_24)
                 }
             }
         }.attach()

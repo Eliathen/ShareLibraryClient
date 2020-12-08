@@ -3,10 +3,12 @@ package com.szymanski.sharelibrary.features.exchange.details.presentation
 import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.Glide
+import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import kotlinx.android.synthetic.main.fragment_exchange_details.*
+import kotlinx.android.synthetic.main.toolbar_base.*
 import org.koin.android.ext.android.inject
 
 class ExchangeDetailsFragment :
@@ -26,7 +28,18 @@ class ExchangeDetailsFragment :
 
     override fun initViews() {
         super.initViews()
+        initAppBar()
         initListeners()
+    }
+
+    private fun initAppBar() {
+        val toolbar = toolbar_base
+        (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).supportActionBar?.apply {
+            title = ""
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
     }
 
     override fun initObservers() {
@@ -40,10 +53,13 @@ class ExchangeDetailsFragment :
             }
             exchange_details_user_name.text = exchange.user.name
             exchange_details_user_surname.text = exchange.user.surname
+            exchange_details_deposit_value.text = exchange.deposit.toString()
         }
         viewModel.requirements.observe(this) { requirements ->
             if (requirements.any { it.user?.id == viewModel.userId }) {
                 exchange_details_request_book.visibility = View.GONE
+            } else {
+                exchange_details_request_book.visibility = View.VISIBLE
             }
 
         }

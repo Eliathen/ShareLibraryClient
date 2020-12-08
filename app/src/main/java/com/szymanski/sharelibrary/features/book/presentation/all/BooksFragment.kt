@@ -390,7 +390,6 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     }
 
     override fun onIdleState() {
-//        books_progressbar.visibility = View.GONE
         books_swipeRefreshLayout.isRefreshing = false
     }
 
