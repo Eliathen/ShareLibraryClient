@@ -22,7 +22,8 @@
         <action
             android:id="@+id/action_navigate_from_books_screen_to_book_details_screen"
             app:destination="@id/book_details_screen"
-            />
+            app:popUpTo="@id/books_screen"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/register_screen"

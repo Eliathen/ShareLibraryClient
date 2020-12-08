@@ -16,7 +16,7 @@ val homeModule = module {
 
     //viewModel
     viewModel { HomeViewModel() }
-    viewModel { RequirementsViewModel(get(), get()) }
+    viewModel { RequirementsViewModel(get(), get(), get(), get()) }
     //repository
     factory<RequirementRepository> { RequirementRepositoryImpl(get(), get()) }
 

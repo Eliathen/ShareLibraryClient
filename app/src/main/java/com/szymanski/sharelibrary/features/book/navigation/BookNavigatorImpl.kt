@@ -32,8 +32,7 @@ class BookNavigatorImpl(
             BookDetailsFragment.BOOK_DETAILS_KEY to bookDisplayable)
     }
 
-    override fun returnFromBookDetailsScreen() {
-        fragmentNavigator.clearHistory()
-        openBooksScreen()
+    override fun returnToBookScreen() {
+        fragmentNavigator.goBack(R.id.books_screen, true)
     }
 }

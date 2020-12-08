@@ -91,7 +91,6 @@ class BooksViewModel(
                 }
             }
         }
-
     }
 
     fun openSearchBookScreen() {

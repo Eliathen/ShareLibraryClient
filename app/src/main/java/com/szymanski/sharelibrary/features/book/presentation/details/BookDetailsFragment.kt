@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.book.presentation.details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
@@ -38,6 +39,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         (activity as MainActivity).setSupportActionBar(toolbar)
         toolbar.title = ""
         toolbar.back_arrow.setOnClickListener {
+            Log.d(TAG, "initAppBar: RETURN TO BOOK SCREEN")
             viewModel.goBackToBookScreen()
         }
     }

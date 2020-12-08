@@ -53,7 +53,7 @@ class BookDetailsViewModel(
     }
 
     fun goBackToBookScreen() {
-        bookNavigator.returnFromBookDetailsScreen()
+        bookNavigator.returnToBookScreen()
     }
 
 }

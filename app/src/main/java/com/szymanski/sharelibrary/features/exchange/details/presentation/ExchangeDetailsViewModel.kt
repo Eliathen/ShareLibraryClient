@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.exchange.details.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -66,7 +65,6 @@ class ExchangeDetailsViewModel(
                 getRequirements(it.id!!)
             }
             result.onFailure {
-                Log.d(TAG, "getExchangeDetails: ${it.message}")
                 handleFailure(it)
             }
         }
@@ -81,7 +79,6 @@ class ExchangeDetailsViewModel(
                 _requirements.value = it
             }
             result.onFailure {
-                Log.d(TAG, "getRequirements: ${it.message}")
                 handleFailure(it)
             }
         }
