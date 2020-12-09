@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.features.home.presentation.requirements
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -12,6 +13,7 @@ import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetUsersBookUseCase
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.home.domain.model.Requirement
+import com.szymanski.sharelibrary.features.home.domain.usecase.ExecuteExchangeUseCase
 import com.szymanski.sharelibrary.features.home.domain.usecase.GetUserRequirements
 import com.szymanski.sharelibrary.features.home.presentation.model.RequirementDisplayable
 
@@ -19,6 +21,7 @@ class RequirementsViewModel(
     private val getUserRequirements: GetUserRequirements,
     private val getUsersBookUseCase: GetUsersBookUseCase,
     private val getCoverUseCase: GetCoverUseCase,
+    private val executeExchangeUseCase: ExecuteExchangeUseCase,
     private val userStorage: UserStorage,
 ) : BaseViewModel() {
 
@@ -105,6 +108,19 @@ class RequirementsViewModel(
 
                 }
             }
+        }
+    }
+
+    fun executeExchange(params: Map<String, Long>) {
+        setPendingState()
+        Log.d(TAG, "executeExchange: $params")
+        executeExchangeUseCase(
+            scope = viewModelScope,
+            params = params
+        ) { result ->
+            setIdleState()
+            result.onSuccess { showMessage("Exchange has been made") }
+            result.onFailure { handleFailure(it) }
         }
     }
 }

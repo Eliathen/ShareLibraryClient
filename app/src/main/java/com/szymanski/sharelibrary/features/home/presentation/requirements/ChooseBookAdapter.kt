@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.home.presentation.requirements
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +16,9 @@ class ChooseBookAdapter : RecyclerView.Adapter<ChooseBookAdapter.ViewHolder>() {
 
     var selectedPosition = 0
 
-    private val TAG = "ChooseBookAdapter"
-
     fun setChoices(list: List<String>) {
         if (choices.isNotEmpty()) choices.clear()
         choices.addAll(list)
-        Log.d(TAG, "setChoices: $choices")
         notifyDataSetChanged()
     }
 
@@ -33,7 +29,7 @@ class ChooseBookAdapter : RecyclerView.Adapter<ChooseBookAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_dialog_choose_book, parent, false)
-        return ViewHolder(view, listeners!!)
+        return ViewHolder(view, listeners)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -75,6 +71,5 @@ class ChooseBookAdapter : RecyclerView.Adapter<ChooseBookAdapter.ViewHolder>() {
 
     interface ChooseBookAdapterListeners {
         fun onItemClick(position: Int)
-//        fun onRadioButtonClick(position: Int)
     }
 }

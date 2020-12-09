@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.R
+import com.szymanski.sharelibrary.core.api.model.request.ExecuteExchangeRequest
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
@@ -70,6 +71,7 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
     override fun onIdleState() {
         super.onIdleState()
         requirement_progress_bar.visibility = View.GONE
+        requirement_swipe_layout.isRefreshing = false
     }
 
     override fun onPendingState() {
@@ -86,15 +88,14 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
             choices.add(it.title!!)
         }
         val contentView = layoutInflater.inflate(R.layout.dialog_choose_book, null)
-        val dialog = dialogBuilder
+        val builder = dialogBuilder
             .setCancelable(false)
             .setView(contentView)
             .setTitle("Choose for what you want to exchange: ")
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
-            .setPositiveButton("Exchange") { dialog, _ ->
-
+            .setPositiveButton("Exchange") { _, _ ->
             }
 
         val chooseAdapter = ChooseBookAdapter()
@@ -114,7 +115,23 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
             }
         })
         chooseAdapter.setChoices(choices)
-        dialog.create().show()
+        val dialog = builder.create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val position = chooseAdapter.selectedPosition
+            var params = mapOf<String, Long>()
+            params =
+                params.plus(Pair(ExecuteExchangeRequest.WITH_USER_ID_KEY, requirement.user?.id!!))
+            params = params.plus(Pair(ExecuteExchangeRequest.EXCHANGE_ID_KEY,
+                requirement.exchange?.id!!))
+            if (position != 0) {
+                params = params.plus(Pair(ExecuteExchangeRequest.FOR_BOOK_ID_KEY,
+                    viewModel.otherUserBooks.value?.get(position - 1)?.id!!))
+            }
+            viewModel.executeExchange(params)
+            dialog.dismiss()
+            requirement_swipe_layout.isRefreshing = true
+        }
     }
 
     private fun displayBookDetails(book: BookDisplayable) {

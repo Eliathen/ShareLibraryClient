@@ -29,7 +29,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
-import com.szymanski.sharelibrary.features.user.registration.presentation.model.CoordinateDisplayable
+import com.szymanski.sharelibrary.features.user.presentation.model.CoordinateDisplayable
 import kotlinx.android.synthetic.main.dialog_save_exchange.*
 import kotlinx.android.synthetic.main.dialog_save_exchange.view.*
 import kotlinx.android.synthetic.main.fragment_books.*

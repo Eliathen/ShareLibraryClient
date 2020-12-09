@@ -68,4 +68,10 @@ interface Api {
 
     @GET("requirements/{id}")
     suspend fun getUserRequirements(@Path("id") userId: Long): List<RequirementResponse>
+
+    @POST("exchanges/execution")
+    suspend fun executeExchange(@Body executeExchangeRequest: ExecuteExchangeRequest): ExchangeResponse
+
+    @GET("exchanges/withUser/{id}")
+    suspend fun exchangesByAtUserId(@Path("id") userId: Long): List<ExchangeResponse>
 }

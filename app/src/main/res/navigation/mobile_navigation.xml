@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/register_screen"
-        android:name="com.szymanski.sharelibrary.features.user.registration.presentation.RegisterFragment"
+        android:name="com.szymanski.sharelibrary.features.user.presentation.registration.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/login_screen"
-        android:name="com.szymanski.sharelibrary.features.user.login.presentation.LoginFragment"
+        android:name="com.szymanski.sharelibrary.features.user.presentation.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/exchanges_screen"
-        android:name="com.szymanski.sharelibrary.features.exchange.all.presentation.ExchangesFragment"
+        android:name="com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesFragment"
         android:label="fragment_exchange"
         tools:layout="@layout/fragment_exchange">
         <action
@@ -62,7 +62,7 @@
     </fragment>
     <fragment
         android:id="@+id/profile_screen"
-        android:name="com.szymanski.sharelibrary.features.user.profile.presentation.ProfileFragment"
+        android:name="com.szymanski.sharelibrary.features.user.presentation.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
         <action
@@ -104,7 +104,7 @@
 
     <fragment
         android:id="@+id/exchange_details_screen"
-        android:name="com.szymanski.sharelibrary.features.exchange.details.presentation.ExchangeDetailsFragment"
+        android:name="com.szymanski.sharelibrary.features.exchange.presentation.details.ExchangeDetailsFragment"
         android:label="fragment_exchange_details"
         tools:layout="@layout/fragment_exchange_details">
         <action
@@ -113,7 +113,7 @@
     </fragment>
     <fragment
         android:id="@+id/other_user_screen"
-        android:name="com.szymanski.sharelibrary.features.user.otheruser.presentation.OtherUserFragment"
+        android:name="com.szymanski.sharelibrary.features.user.presentation.otheruser.OtherUserFragment"
         android:label="fragment_other_user"
         tools:layout="@layout/fragment_other_user">
         <action

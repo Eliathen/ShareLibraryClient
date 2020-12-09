@@ -22,7 +22,7 @@ import com.szymanski.sharelibrary.features.exchange.domain.usecase.ShareBookUseC
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.User
 import com.szymanski.sharelibrary.features.user.domain.usecase.GetUserUseCase
-import com.szymanski.sharelibrary.features.user.registration.presentation.model.CoordinateDisplayable
+import com.szymanski.sharelibrary.features.user.presentation.model.CoordinateDisplayable
 
 class BooksViewModel(
     errorMapper: ErrorMapper,

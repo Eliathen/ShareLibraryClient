@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.exchange.all.presentation.listView.ExchangesListViewFragment">
+    tools:context=".features.exchange.presentation.listView.ExchangesListViewFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView

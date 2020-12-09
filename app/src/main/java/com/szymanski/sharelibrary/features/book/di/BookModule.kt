@@ -8,7 +8,6 @@ import com.szymanski.sharelibrary.features.book.navigation.BookNavigatorImpl
 import com.szymanski.sharelibrary.features.book.presentation.all.BooksAdapter
 import com.szymanski.sharelibrary.features.book.presentation.all.BooksViewModel
 import com.szymanski.sharelibrary.features.book.presentation.details.BookDetailsViewModel
-import com.szymanski.sharelibrary.features.book.presentation.exchangedbook.ExchangedBookViewModel
 import com.szymanski.sharelibrary.features.book.presentation.otheruserbook.OtherUserBooksAdapter
 import com.szymanski.sharelibrary.features.book.presentation.otheruserbook.OtherUserBooksViewModel
 import com.szymanski.sharelibrary.features.book.presentation.save.AddAuthorAdapter
@@ -26,7 +25,6 @@ val bookModule = module {
     viewModel { SearchBookViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SaveBookViewModel(get(), get(), get()) }
     viewModel { OtherUserBooksViewModel(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { ExchangedBookViewModel(get()) }
     //repository
     factory<BookRepository> { BookRepositoryImpl(get(), get(), get()) }
 
