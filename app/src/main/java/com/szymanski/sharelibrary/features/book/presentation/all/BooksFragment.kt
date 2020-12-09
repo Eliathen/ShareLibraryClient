@@ -158,11 +158,10 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
             BookStatus.SHARED -> {
                 displayMenuForDuringExchangeStatus(popupMenu, position)
             }
-            BookStatus.EXCHANGED -> {
-                displayMenuForExchangedStatus(popupMenu, position)
+            BookStatus.AT_OWNER -> {
+                displayMenuForAtOwnerState(popupMenu, position)
             }
             else -> {
-                displayMenuForAtOwnerState(popupMenu, position)
             }
         }
     }
@@ -234,30 +233,10 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         popupMenu.inflate(R.menu.item_books_exchange_state_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.books_item_remove -> {
-                    viewModel.withdrawBook(viewModel.books.value!![position])
-                    true
-                }
                 R.id.books_item_cancel_exchange -> {
                     viewModel.finishExchange(viewModel.books.value!![position])
                     true
                 }
-                else -> {
-                    false
-                }
-            }
-        }
-        popupMenu.show()
-    }
-
-    private fun displayMenuForExchangedStatus(
-        popupMenu: PopupMenu,
-        position: Int,
-    ) {
-        //TODO create new menu for ExchangedStatus
-        popupMenu.inflate(R.menu.item_books_at_owner_state_menu)
-        popupMenu.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
                 else -> {
                     false
                 }
@@ -393,12 +372,6 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         books_swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun onPendingState() {
-//        books_progressbar.visibility = View.VISIBLE
-//        books_swipeRefreshLayout.isRefreshing = true
-
-    }
-
     private val itemTouchHelperCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
@@ -417,8 +390,17 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
 
     private fun displayDialogToRemoveBook(position: Int) {
         val book = viewModel.books.value!![position]
-        AlertDialog.Builder(requireContext())
-            .setCancelable(false)
+        val builder = AlertDialog.Builder(requireContext())
+        if (book.status == BookStatus.EXCHANGED) {
+            booksAdapter.notifyItemChanged(position)
+            builder.setCancelable(false)
+                .setTitle("Warning")
+                .setMessage("You cannot removed exchanged book")
+                .setNeutralButton("Cancel") { dialog, _ -> dialog.dismiss() }
+                .create().show()
+            return
+        }
+        builder.setCancelable(false)
             .setTitle(book.title)
             .setMessage(R.string.remove_book_message)
             .setNegativeButton(R.string.cancel_changes) { dialog, _ ->

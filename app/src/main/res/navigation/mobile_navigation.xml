@@ -21,9 +21,7 @@
             app:popUpTo="@id/books_screen" />
         <action
             android:id="@+id/action_navigate_from_books_screen_to_book_details_screen"
-            app:destination="@id/book_details_screen"
-            app:popUpTo="@id/books_screen"
-            app:popUpToInclusive="true" />
+            app:destination="@id/book_details_screen" />
     </fragment>
     <fragment
         android:id="@+id/register_screen"
@@ -98,8 +96,8 @@
         android:label="fragment_book_details"
         tools:layout="@layout/fragment_book_details">
         <action
-            android:id="@+id/action_navigate_from_details_book_screen_to_book_screen"
-            app:destination="@id/books_screen" />
+            android:id="@+id/action_navigate_from_book_details_screen_to_other_user_screen"
+            app:destination="@id/other_user_screen" />
     </fragment>
 
     <fragment

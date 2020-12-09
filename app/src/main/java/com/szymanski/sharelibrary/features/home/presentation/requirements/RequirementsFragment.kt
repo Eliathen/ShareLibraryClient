@@ -130,7 +130,7 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
             }
             viewModel.executeExchange(params)
             dialog.dismiss()
-            requirement_swipe_layout.isRefreshing = true
+            this@RequirementsFragment.requirement_swipe_layout.isRefreshing = true
         }
     }
 

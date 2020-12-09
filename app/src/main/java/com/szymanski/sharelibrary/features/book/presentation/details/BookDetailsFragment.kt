@@ -1,7 +1,6 @@
 package com.szymanski.sharelibrary.features.book.presentation.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
@@ -11,8 +10,7 @@ import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.fragment_book_details.*
-import kotlinx.android.synthetic.main.toolbar_base_with_back_arrow.*
-import kotlinx.android.synthetic.main.toolbar_base_with_back_arrow.view.*
+import kotlinx.android.synthetic.main.toolbar_base.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -35,12 +33,12 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
     }
 
     private fun initAppBar() {
-        val toolbar = toolbar_base_with_back_arrow
+        val toolbar = toolbar_base
         (activity as MainActivity).setSupportActionBar(toolbar)
         toolbar.title = ""
-        toolbar.back_arrow.setOnClickListener {
-            Log.d(TAG, "initAppBar: RETURN TO BOOK SCREEN")
-            viewModel.goBackToBookScreen()
+        (activity as MainActivity).supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
         }
     }
 
@@ -49,7 +47,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
             viewModel.finishExchange(viewModel.book.value?.id!!)
         }
         display_user_profile_button.setOnClickListener {
-            //TODO implement after adding feature display other user profile
+            viewModel.displayUserProfile()
         }
         finish_exchange.setOnClickListener {
             viewModel.finishExchange(viewModel.book.value?.id!!)
@@ -63,14 +61,14 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         }
         viewModel.bookStatus.observe(this) { status ->
             when (status) {
-                BookStatus.AT_OWNER -> {
-                    displayAtOwnerStatus()
-                }
                 BookStatus.SHARED -> {
                     displayDuringExchangeStatus()
                 }
                 BookStatus.EXCHANGED -> {
                     displayExchangedStatus()
+                }
+                else -> {
+                    displayAtOwnerStatus()
                 }
             }
         }

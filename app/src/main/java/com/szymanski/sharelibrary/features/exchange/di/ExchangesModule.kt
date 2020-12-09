@@ -17,7 +17,7 @@ val exchangesModule = module {
     //viewModel
     viewModel { ExchangesViewModel(get(), get(), get(), get()) }
     viewModel { ExchangeDetailsViewModel(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { ExchangedBookViewModel(get(), get(), get()) }
+    viewModel { ExchangedBookViewModel(get(), get(), get(), get()) }
 
     //repository
     factory<ExchangeRepository> { ExchangeRepositoryImpl(get(), get()) }

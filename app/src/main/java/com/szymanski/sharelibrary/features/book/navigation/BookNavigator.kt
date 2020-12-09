@@ -14,6 +14,6 @@ interface BookNavigator {
 
     fun openOtherUserBookDetailsScreen(bookDisplayable: BookDisplayable)
 
-    fun returnToBookScreen()
+    fun openOtherUserProfileScreen(otherUserId: Long)
 
 }
