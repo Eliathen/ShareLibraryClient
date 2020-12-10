@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -61,7 +62,10 @@ class ExchangesMapViewFragment :
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             val location: Location = locationResult.lastLocation!!
-            displayUserLocation(latitude = location.latitude, longitude = location.longitude)
+            displayUserLocation(latitude = location.latitude,
+                longitude = location.longitude,
+                title = "Your current location",
+                icon = requireContext().getDrawable(R.drawable.ic_current_location_on_24)!!)
         }
     }
 
@@ -97,7 +101,13 @@ class ExchangesMapViewFragment :
                 displayLocation(it.coordinates.latitude!!, it.coordinates.longitude!!)
             }
         }
+        viewModel.user.observe(this) {
+            displayUserLocation(it.coordinates?.latitude!!, it.coordinates?.longitude!!,
+                "Your default location",
+                requireContext().getDrawable(R.drawable.ic_default_location_on_24)!!)
+        }
     }
+
 
     private fun initMap() {
         requestPermissionsIfNecessary(listOf(
@@ -130,6 +140,7 @@ class ExchangesMapViewFragment :
         val tileSource = TileSourceFactory.getTileSource(tileSourceName)
         map?.setTileSource(tileSource)
         map?.onResume()
+        requestNewLocationData()
     }
 
     override fun onRequestPermissionsResult(
@@ -183,7 +194,9 @@ class ExchangesMapViewFragment :
                         requestNewLocationData()
                     } else {
                         displayUserLocation(latitude = location.latitude,
-                            longitude = location.longitude)
+                            longitude = location.longitude,
+                            "Your current location",
+                            requireContext().getDrawable(R.drawable.ic_current_location_on_24)!!)
                     }
                 }
             } else {
@@ -204,7 +217,7 @@ class ExchangesMapViewFragment :
             }
             .setNeutralButton(getString(R.string.accept_button_text)) { _: DialogInterface, _: Int ->
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
+                requireActivity().startActivityForResult(intent, REQUEST_LOCATION_CODE)
             }
             .create()
             .show()
@@ -256,16 +269,32 @@ class ExchangesMapViewFragment :
         )
     }
 
-    private fun displayUserLocation(latitude: Double, longitude: Double) {
+    private fun displayUserLocation(
+        latitude: Double,
+        longitude: Double,
+        title: String,
+        icon: Drawable,
+    ) {
+        map_view_progress_bar.visibility = View.GONE
         val mapController: IMapController = map?.controller!!
         mapController.setZoom(13.0)
         val startPoint = GeoPoint(latitude, longitude)
-        val marker = Marker(map)
+        val newMarker = Marker(map)
+        newMarker.title = title
         mapController.setCenter(startPoint)
-        marker.icon = requireContext().getDrawable(R.drawable.ic_current_location_on_24)
-        marker.position = startPoint
-        map?.overlays?.add(marker)
+        newMarker.icon = icon
+        newMarker.position = startPoint
+        newMarker.setOnMarkerClickListener { marker, mapView ->
+            if (marker.isInfoWindowOpen) {
+                marker.infoWindow.close()
+            } else {
+                marker.showInfoWindow()
+            }
+            true
+        }
+        map?.overlays?.add(newMarker)
     }
+
 
     private fun displayLocation(latitude: Double, longitude: Double) {
         val point = GeoPoint(latitude, longitude)
@@ -274,11 +303,6 @@ class ExchangesMapViewFragment :
         marker.icon = requireContext().getDrawable(R.drawable.ic_exchange_location_on_24)
         map?.overlays?.add(marker)
         marker.setOnMarkerClickListener(this)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        initMap()
     }
 
     private fun drawCircleAroundPointWithRadius(
@@ -301,8 +325,7 @@ class ExchangesMapViewFragment :
     }
 
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
-        val dialogBuilder = AlertDialog.Builder(requireContext())
-//        dialogBuilder.setView(View.inflate(requireContext(), R.layout.))
+//        val dialogBuilder = AlertDialog.Builder(requireContext())
 
         return true
     }

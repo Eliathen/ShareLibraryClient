@@ -10,6 +10,7 @@ import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetUsersBookUseCase
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
+import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesUseCase
 import com.szymanski.sharelibrary.features.home.domain.model.Requirement
 import com.szymanski.sharelibrary.features.home.domain.usecase.CreateRequirementUseCase
@@ -18,7 +19,7 @@ import com.szymanski.sharelibrary.features.home.presentation.model.RequirementDi
 
 class OtherUserBooksViewModel(
     errorMapper: ErrorMapper,
-    private val userStorage: UserStorage,
+    userStorage: UserStorage,
     private val getCoverUseCase: GetCoverUseCase,
     private val getUsersBookUseCase: GetUsersBookUseCase,
     private val getRequirementByIdUseCase: GetRequirementByIdUseCase,
@@ -99,9 +100,15 @@ class OtherUserBooksViewModel(
             scope = viewModelScope,
             params = userId
         ) { result ->
+            setIdleState()
             result.onSuccess { exchanges ->
-                val exchange =
-                    exchanges.first { it.book.id == bookDisplayable.id && it.user.id == otherUserId }
+                var exchange: Exchange? = null
+                try {
+                    exchange =
+                        exchanges.first { it.book.id == bookDisplayable.id && it.user.id == otherUserId }
+                } catch (exception: NoSuchElementException) {
+                    return@onSuccess
+                }
                 exchangeId = exchange.id
                 exchange.id?.let { getRequirementsByExchangeId(it) }
             }

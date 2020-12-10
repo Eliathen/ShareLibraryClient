@@ -115,7 +115,6 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         }
         user_name_book_details.text = bookDisplayable.atUserDisplayable?.name
         user_surname_book_details.text = bookDisplayable.atUserDisplayable?.surname
-
     }
 
     private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {

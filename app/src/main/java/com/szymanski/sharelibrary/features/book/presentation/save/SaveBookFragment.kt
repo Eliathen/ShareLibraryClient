@@ -112,7 +112,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
 
         if (cancel) {
             focusView.requestFocus()
-            saveButton.isClickable = true
+            saveButton.isClickable = false
         } else {
             val book = BookDisplayable(
                 id = null,

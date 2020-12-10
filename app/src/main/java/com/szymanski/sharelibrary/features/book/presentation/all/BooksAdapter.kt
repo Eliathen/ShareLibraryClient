@@ -99,7 +99,6 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
                                 item_book_progress_bar.visibility = View.GONE
                                 return false
                             }
-
                         })
                         .into(cover)
                 }

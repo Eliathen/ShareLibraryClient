@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.book.presentation.details
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -56,8 +55,11 @@ class BookDetailsViewModel(
                 _bookStatus.value = book.status
             }
             result.onFailure {
-                Log.d(TAG, "finishExchange: ${it.message}")
-                handleFailure(it)
+                if (it is NoSuchElementException) {
+                    showMessage("Only person which created exchange can finish it")
+                } else {
+                    handleFailure(it)
+                }
             }
         }
     }
