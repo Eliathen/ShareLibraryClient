@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
@@ -98,7 +99,9 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
 
     private fun initListeners() {
         initFabListener()
-        books_swipeRefreshLayout.setOnRefreshListener { viewModel.refreshBooks() }
+        books_swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshBooks()
+        }
     }
 
     private fun initFabListener() {
@@ -119,8 +122,8 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     }
 
     override fun onResume() {
-        super.onResume()
         viewModel.refreshBooks()
+        super.onResume()
     }
 
     override fun onDestroyView() {
@@ -369,6 +372,7 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     }
 
     override fun onIdleState() {
+        Log.d(TAG, "onIdleState: ")
         books_swipeRefreshLayout.isRefreshing = false
     }
 

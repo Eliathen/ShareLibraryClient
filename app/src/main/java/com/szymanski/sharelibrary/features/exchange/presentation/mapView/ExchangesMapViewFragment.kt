@@ -16,15 +16,22 @@ import android.os.Bundle
 import android.os.Looper
 import android.os.StrictMode
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.*
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesViewModel
+import com.szymanski.sharelibrary.features.exchange.presentation.listView.ExchangesListViewAdapter
+import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
+import kotlinx.android.synthetic.main.dialog_exchanges.view.*
 import kotlinx.android.synthetic.main.fragment_exchanges_map_view.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
@@ -44,6 +51,11 @@ class ExchangesMapViewFragment :
 
     override val viewModel: ExchangesViewModel by viewModel()
 
+    private val linearLayoutManager: LinearLayoutManager by inject()
+
+    private val itemDecoration: DividerItemDecoration by inject()
+
+
     private var map: MapView? = null
 
     private val REQUEST_PERMISSION_CODE = 101
@@ -52,10 +64,13 @@ class ExchangesMapViewFragment :
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    private var dialogContent: View? = null
+
     private val TAG = "ExchangesMapViewFragment"
 
     private val PREFERENCES_KEY = "ShareLibraryPreferences"
     private val PREFS_TILE_SOURCE = "tilesource"
+
 
     private var mPrefs: SharedPreferences? = null
 
@@ -96,12 +111,19 @@ class ExchangesMapViewFragment :
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.exchanges.observe(this) { exchanges ->
-            exchanges.forEach {
-                displayLocation(it.coordinates.latitude!!, it.coordinates.longitude!!)
+//        viewModel.exchanges.observe(this){
+//            for (exchangeDisplayable in it) {
+//                displayLocation(exchangeDisplayable.coordinates.latitude!!, exchangeDisplayable.coordinates.longitude!!)
+//            }
+//        }
+        viewModel.mapOfExchanges.observe(this) { exchanges ->
+            Log.d(TAG, "initObservers: XDDD")
+            exchanges.keys.forEach { coordinate ->
+                displayLocation(coordinate.latitude!!, coordinate.longitude!!)
             }
         }
-        viewModel.user.observe(this) {
+        viewModel.user.observe(this)
+        {
             displayUserLocation(it.coordinates?.latitude!!, it.coordinates?.longitude!!,
                 "Your default location",
                 requireContext().getDrawable(R.drawable.ic_default_location_on_24)!!)
@@ -284,7 +306,7 @@ class ExchangesMapViewFragment :
         mapController.setCenter(startPoint)
         newMarker.icon = icon
         newMarker.position = startPoint
-        newMarker.setOnMarkerClickListener { marker, mapView ->
+        newMarker.setOnMarkerClickListener { marker, _ ->
             if (marker.isInfoWindowOpen) {
                 marker.infoWindow.close()
             } else {
@@ -325,8 +347,42 @@ class ExchangesMapViewFragment :
     }
 
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
-//        val dialogBuilder = AlertDialog.Builder(requireContext())
-
+        val key = viewModel.mapOfExchanges.value?.keys?.first {
+            it.latitude == marker?.position?.latitude && it.longitude == marker?.position?.longitude
+        }
+        val exchanges = viewModel.mapOfExchanges.value?.get(key)?.map { ExchangeDisplayable(it) }
+        val builder = AlertDialog.Builder(requireContext())
+        dialogContent = layoutInflater.inflate(R.layout.dialog_exchanges, null)
+        val dialog = builder.setCancelable(false)
+            .setView(dialogContent)
+            .setNegativeButton("Close", null)
+            .create()
+        val adapterExchanges = ExchangesListViewAdapter()
+        dialogContent!!.dialog_exchanges_recycler_view.apply {
+            layoutManager = this@ExchangesMapViewFragment.linearLayoutManager
+            addItemDecoration(itemDecoration)
+            adapter = adapterExchanges
+        }
+        adapterExchanges.setListeners(object : ExchangesListViewAdapter.ExchangesListViewListener {
+            override fun onItemClick(position: Int) {
+                viewModel.displayExchangeDetails(exchanges?.get(position)?.id!!)
+                dialogContent!!.dialog_exchanges_recycler_view.apply {
+                    layoutManager = null
+                    adapter = null
+                }
+                dialog.dismiss()
+            }
+        })
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+            dialogContent!!.dialog_exchanges_recycler_view.apply {
+                layoutManager = null
+                adapter = null
+            }
+            dialog.dismiss()
+        }
+        exchanges?.let { adapterExchanges.setExchanges(it) }
+        dialogContent!!.dialog_exchanges_progress_bar.visibility = View.GONE
         return true
     }
 }

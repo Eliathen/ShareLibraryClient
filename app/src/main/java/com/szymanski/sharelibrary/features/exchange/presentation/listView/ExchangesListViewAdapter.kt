@@ -66,4 +66,5 @@ class ExchangesListViewAdapter() : RecyclerView.Adapter<ExchangesListViewAdapter
         fun onItemClick(position: Int)
     }
 
+
 }

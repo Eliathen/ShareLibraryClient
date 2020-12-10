@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.home.presentation.requirements
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -113,13 +112,15 @@ class RequirementsViewModel(
 
     fun executeExchange(params: Map<String, Long>) {
         setPendingState()
-        Log.d(TAG, "executeExchange: $params")
         executeExchangeUseCase(
             scope = viewModelScope,
             params = params
         ) { result ->
             setIdleState()
-            result.onSuccess { showMessage("Exchange has been made") }
+            result.onSuccess {
+                showMessage("Exchange has been made")
+                getRequirements()
+            }
             result.onFailure { handleFailure(it) }
         }
     }

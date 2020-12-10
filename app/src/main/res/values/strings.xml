@@ -86,4 +86,5 @@
     <string name="already_requested_book">You requested this book</string>
     <string name="title_home">Home</string>
     <string name="owner_label">Owner</string>
+    <string name="share_by">Shared by:</string>
 </resources>

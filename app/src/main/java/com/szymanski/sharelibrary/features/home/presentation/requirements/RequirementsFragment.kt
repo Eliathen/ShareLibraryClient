@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.home.presentation.requirements
 
 import android.app.AlertDialog
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,10 +61,19 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requirement_recycler_view.apply {
+            layoutManager = null
+            adapter = null
+        }
+    }
+
     override fun onItemClick(position: Int) {
         val requirement = viewModel.requirement.value?.get(position)!!
         viewModel.getUserBooks(requirement.user?.id!!)
         viewModel.otherUserBooks.observe(this) {
+            Log.d(TAG, "onItemClick: ")
             displayExchangeDialog(requirement)
         }
     }
@@ -128,9 +138,8 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
                 params = params.plus(Pair(ExecuteExchangeRequest.FOR_BOOK_ID_KEY,
                     viewModel.otherUserBooks.value?.get(position - 1)?.id!!))
             }
-            viewModel.executeExchange(params)
             dialog.dismiss()
-            this@RequirementsFragment.requirement_swipe_layout.isRefreshing = true
+            viewModel.executeExchange(params)
         }
     }
 

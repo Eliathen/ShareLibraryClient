@@ -58,8 +58,10 @@ class ExchangeDetailsFragment :
         viewModel.requirements.observe(this) { requirements ->
             if (requirements.any { it.user?.id == viewModel.userId }) {
                 exchange_details_request_book.visibility = View.GONE
+                book_requested_info.visibility = View.VISIBLE
             } else {
                 exchange_details_request_book.visibility = View.VISIBLE
+                book_requested_info.visibility = View.GONE
             }
 
         }

@@ -15,7 +15,7 @@ class RequirementsAdapter : RecyclerView.Adapter<ViewHolder>() {
         mutableListOf()
     }
 
-    private var listener: RequirementsAdapter.Listeners? = null
+    private var listener: Listeners? = null
 
     fun setRequirements(list: List<RequirementDisplayable>) {
         if (requirements.isNotEmpty()) requirements.clear()
@@ -23,7 +23,7 @@ class RequirementsAdapter : RecyclerView.Adapter<ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setListener(listener: RequirementsAdapter.Listeners) {
+    fun setListener(listener: Listeners) {
         this.listener = listener
     }
 
