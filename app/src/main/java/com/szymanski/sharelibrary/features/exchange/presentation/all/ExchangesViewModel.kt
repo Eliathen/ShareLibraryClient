@@ -37,6 +37,8 @@ class ExchangesViewModel(
         }
     }
 
+    private val oldExchanges: MutableList<Exchange> = mutableListOf()
+
     private val _exchanges: MutableLiveData<List<Exchange>> by lazy {
         MutableLiveData<List<Exchange>>().also {
             getExchanges()
@@ -73,6 +75,8 @@ class ExchangesViewModel(
         ) { result ->
             result.onSuccess {
                 _exchanges.value = it
+                oldExchanges.clear()
+                oldExchanges.addAll(it)
                 createMapFromExchanges(it)
             }
             result.onFailure {

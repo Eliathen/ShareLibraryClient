@@ -98,4 +98,8 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
             }
         }.attach()
     }
+
+    private fun displayFilterDialog() {
+
+    }
 }
