@@ -102,7 +102,7 @@ class OtherUserBooksViewModel(
         ) { result ->
             setIdleState()
             result.onSuccess { exchanges ->
-                var exchange: Exchange? = null
+                val exchange: Exchange?
                 try {
                     exchange =
                         exchanges.first { it.book.id == bookDisplayable.id && it.user.id == otherUserId }

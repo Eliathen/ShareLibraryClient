@@ -6,19 +6,19 @@
     android:layout_marginHorizontal="10dp">
 
     <TextView
-        android:id="@+id/text_message_name"
+        android:id="@+id/user_text_message_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/text_message_body"
+        android:layout_alignEnd="@id/user_text_message_body"
         android:layout_marginVertical="5dp"
         android:textSize="14sp"
         tools:text="John Doe" />
 
     <TextView
-        android:id="@+id/text_message_body"
+        android:id="@+id/user_text_message_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_message_name"
+        android:layout_below="@id/user_text_message_name"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="5dp"
         android:background="@drawable/user_message"
@@ -28,12 +28,12 @@
         tools:text="hi man, how are you?" />
 
     <TextView
-        android:id="@+id/text_message_time"
+        android:id="@+id/user_text_message_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/text_message_body"
+        android:layout_alignBottom="@id/user_text_message_body"
         android:layout_marginEnd="10dp"
-        android:layout_toStartOf="@id/text_message_body"
+        android:layout_toStartOf="@id/user_text_message_body"
         android:textSize="12sp"
         tools:text="11:40" />
 </RelativeLayout>

@@ -76,5 +76,9 @@ interface Api {
     suspend fun exchangesByAtUserId(@Path("id") userId: Long): List<ExchangeResponse>
 
     @GET("chat/rooms/{id}")
-    suspend fun getRooms(@Path("id") userId: Long): List<RoomResponse>
+    suspend fun getRooms(@Path("id") userId: Long): List<ChatRoomResponse>
+
+    @GET("chat/rooms/{roomId}/messages")
+    suspend fun getRoomMessages(@Path("roomId") roomId: Long): List<MessageResponse>
+
 }

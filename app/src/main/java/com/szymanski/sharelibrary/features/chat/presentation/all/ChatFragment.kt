@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.chat.presentation.all
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.sharelibrary.R
@@ -50,6 +49,14 @@ class ChatFragment : BaseFragment<ChatViewModel>(R.layout.fragment_chat), ChatAd
     }
 
     override fun onItemClick(position: Int) {
-        Log.d(TAG, "onItemClick: XDDD")
+        viewModel.rooms.value?.get(position)?.id?.let { viewModel.openChatRoom(it) }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        chat_recycler_view.apply {
+            layoutManager = null
+            adapter = null
+        }
     }
 }

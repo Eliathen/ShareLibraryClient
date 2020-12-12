@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:background="@drawable/register_button_background"
             app:defaultQueryHint="@string/chat_search_view_hint"
             app:queryHint="@string/chat_search_view_hint" />
 

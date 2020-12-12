@@ -1,66 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".features.chat.presentation.room.ChatRoomFragment">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar_base" />
-
-
-    <RelativeLayout
+    <include
+        android:id="@+id/chat_room_toolbar"
+        layout="@layout/toolbar_base"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/chat_room_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_room_toolbar"
+        app:layout_constraintStart_toStartOf="@+id/chat_room_recycler_view" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chat_room_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chat_room_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_room_toolbar" />
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:background="#dfdfdf"
-            android:layout_marginBottom="0dp"
-            android:layout_above="@id/chat_room_send_message_wrapper" />
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_above="@id/chat_room_send_message_wrapper"
+        android:background="#dfdfdf"
+        app:layout_constraintBottom_toTopOf="@id/chat_room_send_message_wrapper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/chat_room_send_message_wrapper"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/chat_room_send_message_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:minHeight="48dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/chat_room_message_edit_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:minHeight="48dp"
-            android:background="#ffffff"
-            android:layout_alignParentBottom="true">
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="@string/enter_message_hint"
+            android:maxLines="6" />
 
-            <EditText
-                android:id="@+id/chat_room_message_edit_text"
-                android:hint="@string/enter_message_hint"
-                android:background="@android:color/transparent"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:maxLines="6" />
+        <ImageButton
+            android:id="@+id/chat_room_send_message_button"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:src="@drawable/ic_send_message_24"
+            android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/chat_room_send_message_button"
-                android:text="@string/chat_room_send_button"
-                android:textSize="14sp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:layout_width="64dp"
-                android:layout_height="48dp"
-                android:gravity="center"
-                android:layout_gravity="bottom"
-                android:focusable="true" />
-
-        </LinearLayout>
-    </RelativeLayout>
-
-
-</FrameLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

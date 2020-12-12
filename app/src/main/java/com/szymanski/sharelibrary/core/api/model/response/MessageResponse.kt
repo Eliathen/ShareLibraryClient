@@ -1,27 +1,23 @@
 package com.szymanski.sharelibrary.core.api.model.response
 
 import android.annotation.SuppressLint
+import com.google.gson.annotations.SerializedName
 import com.szymanski.sharelibrary.features.chat.domain.model.Message
 import java.time.LocalDateTime
 
-class MessageResponse(
-    private val id: Long,
-
-    private val roomResponse: RoomResponse,
-
-    private val sender: UserResponse,
-
-    private val recipient: UserResponse,
-
-    private val content: String,
-
-    private val timestamp: String,
+data class MessageResponse(
+    @SerializedName("") private val id: Long,
+    @SerializedName("room") private val chatRoomResponse: ChatRoomResponse,
+    @SerializedName("sender") private val sender: UserResponse,
+    @SerializedName("recipient") private val recipient: UserResponse,
+    @SerializedName("content") private val content: String,
+    @SerializedName("timestamp") private val timestamp: String,
 ) {
 
 
     fun toMessage() = Message(
         id = id,
-        room = roomResponse.toRoom(),
+        room = chatRoomResponse.toRoom(),
         sender = sender.toUser(),
         recipient = recipient.toUser(),
         content = content,

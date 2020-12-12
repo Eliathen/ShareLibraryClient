@@ -4,7 +4,5 @@
 
     <solid android:color="@color/user_message_color" />
 
-    <corners
-        android:radius="100dp"
-        android:topRightRadius="0dp" />
+    <corners android:radius="100dp" />
 </shape>

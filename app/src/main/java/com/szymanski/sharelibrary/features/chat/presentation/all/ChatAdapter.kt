@@ -12,7 +12,7 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     private val rooms: MutableList<RoomDisplayable> = mutableListOf()
 
-    private var listener: ChatAdapter.Listener? = null
+    private var listener: Listener? = null
 
     fun setRooms(rooms: List<RoomDisplayable>) {
         if (this.rooms.isNotEmpty()) this.rooms.clear()
@@ -20,8 +20,8 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setListeners(listener: ChatAdapter.Listener) {
-        this.listener = listener;
+    fun setListeners(listener: Listener) {
+        this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatAdapter.ViewHolder {
