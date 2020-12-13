@@ -40,7 +40,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(R.layout.fragment_home) {
                 }
                 else -> {
                     tab.icon = ContextCompat.getDrawable(requireContext(),
-                        R.drawable.ic_other_users_book_24)
+                        R.drawable.ic_exchanged_book_24)
                 }
             }
         }.attach()

@@ -7,12 +7,12 @@ import com.szymanski.sharelibrary.features.user.domain.usecase.EditUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.GetUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.LoginUserUseCase
 import com.szymanski.sharelibrary.features.user.domain.usecase.RegisterUserUseCase
-import com.szymanski.sharelibrary.features.user.login.presentation.LoginViewModel
 import com.szymanski.sharelibrary.features.user.navigation.UserNavigation
 import com.szymanski.sharelibrary.features.user.navigation.UserNavigationImpl
-import com.szymanski.sharelibrary.features.user.otheruser.presentation.OtherUserViewModel
-import com.szymanski.sharelibrary.features.user.profile.presentation.ProfileViewModel
-import com.szymanski.sharelibrary.features.user.registration.presentation.RegisterViewModel
+import com.szymanski.sharelibrary.features.user.presentation.login.LoginViewModel
+import com.szymanski.sharelibrary.features.user.presentation.otheruser.OtherUserViewModel
+import com.szymanski.sharelibrary.features.user.presentation.profile.ProfileViewModel
+import com.szymanski.sharelibrary.features.user.presentation.registration.RegisterViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

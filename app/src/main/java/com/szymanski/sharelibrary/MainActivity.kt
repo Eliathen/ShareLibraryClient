@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.login_screen -> hideBottomNav()
                 R.id.register_screen -> hideBottomNav()
                 R.id.other_user_books_screen -> hideBottomNav()
+                R.id.chat_room_screen -> hideBottomNav()
                 else -> showBottomNav()
             }
         }

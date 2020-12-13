@@ -22,7 +22,7 @@ import com.szymanski.sharelibrary.features.exchange.domain.usecase.ShareBookUseC
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.User
 import com.szymanski.sharelibrary.features.user.domain.usecase.GetUserUseCase
-import com.szymanski.sharelibrary.features.user.registration.presentation.model.CoordinateDisplayable
+import com.szymanski.sharelibrary.features.user.presentation.model.CoordinateDisplayable
 
 class BooksViewModel(
     errorMapper: ErrorMapper,
@@ -40,9 +40,6 @@ class BooksViewModel(
 
     private val _books by lazy {
         MutableLiveData<List<Book>>()
-            .also {
-//                getUsersBook()
-            }
     }
 
     val books by lazy {
@@ -57,8 +54,10 @@ class BooksViewModel(
         val userId = userStorage.getUserId()
         setPendingState()
         getUsersBookUseCase(scope = viewModelScope, params = userId) { result ->
+            Log.d(TAG, "getUsersBook: got result")
             setIdleState()
             result.onSuccess { books ->
+                Log.d(TAG, "getUsersBook: onSuccess")
                 _books.value = books
                 downloadImage(books)
             }
@@ -70,6 +69,7 @@ class BooksViewModel(
     }
 
     fun refreshBooks() {
+        Log.d(TAG, "refreshBooks: ")
         getUsersBook()
     }
 
@@ -91,7 +91,6 @@ class BooksViewModel(
                 }
             }
         }
-
     }
 
     fun openSearchBookScreen() {
@@ -99,10 +98,12 @@ class BooksViewModel(
     }
 
     fun withdrawBook(bookDisplayable: BookDisplayable?) {
+        setPendingState()
         withdrawBookUseCase(
             scope = viewModelScope,
             params = WithdrawBookRequest(userStorage.getUserId(), bookDisplayable?.id!!)
         ) { result ->
+            setIdleState()
             result.onSuccess { _books.value = it.books }
         }
     }
@@ -178,11 +179,13 @@ class BooksViewModel(
     }
 
     fun finishExchange(booksDisplayable: BookDisplayable) {
+        setPendingState()
         booksDisplayable.id?.let { bookId ->
             finishExchangeUseCase(
                 scope = viewModelScope,
                 params = bookId
             ) { result ->
+                setIdleState()
                 result.onSuccess {
                     val book = _books.value!!.first { it.id == booksDisplayable.id }
                     val newBooks = _books.value!!

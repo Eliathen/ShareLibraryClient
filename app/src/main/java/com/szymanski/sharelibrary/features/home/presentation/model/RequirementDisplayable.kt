@@ -1,8 +1,8 @@
 package com.szymanski.sharelibrary.features.home.presentation.model
 
-import com.szymanski.sharelibrary.features.exchange.all.presentation.model.ExchangeDisplayable
+import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import com.szymanski.sharelibrary.features.home.domain.model.Requirement
-import com.szymanski.sharelibrary.features.user.registration.presentation.model.UserDisplayable
+import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 import java.time.LocalDateTime
 
 class RequirementDisplayable(

@@ -2,8 +2,8 @@ package com.szymanski.sharelibrary.features.exchange.navigation
 
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
-import com.szymanski.sharelibrary.features.exchange.details.presentation.ExchangeDetailsFragment
-import com.szymanski.sharelibrary.features.user.otheruser.presentation.OtherUserFragment
+import com.szymanski.sharelibrary.features.exchange.presentation.details.ExchangeDetailsFragment
+import com.szymanski.sharelibrary.features.user.presentation.otheruser.OtherUserFragment
 
 class ExchangeNavigationImpl(
     private val fragmentNavigator: FragmentNavigator,

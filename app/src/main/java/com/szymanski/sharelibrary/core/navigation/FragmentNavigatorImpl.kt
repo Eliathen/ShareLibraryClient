@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
-import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.provider.ActivityProvider
 
 class FragmentNavigatorImpl(
@@ -33,7 +32,7 @@ class FragmentNavigatorImpl(
             }
         } ?: defaultNavOptions
 
-        getNavController()?.navigate(destinationId, bundle)
+        getNavController()?.navigate(destinationId, bundle, navOptions)
     }
 
     override fun navigateTo(

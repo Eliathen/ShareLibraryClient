@@ -8,5 +8,8 @@
     <color name="transparentBackground">#00000000</color>
     <color name="mapCircleInnerColor">#66F45555</color>
     <color name="mapCircleOuterColor">#F45555</color>
+    <color name="defaultLocationMarkerColor">#FFC107</color>
+    <color name="other_user_message_color">#03A9F4</color>
+    <color name="user_message_color">#673AB7</color>
 
 </resources>

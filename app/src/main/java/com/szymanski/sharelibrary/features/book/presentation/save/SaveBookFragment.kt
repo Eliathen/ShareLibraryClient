@@ -80,6 +80,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
     }
 
     private fun attemptSaveBook() {
+        saveButton.isClickable = false
         val title = book_title.text.toString().replace("\"", "")
         val authors = addAuthorAdapter.getAuthors()
         var cancel = false
@@ -111,6 +112,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
 
         if (cancel) {
             focusView.requestFocus()
+            saveButton.isClickable = false
         } else {
             val book = BookDisplayable(
                 id = null,

@@ -1,16 +1,22 @@
 package com.szymanski.sharelibrary.features.book.presentation.all
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.item_book.view.*
 import java.util.*
+
 
 class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
 
@@ -66,9 +72,34 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
                 bookDisplayable.status?.let {
                     book_status.text = getStringByBookStatus(it)
                 }
+                if (bookDisplayable.status == BookStatus.EXCHANGED) {
+                    item_book_menu_options.visibility = View.GONE
+                }
                 if (bookDisplayable.cover!!.isNotEmpty()) {
                     Glide.with(this)
                         .load(bookDisplayable.cover)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean,
+                            ): Boolean {
+                                item_book_progress_bar.visibility = View.GONE
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean,
+                            ): Boolean {
+                                item_book_progress_bar.visibility = View.GONE
+                                return false
+                            }
+                        })
                         .into(cover)
                 }
                 setOnClickListener(this@ViewHolder)

@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
@@ -29,7 +30,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
-import com.szymanski.sharelibrary.features.user.registration.presentation.model.CoordinateDisplayable
+import com.szymanski.sharelibrary.features.user.presentation.model.CoordinateDisplayable
 import kotlinx.android.synthetic.main.dialog_save_exchange.*
 import kotlinx.android.synthetic.main.dialog_save_exchange.view.*
 import kotlinx.android.synthetic.main.fragment_books.*
@@ -98,7 +99,9 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
 
     private fun initListeners() {
         initFabListener()
-        books_swipeRefreshLayout.setOnRefreshListener { viewModel.refreshBooks() }
+        books_swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshBooks()
+        }
     }
 
     private fun initFabListener() {
@@ -119,8 +122,8 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     }
 
     override fun onResume() {
-        super.onResume()
         viewModel.refreshBooks()
+        super.onResume()
     }
 
     override fun onDestroyView() {
@@ -158,11 +161,10 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
             BookStatus.SHARED -> {
                 displayMenuForDuringExchangeStatus(popupMenu, position)
             }
-            BookStatus.EXCHANGED -> {
-                displayMenuForExchangedStatus(popupMenu, position)
+            BookStatus.AT_OWNER -> {
+                displayMenuForAtOwnerState(popupMenu, position)
             }
             else -> {
-                displayMenuForAtOwnerState(popupMenu, position)
             }
         }
     }
@@ -234,30 +236,10 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         popupMenu.inflate(R.menu.item_books_exchange_state_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.books_item_remove -> {
-                    viewModel.withdrawBook(viewModel.books.value!![position])
-                    true
-                }
                 R.id.books_item_cancel_exchange -> {
                     viewModel.finishExchange(viewModel.books.value!![position])
                     true
                 }
-                else -> {
-                    false
-                }
-            }
-        }
-        popupMenu.show()
-    }
-
-    private fun displayMenuForExchangedStatus(
-        popupMenu: PopupMenu,
-        position: Int,
-    ) {
-        //TODO create new menu for ExchangedStatus
-        popupMenu.inflate(R.menu.item_books_at_owner_state_menu)
-        popupMenu.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
                 else -> {
                     false
                 }
@@ -390,14 +372,8 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     }
 
     override fun onIdleState() {
-//        books_progressbar.visibility = View.GONE
+        Log.d(TAG, "onIdleState: ")
         books_swipeRefreshLayout.isRefreshing = false
-    }
-
-    override fun onPendingState() {
-//        books_progressbar.visibility = View.VISIBLE
-//        books_swipeRefreshLayout.isRefreshing = true
-
     }
 
     private val itemTouchHelperCallback =
@@ -418,8 +394,17 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
 
     private fun displayDialogToRemoveBook(position: Int) {
         val book = viewModel.books.value!![position]
-        AlertDialog.Builder(requireContext())
-            .setCancelable(false)
+        val builder = AlertDialog.Builder(requireContext())
+        if (book.status == BookStatus.EXCHANGED) {
+            booksAdapter.notifyItemChanged(position)
+            builder.setCancelable(false)
+                .setTitle("Warning")
+                .setMessage("You cannot removed exchanged book")
+                .setNeutralButton("Cancel") { dialog, _ -> dialog.dismiss() }
+                .create().show()
+            return
+        }
+        builder.setCancelable(false)
             .setTitle(book.title)
             .setMessage(R.string.remove_book_message)
             .setNegativeButton(R.string.cancel_changes) { dialog, _ ->

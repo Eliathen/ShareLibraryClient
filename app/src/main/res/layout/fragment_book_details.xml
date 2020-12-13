@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".features.book.presentation.details.BookDetailsFragment">
 
-    <include layout="@layout/toolbar_base_with_back_arrow" />
+    <include layout="@layout/toolbar_base" />
 
     <ScrollView
         android:layout_width="match_parent"

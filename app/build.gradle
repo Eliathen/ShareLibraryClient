@@ -39,40 +39,37 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    //core dependencies
+    //core
     implementation coreDependencies.values()
 
-    //ui dependencies
+    //ui
     implementation uiDependencies.values()
 
-    //navigation dependencies
+    //navigation
     implementation navigationDependencies.values()
 
-    //di dependencies
+    //di
     implementation koinDependencies.values()
 
-    //coroutines dependencies
+    //coroutines
     implementation coroutinesDependencies.values()
 
-    //lifecycle dependencies
+    //lifecycle
     implementation lifecycleDependencies.values()
 
-    //network dependencies
+    //network
     implementation networkDependencies.values()
 
-    //fragment dependencies
+    //fragment
     implementation fragmenDependencies.values()
 
-    //location dependencies
+    //location
     implementation locationDependencies.values()
 
-    //map dependencies
+    //map
     implementation mapDependencies.values()
 
     implementation preferencesDependencies.values()
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

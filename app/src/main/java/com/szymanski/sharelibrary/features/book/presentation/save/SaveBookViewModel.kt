@@ -23,11 +23,13 @@ class SaveBookViewModel(
     }
 
     fun saveBook(book: BookDisplayable) {
+        setPendingState()
         val saveBook = book.toBook()
         saveBookUseCase(
             scope = viewModelScope,
             params = saveBook
         ) {
+            setIdleState()
             it.onSuccess {
                 bookNavigator.openBooksScreen()
             }

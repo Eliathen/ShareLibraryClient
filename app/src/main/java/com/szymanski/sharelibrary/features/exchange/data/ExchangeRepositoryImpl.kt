@@ -1,9 +1,11 @@
 package com.szymanski.sharelibrary.features.exchange.data
 
 import com.szymanski.sharelibrary.core.api.Api
+import com.szymanski.sharelibrary.core.api.model.request.ExecuteExchangeRequest
 import com.szymanski.sharelibrary.core.api.model.request.SaveExchangeRequest
 import com.szymanski.sharelibrary.core.exception.ErrorWrapper
 import com.szymanski.sharelibrary.core.exception.callOrThrow
+import com.szymanski.sharelibrary.core.utils.ExchangeStatus
 import com.szymanski.sharelibrary.features.exchange.domain.ExchangeRepository
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 
@@ -19,9 +21,11 @@ class ExchangeRepositoryImpl(
 
     override suspend fun getNotUserExchanges(userId: Long): List<Exchange> {
         return callOrThrow(errorWrapper) {
-            api.getExchanges().filter { it.user.id != userId }.map {
-                it.toExchange()
-            }
+            api.getExchanges()
+                .filter { it.user.id != userId && it.exchangeStatus == ExchangeStatus.STARTED }
+                .map {
+                    it.toExchange()
+                }
         }
     }
 
@@ -42,6 +46,20 @@ class ExchangeRepositoryImpl(
     override suspend fun getExchangeById(exchangeId: Long): Exchange {
         return callOrThrow(errorWrapper) {
             api.getExchangeById(exchangeId).toExchange()
+        }
+    }
+
+    private val TAG = "ExchangeRepositoryImpl"
+    override suspend fun executeExchange(params: Map<String, Long>): Exchange {
+        val executeExchangeRequest = ExecuteExchangeRequest(params)
+        return callOrThrow(errorWrapper) {
+            api.executeExchange(executeExchangeRequest).toExchange()
+        }
+    }
+
+    override suspend fun getExchangeByAtUserId(userId: Long): List<Exchange> {
+        return callOrThrow(errorWrapper) {
+            api.exchangesByAtUserId(userId).map { it.toExchange() }
         }
     }
 }

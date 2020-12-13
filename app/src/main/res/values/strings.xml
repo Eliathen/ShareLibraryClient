@@ -85,4 +85,9 @@
     <string name="remove_book_message">Are you sure you want to remove this book?\nThis option is permanent</string>
     <string name="already_requested_book">You requested this book</string>
     <string name="title_home">Home</string>
+    <string name="owner_label">Owner</string>
+    <string name="share_by">Shared by:</string>
+    <string name="enter_message_hint">Enter message</string>
+    <string name="chat_room_send_button">SEND</string>
+    <string name="chat_search_view_hint">find person</string>
 </resources>

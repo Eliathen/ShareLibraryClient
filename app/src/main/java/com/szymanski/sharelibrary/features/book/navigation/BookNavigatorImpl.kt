@@ -4,6 +4,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
 import com.szymanski.sharelibrary.features.book.presentation.details.BookDetailsFragment
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
+import com.szymanski.sharelibrary.features.user.presentation.otheruser.OtherUserFragment
 
 
 class BookNavigatorImpl(
@@ -32,8 +33,8 @@ class BookNavigatorImpl(
             BookDetailsFragment.BOOK_DETAILS_KEY to bookDisplayable)
     }
 
-    override fun returnFromBookDetailsScreen() {
-        fragmentNavigator.clearHistory()
-        openBooksScreen()
+    override fun openOtherUserProfileScreen(otherUserId: Long) {
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_book_details_screen_to_other_user_screen,
+            OtherUserFragment.OTHER_USER_FRAGMENT_KEY to otherUserId)
     }
 }

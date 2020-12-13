@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.features.book.presentation.otheruserbook
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -36,8 +37,6 @@ class OtherUserBooksFragment :
     private val otherUserBooksAdapter: OtherUserBooksAdapter by inject()
 
     private var dialogContent: View? = null
-
-    private val TAG = "OtherUserBooksFragment"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -109,6 +108,7 @@ class OtherUserBooksFragment :
         viewModel.getBookRequirements(viewModel.books.value?.get(position)!!)
     }
 
+    @SuppressLint("InflateParams")
     private fun displayDialogWithBookDetails(book: BookDisplayable) {
         dialogContent = layoutInflater.inflate(R.layout.dialog_other_user_book_details, null)
         val dialog: AlertDialog = AlertDialog.Builder(requireContext()).setCancelable(true)
@@ -162,7 +162,7 @@ class OtherUserBooksFragment :
     }
 
     companion object {
-        val OTHER_USER_BOOKS_KEY = "otherUserBooksKey"
+        const val OTHER_USER_BOOKS_KEY = "otherUserBooksKey"
     }
 
 }
