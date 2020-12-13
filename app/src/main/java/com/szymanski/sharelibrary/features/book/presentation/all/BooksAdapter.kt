@@ -12,6 +12,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.szymanski.sharelibrary.R
+import com.szymanski.sharelibrary.core.helpers.convertAuthorDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.item_book.view.*
@@ -72,6 +73,8 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
                 bookDisplayable.status?.let {
                     book_status.text = getStringByBookStatus(it)
                 }
+                item_book_authors.text =
+                    convertAuthorDisplayableListToString(bookDisplayable.authorsDisplayable!!)
                 if (bookDisplayable.status == BookStatus.EXCHANGED) {
                     item_book_menu_options.visibility = View.GONE
                 }

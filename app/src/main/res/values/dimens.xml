@@ -5,4 +5,7 @@
 
 
     <dimen name="floating_action_button_margin">30dp</dimen>
+    <dimen name="dp_56">56dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
 </resources>

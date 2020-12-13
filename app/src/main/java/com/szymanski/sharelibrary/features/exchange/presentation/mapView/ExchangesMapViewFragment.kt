@@ -32,7 +32,7 @@ import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeD
 import kotlinx.android.synthetic.main.dialog_exchanges.view.*
 import kotlinx.android.synthetic.main.fragment_exchanges_map_view.*
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -49,7 +49,7 @@ class ExchangesMapViewFragment :
     BaseFragment<ExchangesViewModel>(R.layout.fragment_exchanges_map_view),
     Marker.OnMarkerClickListener {
 
-    override val viewModel: ExchangesViewModel by viewModel()
+    override val viewModel: ExchangesViewModel by sharedViewModel()
 
     private val linearLayoutManager: LinearLayoutManager by inject()
 
@@ -111,11 +111,6 @@ class ExchangesMapViewFragment :
 
     override fun initObservers() {
         super.initObservers()
-//        viewModel.exchanges.observe(this){
-//            for (exchangeDisplayable in it) {
-//                displayLocation(exchangeDisplayable.coordinates.latitude!!, exchangeDisplayable.coordinates.longitude!!)
-//            }
-//        }
         viewModel.mapOfExchanges.observe(this) { exchanges ->
             Log.d(TAG, "initObservers: XDDD")
             exchanges.keys.forEach { coordinate ->
@@ -346,6 +341,7 @@ class ExchangesMapViewFragment :
         map?.invalidate()
     }
 
+    @SuppressLint("InflateParams")
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
         val key = viewModel.mapOfExchanges.value?.keys?.first {
             it.latitude == marker?.position?.latitude && it.longitude == marker?.position?.longitude

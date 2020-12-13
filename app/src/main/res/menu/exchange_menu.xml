@@ -13,6 +13,11 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_filter_24"
         android:title="@string/filter_title" />
+    <item
+        android:id="@+id/exchange_sort"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_sort_24"
+        android:title="@string/sort_title" />
 
 
 </menu>

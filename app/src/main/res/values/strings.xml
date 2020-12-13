@@ -90,4 +90,12 @@
     <string name="enter_message_hint">Enter message</string>
     <string name="chat_room_send_button">SEND</string>
     <string name="chat_search_view_hint">find person</string>
+    <string name="choose_categories">Choose your categories</string>
+    <string name="categories_button">Categories</string>
+    <string name="category_label">Category:</string>
+    <string name="sort_title">sort</string>
+    <string name="sort_by_title_asc">Title from A to Z</string>
+    <string name="sort_by_title_desc">Title from Z to A</string>
+    <string name="sort_by_distance_asc">Distance from the nearest</string>
+    <string name="sort_by_distance_desc">Distance from the farthest</string>
 </resources>

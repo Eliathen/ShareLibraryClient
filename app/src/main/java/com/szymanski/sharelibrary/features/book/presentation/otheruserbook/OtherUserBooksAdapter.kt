@@ -12,6 +12,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.szymanski.sharelibrary.R
+import com.szymanski.sharelibrary.core.helpers.convertAuthorDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.item_book.view.*
@@ -52,6 +53,9 @@ class OtherUserBooksAdapter : RecyclerView.Adapter<OtherUserBooksAdapter.ViewHol
         fun onBind(bookDisplayable: BookDisplayable) {
             with(view) {
                 title.text = bookDisplayable.title!!.replace("\"", "")
+                bookDisplayable.authorsDisplayable?.let {
+                    item_book_authors.text = convertAuthorDisplayableListToString(it)
+                }
                 bookDisplayable.status?.let {
                     book_status.text = getStringByBookStatus(it)
                 }

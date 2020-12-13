@@ -1,24 +1,28 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.all
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.utils.SortOption
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_sort.view.*
 import kotlinx.android.synthetic.main.fragment_exchange.*
 import kotlinx.android.synthetic.main.toolbar_base.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exchange) {
 
-    override val viewModel: ExchangesViewModel by viewModel()
+    override val viewModel: ExchangesViewModel by sharedViewModel()
 
     private val TAG = "ExchangesFragment"
 
@@ -34,11 +38,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         with((activity as MainActivity).supportActionBar!!) {
             setHasOptionsMenu(true)
             title = ""
-        }
-    }
-
-    override fun initObservers() {
-        viewModel.exchanges.observe(this) {
         }
     }
 
@@ -72,6 +71,10 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.exchange_sort -> {
+                displaySortBottomSheet()
+                true
+            }
             R.id.exchange_filter -> {
                 Log.d(TAG, "onOptionsItemSelected: filter")
                 true
@@ -97,6 +100,35 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
                 }
             }
         }.attach()
+    }
+
+    @SuppressLint("InflateParams")
+    private fun displaySortBottomSheet() {
+        val content = layoutInflater.inflate(R.layout.dialog_bottom_sheet_sort, null)
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(content)
+        bottomSheetDialog.show()
+        with(content) {
+            sort_title_asc.setOnClickListener {
+                viewModel.setSort(SortOption.TITLE_ASC)
+                bottomSheetDialog.cancel()
+            }
+            sort_title_desc.setOnClickListener {
+                viewModel.setSort(SortOption.TITLE_DESC)
+                bottomSheetDialog.cancel()
+
+            }
+            sort_distance_asc.setOnClickListener {
+                viewModel.setSort(SortOption.DISTANCE_ASC)
+                bottomSheetDialog.cancel()
+
+            }
+            sort_distance_desc.setOnClickListener {
+                viewModel.setSort(SortOption.TITLE_DESC)
+                bottomSheetDialog.cancel()
+
+            }
+        }
     }
 
     private fun displayFilterDialog() {

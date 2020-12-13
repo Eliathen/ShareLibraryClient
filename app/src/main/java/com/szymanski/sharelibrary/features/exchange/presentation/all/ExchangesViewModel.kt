@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
+import com.szymanski.sharelibrary.core.utils.SortOption
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesUseCase
 import com.szymanski.sharelibrary.features.exchange.navigation.ExchangeNavigation
@@ -26,6 +27,8 @@ class ExchangesViewModel(
 
     private val userId = userStorage.getUserId()
 
+    private var sortOption: SortOption? = null
+
     private val _user: MutableLiveData<User> by lazy {
         MutableLiveData<User>().also {
             getUserDetails()
@@ -37,7 +40,7 @@ class ExchangesViewModel(
         }
     }
 
-    private val oldExchanges: MutableList<Exchange> = mutableListOf()
+    private val copyExchanges: MutableList<Exchange> = mutableListOf()
 
     private val _exchanges: MutableLiveData<List<Exchange>> by lazy {
         MutableLiveData<List<Exchange>>().also {
@@ -68,15 +71,18 @@ class ExchangesViewModel(
         }
     }
 
+    private val TAG = "ExchangesViewModel"
     private fun getExchanges() {
         getExchangesUseCase(
             scope = viewModelScope,
             params = userId
         ) { result ->
             result.onSuccess {
-                _exchanges.value = it
-                oldExchanges.clear()
-                oldExchanges.addAll(it)
+                if (sortOption != null) {
+                    _exchanges.value = sort(sortOption!!)
+                } else _exchanges.value = it
+                copyExchanges.clear()
+                copyExchanges.addAll(it)
                 createMapFromExchanges(it)
             }
             result.onFailure {
@@ -85,7 +91,6 @@ class ExchangesViewModel(
         }
     }
 
-    private val TAG = "ExchangesViewModel"
     private fun createMapFromExchanges(exchanges: List<Exchange>) {
         val map = hashMapOf<Coordinate, MutableList<Exchange>>()
         exchanges.forEach {
@@ -103,5 +108,26 @@ class ExchangesViewModel(
         exchangeNavigation.openExchangeDetails(exchangeId)
     }
 
+    fun setSort(sort: SortOption) {
+        sortOption = sort
+        _exchanges.value = sort(sort)
+    }
 
+    private fun sort(sort: SortOption): List<Exchange>? {
+        val toSort = _exchanges.value
+        return when (sort) {
+            SortOption.TITLE_ASC -> {
+                toSort?.sortedBy { it.book.title }
+            }
+            SortOption.TITLE_DESC -> {
+                toSort?.sortedByDescending { it.book.title }
+            }
+            SortOption.DISTANCE_ASC -> {
+                toSort
+            }
+            SortOption.DISTANCE_DESC -> {
+                toSort
+            }
+        }
+    }
 }

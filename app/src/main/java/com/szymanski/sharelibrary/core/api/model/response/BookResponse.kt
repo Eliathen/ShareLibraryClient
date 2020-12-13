@@ -10,14 +10,16 @@ data class BookResponse(
     @SerializedName("authors") private val authors: List<AuthorResponse>,
     @SerializedName("status") private val status: BookStatus,
     @SerializedName("atUser") private val atUser: UserWithoutBooks?,
+    @SerializedName("categories") private val categories: List<CategoryResponse>,
 ) {
 
     fun toBook() = Book(
         id = this.id,
         title = this.title,
-        authors = authors.map { it.toAuthor() }.toList(),
+        authors = this.authors.map { it.toAuthor() }.toList(),
         cover = byteArrayOf(),
         status = this.status,
-        atUser = this.atUser?.toUser()
+        atUser = this.atUser?.toUser(),
+        categories = this.categories.map { it.toCategory() }
     )
 }

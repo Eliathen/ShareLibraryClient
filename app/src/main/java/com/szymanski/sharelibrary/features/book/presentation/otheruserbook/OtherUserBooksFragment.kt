@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
@@ -116,6 +117,8 @@ class OtherUserBooksFragment :
             .create()
         with(dialogContent!!) {
             other_user_book_details_title.text = book.title
+            other_user_book_category.text =
+                convertCategoriesDisplayableListToString(book.categoriesDisplayable!!)
             if (book.cover!!.isNotEmpty()) {
                 Glide.with(this)
                     .load(book.cover)
@@ -128,6 +131,7 @@ class OtherUserBooksFragment :
                 viewModel.requirementBook()
                 dialog.dismiss()
             }
+            dialog_other_user_details_wrapper.visibility = View.GONE
             other_user_book_details_status_value.text = when (book.status) {
                 BookStatus.SHARED -> {
                     getString(R.string.book_status_during_exchange)
@@ -139,13 +143,21 @@ class OtherUserBooksFragment :
                     getString(R.string.book_status_at_owner)
                 }
             }
+
             viewModel.requirements.observe(this@OtherUserBooksFragment) { list ->
-                if (list.any { it.user?.id == viewModel.userId }) {
-                    you_requested_book_textView.visibility = View.VISIBLE
-                    other_user_book_details_request_book.visibility = View.GONE
-                } else {
-                    you_requested_book_textView.visibility = View.GONE
-                    other_user_book_details_request_book.visibility = View.VISIBLE
+                when {
+                    book.status == BookStatus.AT_OWNER || book.status == BookStatus.EXCHANGED -> {
+                        you_requested_book_textView.visibility = View.GONE
+                        other_user_book_details_request_book.visibility = View.GONE
+                    }
+                    list.any { it.user?.id == viewModel.userId } -> {
+                        you_requested_book_textView.visibility = View.VISIBLE
+                        other_user_book_details_request_book.visibility = View.GONE
+                    }
+                    else -> {
+                        you_requested_book_textView.visibility = View.GONE
+                        other_user_book_details_request_book.visibility = View.VISIBLE
+                    }
                 }
             }
         }

@@ -7,6 +7,7 @@ import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.book.domain.BookRepository
 import com.szymanski.sharelibrary.features.book.domain.model.Author
 import com.szymanski.sharelibrary.features.book.domain.model.Book
+import com.szymanski.sharelibrary.features.book.domain.model.Category
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -24,9 +25,10 @@ class BookRepositoryImpl(
                 .toRequestBody("image/*".toMediaTypeOrNull(),
                     0, book.cover!!.size)
         )
-        val map = createMapOfRequestBodyFromAuthorList(book.authors!!.toList())
+        val authors = createMapOfRequestBodyFromAuthorList(book.authors!!)
+        val categories = createMapOfRequestBodyFromCategories(book.categories!!)
         callOrThrow(errorWrapper) {
-            api.saveBook(book.title!!, image, map, userId)
+            api.saveBook(book.title!!, image, authors, categories, userId)
         }
     }
 
@@ -38,6 +40,18 @@ class BookRepositoryImpl(
             val surname = authors[index].surname.let { it!!.toRequestBody(mT) }
             map["authors[$index].name"] = name
             map["authors[$index].surname"] = surname
+        }
+        return map
+    }
+
+    private fun createMapOfRequestBodyFromCategories(categories: List<Category>): Map<String, RequestBody> {
+        val map = hashMapOf<String, RequestBody>()
+        val mT = ("text/plain".toMediaTypeOrNull())
+        for (index in categories.indices) {
+            val id = categories[index].id.toString().toRequestBody(mT)
+            val name = categories[index].name.toRequestBody(mT)
+            map["categories[$index].id"] = id
+            map["categories[$index].name"] = name
         }
         return map
     }

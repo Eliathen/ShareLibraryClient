@@ -54,22 +54,20 @@ class BooksViewModel(
         val userId = userStorage.getUserId()
         setPendingState()
         getUsersBookUseCase(scope = viewModelScope, params = userId) { result ->
-            Log.d(TAG, "getUsersBook: got result")
             setIdleState()
             result.onSuccess { books ->
-                Log.d(TAG, "getUsersBook: onSuccess")
                 _books.value = books
                 downloadImage(books)
             }
 
             result.onFailure { throwable ->
+                Log.d(TAG, "getUsersBook: ${throwable.message}")
                 handleFailure(throwable)
             }
         }
     }
 
     fun refreshBooks() {
-        Log.d(TAG, "refreshBooks: ")
         getUsersBook()
     }
 
@@ -197,7 +195,6 @@ class BooksViewModel(
                     _books.value = newBooks
                 }
                 result.onFailure { throwable ->
-                    Log.d(TAG, "finishExchange: ${throwable.message}")
                     handleFailure(throwable)
                 }
             }

@@ -16,6 +16,9 @@ interface Api {
     @POST("login")
     suspend fun login(@Body loginRequest: LoginRequest): LoginResponse
 
+    @GET("categories")
+    suspend fun getCategories(): List<CategoryResponse>
+
     @POST("books")
     @Multipart
     @JvmSuppressWildcards
@@ -23,6 +26,7 @@ interface Api {
         @Part("title") title: String,
         @Part image: MultipartBody.Part,
         @PartMap authors: Map<String, RequestBody>,
+        @PartMap categories: Map<String, RequestBody>,
         @Part("userId") userId: Long,
     )
 
@@ -77,7 +81,6 @@ interface Api {
 
     @GET("chat/rooms/{id}")
     suspend fun getRooms(@Path("id") userId: Long): List<ChatRoomResponse>
-
     @GET("chat/rooms/{roomId}/messages")
     suspend fun getRoomMessages(@Path("roomId") roomId: Long): List<MessageResponse>
 

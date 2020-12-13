@@ -7,14 +7,14 @@ import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesViewModel
 import kotlinx.android.synthetic.main.fragment_exchanges_list_view.*
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class ExchangesListViewFragment :
     BaseFragment<ExchangesViewModel>(R.layout.fragment_exchanges_list_view),
     ExchangesListViewAdapter.ExchangesListViewListener {
 
-    override val viewModel: ExchangesViewModel by viewModel()
+    override val viewModel: ExchangesViewModel by sharedViewModel()
 
     private val linearLayoutManager: LinearLayoutManager by inject()
 
@@ -38,12 +38,12 @@ class ExchangesListViewFragment :
 
     }
 
+    private val TAG = "ExchangesListViewFragme"
     override fun initObservers() {
         super.initObservers()
         viewModel.exchanges.observe(this) {
             exchangesListViewAdapter.setExchanges(it)
         }
-
     }
 
     override fun onItemClick(position: Int) {

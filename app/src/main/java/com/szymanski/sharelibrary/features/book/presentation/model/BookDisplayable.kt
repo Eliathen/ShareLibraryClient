@@ -15,6 +15,7 @@ class BookDisplayable(
     var cover: ByteArray?,
     var status: BookStatus?,
     val atUserDisplayable: UserDisplayable?,
+    val categoriesDisplayable: List<CategoryDisplayable>?,
 ) : Parcelable {
     constructor(book: Book) : this(
         id = book.id,
@@ -22,7 +23,8 @@ class BookDisplayable(
         authorsDisplayable = book.authors?.map { AuthorDisplayable(it) },
         cover = book.cover,
         status = book.status,
-        atUserDisplayable = book.atUser?.let { UserDisplayable(it) }
+        atUserDisplayable = book.atUser?.let { UserDisplayable(it) },
+        categoriesDisplayable = book.categories?.map { CategoryDisplayable(it) }
     )
 
     fun toBook() = Book(
@@ -32,5 +34,6 @@ class BookDisplayable(
         cover = this.cover,
         status = this.status,
         atUser = this.atUserDisplayable?.toUser(),
+        categories = this.categoriesDisplayable?.map { it.toCategory() }
     )
 }

@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:orientation="vertical"
-                android:paddingBottom="20dp">
+                android:paddingBottom="10dp">
 
 
                 <TextView
@@ -60,6 +60,32 @@
                     android:textSize="18sp"
                     tools:text="Authors" />
 
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/category_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:layout_marginHorizontal="20dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category_label"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/exchange_details_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:textSize="18sp"
+                    android:layout_marginStart="5dp"
+                    tools:text="Category" />
 
             </LinearLayout>
 
@@ -118,7 +144,8 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/register_button_background"
                         android:src="@drawable/ic_person_24"
-                        android:tint="@color/colorPrimaryDark" />
+                        android:tint="@color/colorPrimaryDark"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:id="@+id/exchange_details_user_name"
@@ -161,7 +188,8 @@
                     android:background="@drawable/register_button_background"
                     android:paddingHorizontal="10dp"
                     android:text="@string/user_profile"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    tools:ignore="ButtonStyle" />
 
                 <Button
                     android:id="@+id/exchange_details_request_book"
@@ -172,7 +200,8 @@
                     android:paddingHorizontal="10dp"
                     android:text="@string/request_book"
                     android:textColor="@color/white"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:ignore="ButtonStyle" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

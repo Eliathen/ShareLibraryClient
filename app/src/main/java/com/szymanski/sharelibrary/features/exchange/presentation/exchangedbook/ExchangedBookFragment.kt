@@ -95,8 +95,8 @@ class ExchangedBookFragment :
             }
             dialog_other_user_details_label.text = context.getString(R.string.owner_label)
             dialog_other_user_details_wrapper.visibility = View.VISIBLE
-            dialog_other_user_details_user_name.text = exchange.user.name
-            dialog_other_user_details_user_surname.text = exchange.user.surname
+            val fullName = "${exchange.user.name} ${exchange.user.surname}"
+            dialog_other_user_details_full_name.text = fullName
             dialog_other_user_book_details_status_wrapper.visibility = View.GONE
             dialog_other_user_send_message_button.setOnClickListener {
                 Log.d(TAG, "displayBookDetails: XDDD")

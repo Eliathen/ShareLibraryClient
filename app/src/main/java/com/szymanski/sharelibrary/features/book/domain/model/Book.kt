@@ -19,6 +19,8 @@ data class Book(
 
     var atUser: User?,
 
+    var categories: List<Category>?,
+
     ) : Serializable {
 
     override fun equals(other: Any?): Boolean {
@@ -36,7 +38,7 @@ data class Book(
         } else if (other.cover != null) return false
         if (status != other.status) return false
         if (atUser != other.atUser) return false
-
+        if (categories != other.categories) return false
         return true
     }
 
@@ -47,6 +49,7 @@ data class Book(
         result = 31 * result + (cover?.contentHashCode() ?: 0)
         result = 31 * result + (status?.hashCode() ?: 0)
         result = 31 * result + (atUser?.hashCode() ?: 0)
+        result = 31 * result + (categories?.hashCode() ?: 0)
         return result
     }
 }
