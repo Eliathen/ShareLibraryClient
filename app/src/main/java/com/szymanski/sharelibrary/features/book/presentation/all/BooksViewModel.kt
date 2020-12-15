@@ -150,6 +150,7 @@ class BooksViewModel(
             deposit = deposit,
             exchangeStatus = ExchangeStatus.STARTED,
             coordinates = coordinate,
+            distance = null
         )
 
         shareBookUseCase(

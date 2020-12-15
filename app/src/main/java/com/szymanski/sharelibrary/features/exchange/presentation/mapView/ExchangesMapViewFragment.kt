@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.os.StrictMode
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -112,7 +111,6 @@ class ExchangesMapViewFragment :
     override fun initObservers() {
         super.initObservers()
         viewModel.mapOfExchanges.observe(this) { exchanges ->
-            Log.d(TAG, "initObservers: XDDD")
             exchanges.keys.forEach { coordinate ->
                 displayLocation(coordinate.latitude!!, coordinate.longitude!!)
             }

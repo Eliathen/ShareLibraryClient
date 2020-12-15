@@ -1,12 +1,24 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.all
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -26,10 +38,15 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
     private val TAG = "ExchangesFragment"
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private val REQUEST_LOCATION_CODE = 101
+
     override fun initViews() {
         super.initViews()
         initAppBar()
         setViewPager()
+        getLastLocation()
     }
 
     private fun initAppBar() {
@@ -133,5 +150,100 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
     private fun displayFilterDialog() {
 
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                fusedLocationClient =
+                    LocationServices.getFusedLocationProviderClient(requireActivity())
+                fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
+                    val location: Location? = task.result
+                    if (location == null) {
+                        requestNewLocationData()
+                    } else {
+                        setUserCoordinates(location.latitude, location.longitude)
+                    }
+                }
+            } else {
+                enableLocation()
+            }
+        } else {
+            requestPermissions()
+        }
+    }
+
+    private fun setUserCoordinates(latitude: Double, longitude: Double) {
+        viewModel.setCoordinates(latitude, longitude)
+    }
+
+    private fun enableLocation() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setCancelable(false)
+            .setTitle(getString(R.string.location_access_title))
+            .setMessage(getString(R.string.get_location_message))
+            .setNegativeButton(getString(R.string.cancel_button_text)) { dialog: DialogInterface, _: Int ->
+                dialog.cancel()
+            }
+            .setNeutralButton(getString(R.string.accept_button_text)) { _: DialogInterface, _: Int ->
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                requireActivity().startActivityForResult(intent, REQUEST_LOCATION_CODE)
+            }
+            .create()
+            .show()
+
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(result: LocationResult?) {
+            val location: Location = result?.lastLocation!!
+            setUserCoordinates(location.latitude, location.longitude)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestNewLocationData() {
+        val mLocationRequest = LocationRequest()
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        mLocationRequest.interval = 0
+        mLocationRequest.fastestInterval = 0
+        mLocationRequest.numUpdates = 1
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationClient.requestLocationUpdates(
+            mLocationRequest, mLocationCallback,
+            Looper.myLooper()
+        )
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION),
+            REQUEST_LOCATION_CODE
+        )
     }
 }

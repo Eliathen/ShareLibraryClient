@@ -81,7 +81,17 @@ interface Api {
 
     @GET("chat/rooms/{id}")
     suspend fun getRooms(@Path("id") userId: Long): List<ChatRoomResponse>
+
     @GET("chat/rooms/{roomId}/messages")
     suspend fun getRoomMessages(@Path("roomId") roomId: Long): List<MessageResponse>
+
+    @GET("exchanges/filter")
+    suspend fun getExchangesWithFilter(
+        @Query("lat") latitude: Double,
+        @Query("long") longitude: Double,
+        @Query("rad") radius: Double?,
+        @Query("cat[]") categories: List<String>?,
+        @Query("q") query: String?,
+    ): List<ExchangeResponse>
 
 }
