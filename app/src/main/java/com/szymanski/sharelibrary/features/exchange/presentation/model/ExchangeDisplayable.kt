@@ -10,6 +10,7 @@ data class ExchangeDisplayable(
     val book: BookDisplayable,
     val coordinates: CoordinateDisplayable,
     val deposit: Double,
+    val distance: Double?,
     val exchangeStatus: ExchangeStatus,
     val id: Long?,
     val user: UserDisplayable,
@@ -19,6 +20,7 @@ data class ExchangeDisplayable(
         coordinates = CoordinateDisplayable(exchange.coordinates),
         user = UserDisplayable(exchange.user),
         deposit = exchange.deposit,
+        distance = exchange.distance,
         exchangeStatus = exchange.exchangeStatus,
         id = exchange.id,
     )
@@ -27,6 +29,7 @@ data class ExchangeDisplayable(
         book = book.toBook(),
         coordinates = coordinates.toCoordinate(),
         deposit = deposit,
+        distance = distance,
         exchangeStatus = exchangeStatus,
         id = id,
         user = user.toUser(),

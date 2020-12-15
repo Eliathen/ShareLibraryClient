@@ -48,7 +48,15 @@ class ExchangesListViewAdapter : RecyclerView.Adapter<ExchangesListViewAdapter.V
     ) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         fun bind(exchangeDisplayable: ExchangeDisplayable) {
+            val distance = exchangeDisplayable.distance
             with(view) {
+                if (distance != null) {
+                    exchange_distance.text = if (distance < 1.0) {
+                        "${distance / 1000} m"
+                    } else {
+                        "$distance km"
+                    }
+                }
                 exchanges_book_title.text = exchangeDisplayable.book.title
                 exchanges_authors.text =
                     convertAuthorDisplayableListToString(exchangeDisplayable.book.authorsDisplayable!!)

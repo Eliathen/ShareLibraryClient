@@ -123,10 +123,10 @@ class ExchangesViewModel(
                 toSort?.sortedByDescending { it.book.title }
             }
             SortOption.DISTANCE_ASC -> {
-                toSort
+                toSort?.sortedBy { it.distance }
             }
             SortOption.DISTANCE_DESC -> {
-                toSort
+                toSort?.sortedByDescending { it.distance }
             }
         }
     }

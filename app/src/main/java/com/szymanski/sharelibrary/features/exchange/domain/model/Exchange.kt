@@ -10,6 +10,7 @@ data class Exchange(
     var book: Book,
     var coordinates: Coordinate,
     var deposit: Double,
+    var distance: Double?,
     var exchangeStatus: ExchangeStatus,
     var id: Long?,
     var user: User,
