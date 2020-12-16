@@ -78,7 +78,7 @@ class ExchangesMapViewFragment :
             val location: Location = locationResult.lastLocation!!
             displayUserLocation(latitude = location.latitude,
                 longitude = location.longitude,
-                title = "Your current location",
+                titleId = R.string.current_location,
                 icon = requireContext().getDrawable(R.drawable.ic_current_location_on_24)!!)
         }
     }
@@ -118,7 +118,7 @@ class ExchangesMapViewFragment :
         viewModel.user.observe(this)
         {
             displayUserLocation(it.coordinates?.latitude!!, it.coordinates?.longitude!!,
-                "Your default location",
+                R.string.default_location,
                 requireContext().getDrawable(R.drawable.ic_default_location_on_24)!!)
         }
     }
@@ -210,7 +210,7 @@ class ExchangesMapViewFragment :
                     } else {
                         displayUserLocation(latitude = location.latitude,
                             longitude = location.longitude,
-                            "Your current location",
+                            R.string.current_location,
                             requireContext().getDrawable(R.drawable.ic_current_location_on_24)!!)
                     }
                 }
@@ -287,7 +287,7 @@ class ExchangesMapViewFragment :
     private fun displayUserLocation(
         latitude: Double,
         longitude: Double,
-        title: String,
+        titleId: Int,
         icon: Drawable,
     ) {
         map_view_progress_bar.visibility = View.GONE
@@ -295,8 +295,10 @@ class ExchangesMapViewFragment :
         mapController.setZoom(13.0)
         val startPoint = GeoPoint(latitude, longitude)
         val newMarker = Marker(map)
-        newMarker.title = title
-        mapController.setCenter(startPoint)
+        newMarker.title = getString(titleId)
+        if (titleId == R.string.current_location) {
+            mapController.setCenter(startPoint)
+        }
         newMarker.icon = icon
         newMarker.position = startPoint
         newMarker.setOnMarkerClickListener { marker, _ ->

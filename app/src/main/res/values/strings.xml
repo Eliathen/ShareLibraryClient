@@ -41,7 +41,7 @@
     <string name="error_found">It\'s already exists.</string>
     <string name="error_connect">Could not connect to server</string>
     <string name="search_title">Search book</string>
-    <string name="filter_title">filter</string>
+    <string name="filter_title">Filter</string>
     <string name="not_found_add_new">Book not found. Add new?</string>
     <string name="save_book">Save Book</string>
     <string name="title_hint">title</string>
@@ -98,4 +98,7 @@
     <string name="sort_by_title_desc">Title from Z to A</string>
     <string name="sort_by_distance_asc">Distance from the nearest</string>
     <string name="sort_by_distance_desc">Distance from the farthest</string>
+    <string name="filter_button">Filter</string>
+    <string name="reset_button">Reset</string>
+    <string name="distance_label">Distance: </string>
 </resources>

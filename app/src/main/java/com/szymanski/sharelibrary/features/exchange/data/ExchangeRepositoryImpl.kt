@@ -60,15 +60,14 @@ class ExchangeRepositoryImpl(
         categories: List<String>?,
         query: String?,
     ): List<Exchange> {
-        val listOfCategoriesName = mutableListOf<String>()
         val userId = userStorage.getUserId()
         return callOrThrow(errorWrapper) {
             api.getExchangesWithFilter(
                 latitude,
                 longitude,
                 radius,
-                listOfCategoriesName,
-                query
+                categories,
+                if (query.isNullOrEmpty()) null else query
             ).filter { it.user.id != userId }.map { it.toExchange() }
         }
     }

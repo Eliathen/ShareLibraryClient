@@ -90,7 +90,7 @@ interface Api {
         @Query("lat") latitude: Double,
         @Query("long") longitude: Double,
         @Query("rad") radius: Double?,
-        @Query("cat[]") categories: List<String>?,
+        @Query("cat") categories: List<String>?,
         @Query("q") query: String?,
     ): List<ExchangeResponse>
 

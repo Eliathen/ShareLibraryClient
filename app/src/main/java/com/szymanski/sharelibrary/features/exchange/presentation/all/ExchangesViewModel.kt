@@ -10,6 +10,8 @@ import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.core.utils.SortOption
+import com.szymanski.sharelibrary.features.book.domain.model.Category
+import com.szymanski.sharelibrary.features.book.domain.usecase.GetCategoriesUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesByFiltersUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesUseCase
@@ -26,6 +28,7 @@ class ExchangesViewModel(
     private val exchangeNavigation: ExchangeNavigation,
     private val getUserUseCase: GetUserUseCase,
     private val getExchangesByFiltersUseCase: GetExchangesByFiltersUseCase,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
     userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
 
@@ -44,13 +47,24 @@ class ExchangesViewModel(
         }
     }
 
+    val listOfCategories: MutableLiveData<List<Category>> =
+        MutableLiveData<List<Category>>().also {
+            getCategories()
+        }
+
+    private fun getCategories() {
+        getCategoriesUseCase(
+            scope = viewModelScope,
+            params = Unit
+        ) { result ->
+            result.onSuccess { listOfCategories.value = it.sortedBy { category -> category.name } }
+        }
+    }
+
     private val copyExchanges: MutableList<Exchange> = mutableListOf()
 
     private val _exchanges: MutableLiveData<List<Exchange>> by lazy {
         MutableLiveData<List<Exchange>>()
-//            .also {
-//            getExchanges()
-//        }
     }
 
     val exchanges: LiveData<List<ExchangeDisplayable>> by lazy {
@@ -74,13 +88,23 @@ class ExchangesViewModel(
 
     private var radius: Double? = 100.0
 
-    private val categories: List<String>? = mutableListOf()
+    private val chosenCategories: MutableMap<String, Boolean>? = mutableMapOf()
 
-//    private val currentCoordinates: LiveData<CoordinateDisplayable> by lazy {
-//        _currentCoordinates.map {
-//            CoordinateDisplayable(it)
-//        }
-//    }
+    fun setQuery(query: String) {
+        this.query = query
+    }
+
+    fun setRadius(radius: Double) {
+        this.radius = radius
+    }
+
+    fun getRadius() = this.radius
+
+    fun setChosenCategory(name: String, checked: Boolean) {
+        chosenCategories?.set(name, checked)
+    }
+
+    fun getChosenCategories() = chosenCategories
 
     private fun getUserDetails() {
         getUserUseCase(
@@ -92,26 +116,36 @@ class ExchangesViewModel(
     }
 
     private val TAG = "ExchangesViewModel"
-    private fun getFilteredExchanges() {
-        setPendingState()
+
+    fun getFilteredExchanges() {
+        Log.d(TAG, "CHOSEN CATEGORIES: ${chosenCategories?.filter { it.value }?.keys?.toList()}")
         val request = SearchRequest(
             _currentCoordinates.value?.latitude!!,
             _currentCoordinates.value?.longitude!!,
             radius,
-            categories,
+            chosenCategories?.filter { it.value }?.keys?.toList(),
             query
         )
+        setPendingState()
         getExchangesByFiltersUseCase(
             scope = viewModelScope,
             params = request
         ) { result ->
             setIdleState()
-            result.onSuccess { _exchanges.value = it }
+            result.onSuccess {
+                _exchanges.value = it
+            }
             result.onFailure {
-                Log.e(TAG, "getFilteredExchanges: ${it.message}", it)
                 handleFailure(it)
             }
         }
+    }
+
+    fun resetFilters() {
+        query = ""
+        radius = 100.0
+        chosenCategories!!.clear()
+        getFilteredExchanges()
     }
 
     private fun getExchanges() {
@@ -165,10 +199,10 @@ class ExchangesViewModel(
         val toSort = _exchanges.value
         return when (sort) {
             SortOption.TITLE_ASC -> {
-                toSort?.sortedBy { it.book.title }
+                toSort?.sortedByDescending { it.book.title }
             }
             SortOption.TITLE_DESC -> {
-                toSort?.sortedByDescending { it.book.title }
+                toSort?.sortedBy { it.book.title }
             }
             SortOption.DISTANCE_ASC -> {
                 toSort?.sortedBy { it.distance }
@@ -178,4 +212,6 @@ class ExchangesViewModel(
             }
         }
     }
+
+
 }

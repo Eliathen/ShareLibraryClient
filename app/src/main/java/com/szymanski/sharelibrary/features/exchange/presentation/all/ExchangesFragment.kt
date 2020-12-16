@@ -11,15 +11,17 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.szymanski.sharelibrary.MainActivity
@@ -27,6 +29,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.utils.SortOption
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_sort.view.*
+import kotlinx.android.synthetic.main.dialog_filters.view.*
 import kotlinx.android.synthetic.main.fragment_exchange.*
 import kotlinx.android.synthetic.main.toolbar_base.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -63,6 +66,11 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         setSearchView(menu)
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.resetFilters()
+    }
+
     private fun setSearchView(menu: Menu) {
         val searchItem = menu.findItem(R.id.exchange_searchView)
         val filterItem = menu.findItem(R.id.exchange_filter)
@@ -75,7 +83,8 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d(TAG, "onQueryTextSubmit: $query")
+                viewModel.setQuery(query!!)
+                viewModel.getFilteredExchanges()
                 return true
             }
 
@@ -93,7 +102,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
                 true
             }
             R.id.exchange_filter -> {
-                Log.d(TAG, "onOptionsItemSelected: filter")
+                displayFilterDialog()
                 true
             }
             else -> {
@@ -141,15 +150,56 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
             }
             sort_distance_desc.setOnClickListener {
-                viewModel.setSort(SortOption.TITLE_DESC)
+                viewModel.setSort(SortOption.DISTANCE_DESC)
                 bottomSheetDialog.cancel()
-
             }
         }
     }
 
     private fun displayFilterDialog() {
-
+        val builder = AlertDialog.Builder(requireContext())
+        val dialogContent = layoutInflater.inflate(R.layout.dialog_filters, null)
+        builder.setCancelable(true)
+            .setView(dialogContent)
+        val dialog = builder.create()
+        with(dialogContent) {
+            val chipGroup = dialog_filters_chip_group
+            viewModel.listOfCategories.value?.forEachIndexed { index, item ->
+                val newChip =
+                    layoutInflater.inflate(R.layout.chip_style_filter, chipGroup, false) as Chip
+                newChip.text = item.name
+                if (viewModel.getChosenCategories()?.containsKey(item.name)!!) {
+                    newChip.isChecked = viewModel.getChosenCategories()?.get(item.name)!!
+                }
+                chipGroup.addView(newChip as View)
+                newChip.setOnCheckedChangeListener { _, isChecked ->
+                    viewModel.setChosenCategory(item.name, isChecked)
+                }
+            }
+            dialog_filters_cancel_button.setOnClickListener { dialog.dismiss() }
+            dialog_filters_filter_button.setOnClickListener {
+                viewModel.getFilteredExchanges()
+                dialog.dismiss()
+            }
+            dialog_filters_reset_button.setOnClickListener {
+                viewModel.resetFilters()
+                chipGroup.forEach {
+                    if (it is Chip) {
+                        it.isChecked = false
+                    }
+                }
+                dialog_filters_distance_picker.value = viewModel.getRadius()?.toInt()!!
+            }
+            dialog_filters_distance_picker.apply {
+                maxValue = 100
+                minValue = 1
+                value = viewModel.getRadius()?.toInt()!!
+                setOnValueChangedListener { _, _, newVal ->
+                    viewModel.setRadius(newVal.toDouble())
+                }
+            }
+        }
+        dialog.show()
     }
 
     @SuppressLint("MissingPermission")
