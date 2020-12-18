@@ -68,7 +68,9 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
     override fun onPause() {
         super.onPause()
-        viewModel.resetFilters()
+        if (isLocationEnabled()) {
+            viewModel.resetFilters()
+        }
     }
 
     private fun setSearchView(menu: Menu) {
@@ -164,7 +166,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         val dialog = builder.create()
         with(dialogContent) {
             val chipGroup = dialog_filters_chip_group
-            viewModel.listOfCategories.value?.forEachIndexed { index, item ->
+            viewModel.listOfCategories.value?.forEachIndexed { _, item ->
                 val newChip =
                     layoutInflater.inflate(R.layout.chip_style_filter, chipGroup, false) as Chip
                 newChip.text = item.name

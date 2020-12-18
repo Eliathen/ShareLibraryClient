@@ -213,5 +213,9 @@ class ExchangesViewModel(
         }
     }
 
+    fun navigateBack() {
+        exchangeNavigation.navigateBack()
+    }
+
 
 }

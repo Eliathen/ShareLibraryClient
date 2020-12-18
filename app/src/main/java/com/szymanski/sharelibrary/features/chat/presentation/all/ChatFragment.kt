@@ -49,7 +49,9 @@ class ChatFragment : BaseFragment<ChatViewModel>(R.layout.fragment_chat), ChatAd
     }
 
     override fun onItemClick(position: Int) {
-        viewModel.rooms.value?.get(position)?.id?.let { viewModel.openChatRoom(it) }
+        viewModel.rooms.value?.get(position)?.let {
+            viewModel.openChatRoom(it)
+        }
     }
 
     override fun onDestroyView() {

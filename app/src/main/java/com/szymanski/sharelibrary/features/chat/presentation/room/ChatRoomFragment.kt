@@ -1,12 +1,14 @@
 package com.szymanski.sharelibrary.features.chat.presentation.room
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
 import kotlinx.android.synthetic.main.fragment_chat_room.*
 import kotlinx.android.synthetic.main.toolbar_base.*
 import org.koin.android.ext.android.inject
@@ -30,14 +32,20 @@ class ChatRoomFragment : BaseFragment<ChatRoomViewModel>(R.layout.fragment_chat_
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val roomId = arguments?.getLong(CHAT_ROOM_KEY)!!
-        viewModel.setRoomId(roomId)
+        arguments?.getParcelable<RoomDisplayable>(CHAT_ROOM_KEY).let {
+            viewModel.setRoom(it!!)
+        }
     }
 
     override fun initViews() {
         super.initViews()
         initAppBar()
         initRecyclerView()
+        viewModel.connectSocket()
+        chat_room_send_message_button.setOnClickListener {
+            viewModel.sendMessage(chat_room_message_edit_text.text.toString())
+            chat_room_message_edit_text.text = Editable.Factory.getInstance().newEditable("")
+        }
     }
 
     private fun initAppBar() {

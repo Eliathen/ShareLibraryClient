@@ -178,7 +178,7 @@
                         android:layout_height="30dp"
                         android:background="@drawable/register_button_background"
                         android:src="@drawable/ic_person_24"
-                        android:tint="@color/colorPrimaryDark"
+                        app:tint="@color/colorPrimaryDark"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

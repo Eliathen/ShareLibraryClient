@@ -50,7 +50,7 @@ class ChatViewModel(
         }
     }
 
-    fun openChatRoom(roomId: Long) {
-        chatNavigation.openChatRoom(roomId)
+    fun openChatRoom(room: RoomDisplayable) {
+        chatNavigation.openChatRoom(room)
     }
 }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".features.exchange.presentation.details.ExchangeDetailsFragment">
 
@@ -144,7 +145,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/register_button_background"
                         android:src="@drawable/ic_person_24"
-                        android:tint="@color/colorPrimaryDark"
+                        app:tint="@color/colorPrimaryDark"
                         tools:ignore="ContentDescription" />
 
                     <TextView

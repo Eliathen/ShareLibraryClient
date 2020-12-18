@@ -18,4 +18,8 @@ class ExchangeNavigationImpl(
         fragmentNavigator.navigateTo(R.id.action_navigate_from_exchange_details_screen_to_other_user_screen,
             param = Pair(OtherUserFragment.OTHER_USER_FRAGMENT_KEY, userId))
     }
+
+    override fun navigateBack() {
+        fragmentNavigator.goBack()
+    }
 }

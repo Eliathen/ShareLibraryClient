@@ -16,7 +16,7 @@ import org.koin.dsl.module
 val chatModule = module {
     //viewModel
     viewModel { ChatViewModel(get(), get(), get(), get()) }
-    viewModel { ChatRoomViewModel(get(), get(), get()) }
+    viewModel { ChatRoomViewModel(get(), get(), get(), get()) }
 
     //useCase
     factory { GetUserRoomsUseCase(get()) }

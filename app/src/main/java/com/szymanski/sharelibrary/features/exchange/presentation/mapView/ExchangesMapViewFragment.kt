@@ -229,6 +229,7 @@ class ExchangesMapViewFragment :
             .setMessage(getString(R.string.get_location_message))
             .setNegativeButton(getString(R.string.cancel_button_text)) { dialog: DialogInterface, _: Int ->
                 dialog.cancel()
+                viewModel.navigateBack()
             }
             .setNeutralButton(getString(R.string.accept_button_text)) { _: DialogInterface, _: Int ->
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
