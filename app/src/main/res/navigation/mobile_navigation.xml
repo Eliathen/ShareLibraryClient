@@ -117,6 +117,9 @@
         <action
             android:id="@+id/action_navigate_from_other_user_screen_to_other_user_books_screen"
             app:destination="@id/other_user_books_screen" />
+        <action
+            android:id="@+id/action_navigate_from_other_user_screen_to_chat_room_screen"
+            app:destination="@+id/chat_room_screen" />
 
     </fragment>
     <fragment

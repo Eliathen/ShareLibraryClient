@@ -2,6 +2,7 @@ package com.szymanski.sharelibrary.features.chat.presentation.room
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -20,6 +21,7 @@ import com.szymanski.sharelibrary.features.chat.domain.model.Room
 import com.szymanski.sharelibrary.features.chat.domain.usecase.GetRoomMessagesUseCase
 import com.szymanski.sharelibrary.features.chat.presentation.model.MessageDisplayable
 import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
+import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -41,6 +43,7 @@ class ChatRoomViewModel(
     private val _messages by lazy {
         MutableLiveData<MutableList<Message>>()
     }
+    lateinit var otherUser: LiveData<UserDisplayable>
 
     val messages by lazy {
         _messages.map {
@@ -52,7 +55,14 @@ class ChatRoomViewModel(
 
     fun setRoom(room: RoomDisplayable) {
         _room.value = room.toRoom()
+        if (room.sender?.id == userId) {
+            setOtherUser(room.recipient!!)
+        } else setOtherUser(room.sender!!)
         loadMessages()
+    }
+
+    fun setOtherUser(user: UserDisplayable) {
+        otherUser = MutableLiveData(user)
     }
 
     private fun loadMessages() {
@@ -108,6 +118,15 @@ class ChatRoomViewModel(
 
     }
 
+    fun sendFirstMessage(message: String) {
+        val mess = SendMessageRequest(null,
+            userId,
+            otherUser.value?.id,
+            message
+        )
+        sendMessageUsingSocket(mess)
+    }
+
     fun sendMessage(message: String) {
         val room = _room.value!!
         val mess = SendMessageRequest(room.id,
@@ -115,8 +134,12 @@ class ChatRoomViewModel(
             if (room.sender?.id == userStorage.getUserId()) room.recipient?.id else room.sender?.id,
             message
         )
+        sendMessageUsingSocket(mess)
+    }
+
+    private fun sendMessageUsingSocket(message: SendMessageRequest) {
         val gson = Gson()
-        val sending = stomp.send("/app/chat", gson.toJson(mess)).subscribe {
+        val sending = stomp.send("/app/chat", gson.toJson(message)).subscribe {
             if (it) {
                 val messages = _messages.value
                 Log.d(TAG, "sendMessage: send")
@@ -126,37 +149,5 @@ class ChatRoomViewModel(
         }
     }
 
-//    private var webSocket: WebSocket? = null
-//    fun sendMessage(){
-//        webSocket!!.send("Hello")
-//    }
-//    fun connectSocket() {
-//        val token = userStorage.getLoginDetails().token!!.accessToken
-//        val typeOfToken = userStorage.getLoginDetails().token!!.tokenType
-//        val bearerToken = "$typeOfToken $token"
-//        val client = OkHttpClient()
-//        val request = Request.Builder()
-//            .url("ws://192.168.8.100:8081/chat")
-//            .addHeader("Authorization", bearerToken)
-//            .build()
-//        webSocket = client.newWebSocket(request, SocketListener())
-//    }
-//    private class SocketListener : WebSocketListener() {
-//        private val TAG = "ChatRoomViewModel"
-//        override fun onMessage(webSocket: WebSocket, text: String) {
-//            super.onMessage(webSocket, text)
-//            Log.d(TAG, "onMessage: $text")
-//        }
-//
-//        override fun onOpen(webSocket: WebSocket, response: Response) {
-//            super.onOpen(webSocket, response)
-//            Log.d(TAG, "onOpen: Socket opened")
-//        }
-//
-//        override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-//            super.onFailure(webSocket, t, response)
-//            Log.d(TAG, "onFailure: ${t.message}")
-//        }
-//    }
 }
 

@@ -1,5 +1,7 @@
 package com.szymanski.sharelibrary.features.user.navigation
 
+import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
+
 interface UserNavigation {
 
     fun openRegisterScreen()
@@ -15,5 +17,7 @@ interface UserNavigation {
     fun goBack()
 
     fun openOtherUserBooksScreen(userId: Long)
+
+    fun openChatRoomScreen(otherUser: UserDisplayable)
 
 }

@@ -24,11 +24,11 @@
         android:src="@drawable/ic_add_green_24"
         android:background="@color/transparentBackground"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/title"
+        app:layout_constraintTop_toTopOf="@+id/toolbar_title"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/toolbar_title"
         android:gravity="start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cover"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_title"
         tools:text="Henryk Sienkiewicz, J. R. R. Tolkien, Adam Mickiewicz" />
 
     <TextView

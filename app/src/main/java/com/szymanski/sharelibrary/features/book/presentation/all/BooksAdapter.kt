@@ -69,7 +69,7 @@ class BooksAdapter : RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(view), View.OnClickListener {
         fun onBind(bookDisplayable: BookDisplayable) {
             with(view) {
-                title.text = bookDisplayable.title!!.replace("\"", "")
+                toolbar_title.text = bookDisplayable.title!!.replace("\"", "")
                 bookDisplayable.status?.let {
                     book_status.text = getStringByBookStatus(it)
                 }

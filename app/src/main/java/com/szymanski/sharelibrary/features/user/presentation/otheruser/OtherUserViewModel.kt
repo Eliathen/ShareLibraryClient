@@ -49,7 +49,6 @@ class OtherUserViewModel(
     }
 
     fun openChatRoom() {
-        val user = userStorage.getUserId()
-        val otherUserId = _user.value?.id
+            user.value?.let { userNavigation.openChatRoomScreen(it) }
     }
 }

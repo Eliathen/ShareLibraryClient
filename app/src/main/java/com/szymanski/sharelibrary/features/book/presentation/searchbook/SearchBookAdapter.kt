@@ -58,7 +58,7 @@ class SearchBookAdapter : RecyclerView.Adapter<SearchBookAdapter.ViewHolder>() {
     ) : RecyclerView.ViewHolder(view), View.OnClickListener {
         fun onBind(bookDisplayable: BookDisplayable) {
             with(view) {
-                title.text = bookDisplayable.title?.replace("\"", "")
+                toolbar_title.text = bookDisplayable.title?.replace("\"", "")
                 authors.text = bookDisplayable.authorsDisplayable?.let {
                     convertAuthorDisplayableListToString(it)
                 }

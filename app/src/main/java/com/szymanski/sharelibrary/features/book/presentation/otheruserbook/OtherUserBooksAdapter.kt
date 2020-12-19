@@ -52,7 +52,7 @@ class OtherUserBooksAdapter : RecyclerView.Adapter<OtherUserBooksAdapter.ViewHol
         RecyclerView.ViewHolder(view), View.OnClickListener {
         fun onBind(bookDisplayable: BookDisplayable) {
             with(view) {
-                title.text = bookDisplayable.title!!.replace("\"", "")
+                toolbar_title.text = bookDisplayable.title!!.replace("\"", "")
                 bookDisplayable.authorsDisplayable?.let {
                     item_book_authors.text = convertAuthorDisplayableListToString(it)
                 }
