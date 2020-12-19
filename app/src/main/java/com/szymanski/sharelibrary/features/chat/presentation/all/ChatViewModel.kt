@@ -26,6 +26,7 @@ class ChatViewModel(
             loadRooms()
         }
     }
+    val userId = userStorage.getUserId()
 
     val rooms: LiveData<List<RoomDisplayable>> by lazy {
         _rooms.map {

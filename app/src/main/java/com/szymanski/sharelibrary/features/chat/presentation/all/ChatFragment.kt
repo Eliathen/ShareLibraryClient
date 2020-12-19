@@ -29,6 +29,7 @@ class ChatFragment : BaseFragment<ChatViewModel>(R.layout.fragment_chat), ChatAd
             adapter = chatAdapter
         }
         chatAdapter.setListeners(this)
+        chatAdapter.setUserId(viewModel.userId);
     }
 
     override fun initObservers() {
