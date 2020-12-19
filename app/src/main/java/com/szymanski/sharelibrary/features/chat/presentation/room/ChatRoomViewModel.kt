@@ -10,6 +10,7 @@ import com.gmail.bishoybasily.stomp.lib.StompClient
 import com.google.gson.Gson
 import com.szymanski.sharelibrary.core.api.Api
 import com.szymanski.sharelibrary.core.api.model.request.SendMessageRequest
+import com.szymanski.sharelibrary.core.api.model.response.MessageResponse
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.network.HeaderInterceptor
@@ -19,6 +20,8 @@ import com.szymanski.sharelibrary.features.chat.domain.model.Room
 import com.szymanski.sharelibrary.features.chat.domain.usecase.GetRoomMessagesUseCase
 import com.szymanski.sharelibrary.features.chat.presentation.model.MessageDisplayable
 import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 
 class ChatRoomViewModel(
@@ -83,9 +86,14 @@ class ChatRoomViewModel(
             when (it.type) {
                 Event.Type.OPENED -> {
                     stomp.url = url
-                    val topic = stomp.join("/topic/messages").subscribe {
-                        val message = gson.fromJson(it, Message::class.java)
-                        Log.d(TAG, "connectSocket: $message")
+                    val topic = stomp.join("/user/${userId}/queue/messages").subscribe {
+                        val message = gson.fromJson(it, MessageResponse::class.java)
+                        val all = _messages.value
+                        all?.add(message.toMessage())
+                        GlobalScope.launch {
+                            _messages.postValue(all)
+                        }
+                        Log.d(TAG, "message: $message")
                     }
                 }
                 Event.Type.CLOSED -> {

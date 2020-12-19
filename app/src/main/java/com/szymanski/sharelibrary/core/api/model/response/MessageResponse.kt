@@ -6,7 +6,7 @@ import com.szymanski.sharelibrary.features.chat.domain.model.Message
 import java.time.LocalDateTime
 
 data class MessageResponse(
-    @SerializedName("") private val id: Long,
+    @SerializedName("id") private val id: Long,
     @SerializedName("room") private val chatRoomResponse: ChatRoomResponse,
     @SerializedName("sender") private val sender: UserResponse,
     @SerializedName("recipient") private val recipient: UserResponse,

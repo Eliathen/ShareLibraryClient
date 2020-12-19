@@ -2,6 +2,7 @@ package com.szymanski.sharelibrary.features.chat.presentation.room
 
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,6 +69,7 @@ class ChatRoomFragment : BaseFragment<ChatRoomViewModel>(R.layout.fragment_chat_
         super.initObservers()
         viewModel.messages.observe(this) {
             chatRoomAdapter.setMessages(it)
+            Log.d(TAG, "initObservers: $it")
         }
     }
 
