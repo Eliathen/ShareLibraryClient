@@ -61,6 +61,13 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         }
     }
 
+    override fun initObservers() {
+        super.initObservers()
+        viewModel.currentCoordinates.observe(this) {
+            viewModel.getFilteredExchanges()
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.exchange_menu, menu)
         setSearchView(menu)
@@ -191,6 +198,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
                     }
                 }
                 dialog_filters_distance_picker.value = viewModel.getRadius()?.toInt()!!
+                viewModel.getFilteredExchanges()
             }
             dialog_filters_distance_picker.apply {
                 maxValue = 100

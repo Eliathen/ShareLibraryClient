@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".features.chat.presentation.all.ChatFragment">
 
     <include layout="@layout/toolbar_base" />
@@ -13,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="@dimen/dp_16">
 
         <ProgressBar
             android:id="@+id/chat_progress_bar"
@@ -23,20 +22,12 @@
             android:translationZ="2dp"
             android:layout_centerInParent="true" />
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/chat_search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/register_button_background"
-            app:defaultQueryHint="@string/chat_search_view_hint"
-            app:queryHint="@string/chat_search_view_hint" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/dp_16"
             android:id="@+id/chat_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/chat_search_view" />
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 

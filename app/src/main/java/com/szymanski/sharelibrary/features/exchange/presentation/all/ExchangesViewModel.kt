@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.all
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -20,6 +19,7 @@ import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeD
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.User
 import com.szymanski.sharelibrary.features.user.domain.usecase.GetUserUseCase
+import com.szymanski.sharelibrary.features.user.presentation.model.CoordinateDisplayable
 import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 
 class ExchangesViewModel(
@@ -84,6 +84,11 @@ class ExchangesViewModel(
     private val _currentCoordinates: MutableLiveData<Coordinate> by lazy {
         MutableLiveData<Coordinate>()
     }
+    val currentCoordinates: LiveData<CoordinateDisplayable> by lazy {
+        _currentCoordinates.map {
+            CoordinateDisplayable(it)
+        }
+    }
     private var query: String? = ""
 
     private var radius: Double? = 100.0
@@ -118,7 +123,6 @@ class ExchangesViewModel(
     private val TAG = "ExchangesViewModel"
 
     fun getFilteredExchanges() {
-        Log.d(TAG, "CHOSEN CATEGORIES: ${chosenCategories?.filter { it.value }?.keys?.toList()}")
         val request = SearchRequest(
             _currentCoordinates.value?.latitude!!,
             _currentCoordinates.value?.longitude!!,
@@ -145,14 +149,15 @@ class ExchangesViewModel(
         query = ""
         radius = 100.0
         chosenCategories!!.clear()
-        getFilteredExchanges()
     }
 
     private fun getExchanges() {
+        setPendingState()
         getExchangesUseCase(
             scope = viewModelScope,
             params = userId
         ) { result ->
+            setIdleState()
             result.onSuccess {
                 if (sortOption != null) {
                     _exchanges.value = sort(sortOption!!)

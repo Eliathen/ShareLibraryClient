@@ -12,8 +12,10 @@ import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.core.widget.doAfterTextChanged
 import com.google.android.gms.location.*
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
@@ -48,6 +50,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         setSignInTextListener()
         setRegisterButtonListener()
         setCoordinateButtonListener()
+        setPasswordFieldTextWatcher()
     }
 
     private fun setCoordinateButtonListener() {
@@ -76,43 +79,64 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         }
     }
 
+    private fun setPasswordFieldTextWatcher() {
+        password_edit_text.doAfterTextChanged {
+            if (!isPasswordValid(it.toString())) {
+                if (it.toString().isEmpty()) {
+                    password_edit_text_wrapper.error = getString(R.string.field_required_error)
+
+                }
+                password_edit_text_wrapper.error = getString(R.string.invalid_password_error)
+                register_button.isClickable = false
+                register_button.isFocusable = false
+            } else {
+                password_edit_text_wrapper.error = ""
+                register_button.isClickable = true
+                register_button.isFocusable = true
+            }
+        }
+    }
+
     private fun attemptRegistration() {
-        val fullName = fullNameEditText.text.toString()
-        val userName = userNameEditText.text.toString()
-        val email = emailEditText.text.toString()
-        val password = passwordEditText.text.toString().toCharArray()
+        clearErrors()
+        val fullName = full_name_edit_text.text.toString()
+        val userName = user_name_edit_text.text.toString()
+        val email = email_edit_text.text.toString()
+        val password = password_edit_text.text.toString()
         val coordinate = viewModel.coordinate.value
         var cancel = false
         var focusView = View(context)
 
         if (TextUtils.isEmpty(email)) {
-            emailEditText.error = getString(R.string.field_required_error)
+            email_edit_text_wrapper.error = getString(R.string.field_required_error)
             cancel = true
-            focusView = emailEditText
+            focusView = email_edit_text
         } else if (isEmailInvalid(email)) {
-            emailEditText.error = getString(R.string.invalid_email_error)
+            email_edit_text_wrapper.error = getString(R.string.invalid_email_error)
             cancel = true
-            focusView = emailEditText
+            focusView = email_edit_text
         }
         if (TextUtils.isEmpty(userName)) {
-            userNameEditText.error = getString(R.string.field_required_error)
+            user_name_edit_text_wrapper.error = getString(R.string.field_required_error)
             cancel = true
-            focusView = userNameEditText
+            focusView = user_name_edit_text
         }
         if (TextUtils.isEmpty(fullName)) {
-            fullNameEditText.error = getString(R.string.field_required_error)
+            full_name_edit_text_wrapper.error = getString(R.string.field_required_error)
             cancel = true
-            focusView = fullNameEditText
+            focusView = full_name_edit_text
         }
-        if (TextUtils.isEmpty(password.toString())) {
-            passwordEditText.error = getString(R.string.field_required_error)
+        if (TextUtils.isEmpty(password)) {
+            Log.d(TAG, "attemptRegistration: password is empty")
+            password_edit_text_wrapper.error = getString(R.string.field_required_error)
             cancel = true
-            focusView = passwordEditText
+            focusView = password_edit_text
         } else if (!isPasswordValid(password.toString())) {
-            passwordEditText.error =
+            Log.d(TAG, "attemptRegistration: password is valid")
+            password_edit_text_wrapper.error =
                 getString(R.string.invalid_password_error)
             cancel = true
-            focusView = passwordEditText
+            focusView = password_edit_text
         }
         if (coordinate?.latitude == null || coordinate.longitude == null) {
             coordinates_label_register.error = getString(R.string.field_required_error)
@@ -125,7 +149,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         } else {
             val name: CharSequence
             var surname: CharSequence = ""
-            val fullNameTemp = fullNameEditText.text.toString().trim()
+            val fullNameTemp = full_name_edit_text.text.toString().trim()
             if (fullNameTemp.contains(' ')) {
                 val firstSpace = fullNameTemp.indexOfFirst { it == ' ' }
                 name = fullNameTemp.subSequence(0 until firstSpace)
@@ -139,12 +163,20 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
                 surname = surname.toString(),
                 username = userName,
                 email = email,
-                password = password,
+                password = password.toCharArray(),
                 coordinates = CoordinateDisplayable(
                     null, coordinate?.latitude, coordinate?.longitude
                 ),
             ))
         }
+    }
+
+    private fun clearErrors() {
+        full_name_edit_text_wrapper.error = ""
+        user_name_edit_text_wrapper.error = ""
+        email_edit_text_wrapper.error = ""
+        password_edit_text_wrapper.error = ""
+        coordinates_label_register.error = ""
     }
 
     private fun registerUser(userDisplayable: UserDisplayable) {
@@ -153,15 +185,19 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
 
     override fun onIdleState() {
         progress_bar.visibility = View.INVISIBLE
+        register_button.visibility = View.VISIBLE
     }
 
     override fun onPendingState() {
         error_message_wrapper.visibility = View.GONE
         progress_bar.visibility = View.VISIBLE
+        register_button.visibility = View.INVISIBLE
     }
 
     private fun isPasswordValid(password: String): Boolean {
-        return password.contains("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@\$%^&*-]).{8,}\$")
+        val pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@\$%^&*-]).{8,}\$".toRegex()
+        Log.d(TAG, "isPasswordValid: ${pattern.matches(password)}")
+        return pattern.matches(password)
     }
 
     private fun isEmailInvalid(email: String): Boolean {

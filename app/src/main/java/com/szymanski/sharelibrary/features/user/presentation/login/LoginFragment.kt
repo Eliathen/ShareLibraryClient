@@ -21,11 +21,12 @@ class LoginFragment : BaseFragment<LoginViewModel>(R.layout.fragment_login) {
         loginAutomatic()
     }
 
+
     private fun loginAutomatic() {
         val loginData = userStorage.getLoginAndPassword()
         if (!(loginData.first.isEmpty() && loginData.second.isEmpty())) {
-            userNameOrEmailEditText.text = Editable.Factory().newEditable(loginData.first)
-            passwordEditText.text = Editable.Factory().newEditable(loginData.second)
+            user_name_or_email_edit_text.text = Editable.Factory().newEditable(loginData.first)
+            password_edit_text.text = Editable.Factory().newEditable(loginData.second)
             viewModel.logIn(LoginDisplayable(loginData.first, loginData.second.toCharArray()),
                 false)
         }
@@ -41,11 +42,13 @@ class LoginFragment : BaseFragment<LoginViewModel>(R.layout.fragment_login) {
 
     override fun onIdleState() {
         progress_bar.visibility = View.INVISIBLE
+        login_button.visibility = View.VISIBLE
     }
 
     override fun onPendingState() {
         error_message_wrapper.visibility = View.GONE
         progress_bar.visibility = View.VISIBLE
+        login_button.visibility = View.INVISIBLE
     }
 
     private fun initListeners() {
@@ -59,19 +62,19 @@ class LoginFragment : BaseFragment<LoginViewModel>(R.layout.fragment_login) {
     }
 
     private fun attemptLogin() {
-        val userNameOrEmail = userNameOrEmailEditText.text.toString()
-        val password = passwordEditText.text.toString()
+        val userNameOrEmail = user_name_or_email_edit_text.text.toString()
+        val password = password_edit_text.text.toString()
         var close = false
         var focusView = View(context)
         if (TextUtils.isEmpty(userNameOrEmail)) {
-            userNameOrEmailEditText.error = getString(R.string.field_required_error)
+            user_name_or_email_edit_text_wrapper.error = getString(R.string.field_required_error)
             close = true
-            focusView = userNameOrEmailEditText
+            focusView = user_name_or_email_edit_text
         }
         if (TextUtils.isEmpty(password)) {
-            passwordEditText.error = getString(R.string.field_required_error)
+            password_edit_text_wrapper.error = getString(R.string.field_required_error)
             close = true
-            focusView = passwordEditText
+            focusView = password_edit_text
         }
 
         if (close) {

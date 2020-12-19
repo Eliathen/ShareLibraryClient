@@ -2,6 +2,7 @@ package com.szymanski.sharelibrary.features.chat.presentation.room
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,8 +44,11 @@ class ChatRoomFragment : BaseFragment<ChatRoomViewModel>(R.layout.fragment_chat_
         initRecyclerView()
         viewModel.connectSocket()
         chat_room_send_message_button.setOnClickListener {
-            viewModel.sendMessage(chat_room_message_edit_text.text.toString())
-            chat_room_message_edit_text.text = Editable.Factory.getInstance().newEditable("")
+            val message = chat_room_message_edit_text.text.toString()
+            if (!TextUtils.isEmpty(message)) {
+                viewModel.sendMessage(chat_room_message_edit_text.text.toString())
+                chat_room_message_edit_text.text = Editable.Factory.getInstance().newEditable("")
+            }
         }
     }
 
@@ -68,6 +72,7 @@ class ChatRoomFragment : BaseFragment<ChatRoomViewModel>(R.layout.fragment_chat_
         super.initObservers()
         viewModel.messages.observe(this) {
             chatRoomAdapter.setMessages(it)
+            chat_room_recycler_view.scrollToPosition(it.size - 1)
         }
     }
 

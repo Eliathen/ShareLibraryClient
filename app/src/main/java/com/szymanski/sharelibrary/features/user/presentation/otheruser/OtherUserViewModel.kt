@@ -47,4 +47,9 @@ class OtherUserViewModel(
     fun openOtherUserBooksScreen(id: Long) {
         userNavigation.openOtherUserBooksScreen(id)
     }
+
+    fun openChatRoom() {
+        val user = userStorage.getUserId()
+        val otherUserId = _user.value?.id
+    }
 }

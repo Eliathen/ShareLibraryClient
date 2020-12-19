@@ -186,10 +186,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/register_button_background"
                     android:paddingHorizontal="10dp"
                     android:text="@string/user_profile"
-                    android:textColor="@color/colorPrimaryDark"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     tools:ignore="ButtonStyle" />
 
                 <Button
@@ -197,10 +196,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/login_button_background"
                     android:paddingHorizontal="10dp"
+                    style="@style/Widget.MaterialComponents.Button"
                     android:text="@string/request_book"
-                    android:textColor="@color/white"
                     android:visibility="gone"
                     tools:ignore="ButtonStyle" />
             </LinearLayout>

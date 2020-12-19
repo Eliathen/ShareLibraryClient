@@ -67,9 +67,7 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_navigate_from_profile_screen_to_login_screen"
-            app:destination="@id/login_screen"
-            app:popUpTo="@id/login_screen"
-            app:popUpToInclusive="true" />
+            app:destination="@id/mobile_navigation" />
     </fragment>
     <fragment
         android:id="@+id/save_book_screen"

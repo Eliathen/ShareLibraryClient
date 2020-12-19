@@ -182,8 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:text="@string/cancel_button_text"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:background="@drawable/register_button_background"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:paddingHorizontal="10dp" />
 
             </LinearLayout>
@@ -200,9 +199,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:background="@drawable/register_button_background"
                     android:paddingHorizontal="10dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:text="@string/title_profile"
                     tools:ignore="ButtonStyle" />
 

@@ -143,11 +143,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/register_button_background"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:paddingHorizontal="10dp"
                     android:text="@string/request_book"
-                    android:visibility="gone"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -190,6 +189,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
                         android:textSize="18sp"
+                        android:textColor="@color/default_text"
                         app:layout_constraintEnd_toStartOf="@+id/dialog_other_user_send_message_button"
                         app:layout_constraintStart_toEndOf="@+id/profile_imageView"
                         app:layout_constraintTop_toTopOf="parent"

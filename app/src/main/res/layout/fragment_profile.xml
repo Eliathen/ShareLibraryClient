@@ -173,10 +173,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginHorizontal="10dp"
-                        android:background="@drawable/register_button_background"
                         android:paddingHorizontal="10dp"
                         android:text="@string/save_changes"
-                        android:textColor="@color/colorPrimaryDark"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:visibility="visible"
                         tools:ignore="ButtonStyle" />
 
@@ -186,10 +185,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginHorizontal="10dp"
-                        android:background="@drawable/register_button_background"
                         android:paddingHorizontal="10dp"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:text="@string/cancel_changes"
-                        android:textColor="@color/colorPrimaryDark"
                         android:visibility="visible"
                         tools:ignore="ButtonStyle" />
                 </LinearLayout>

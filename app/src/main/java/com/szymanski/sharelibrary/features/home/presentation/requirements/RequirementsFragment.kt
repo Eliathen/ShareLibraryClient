@@ -102,11 +102,6 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
             .setCancelable(false)
             .setView(contentView)
             .setTitle("Choose for what you want to exchange: ")
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setPositiveButton("Exchange") { _, _ ->
-            }
 
         val chooseAdapter = ChooseBookAdapter()
         contentView.dialog_choose_book_recycler_view.apply {
@@ -127,7 +122,10 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         chooseAdapter.setChoices(choices)
         val dialog = builder.create()
         dialog.show()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+        contentView.dialog_choose_book_cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        contentView.dialog_choose_book_exchange.setOnClickListener {
             val position = chooseAdapter.selectedPosition
             var params = mapOf<String, Long>()
             params =

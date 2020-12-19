@@ -3,14 +3,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logo_image_description">Logo Image</string>
     <string name="registration_label">REGISTRATION</string>
-    <string name="full_name_label">Full name</string>
-    <string name="postal_code_hint">Postal code</string>
-    <string name="building_number_hint">Building number</string>
-    <string name="street_hint">Street</string>
-    <string name="password_hint">Password</string>
-    <string name="email_hint">Email</string>
-    <string name="username_hint">Username</string>
-    <string name="full_name_hint">Full Name</string>
+    <string name="full_name_label">Full name*</string>
+    <string name="password_hint">Password*</string>
+    <string name="email_hint">Email*</string>
+    <string name="username_hint">Username*</string>
+    <string name="full_name_hint">Full Name*</string>
     <string name="city_hint">City</string>
     <string name="country_hint">Country</string>
     <string name="register_button_text">REGISTER</string>
@@ -47,7 +44,7 @@
     <string name="title_hint">title</string>
     <string name="authors_surname_hint">surname</string>
     <string name="author_name_hint">name</string>
-    <string name="save_login_details">save login details</string>
+    <string name="save_login_details">Save login details</string>
     <string name="coordinates_label">Your coordinates:</string>
     <string name="change_details">Edit</string>
     <string name="save_changes">Save changes</string>
@@ -101,4 +98,6 @@
     <string name="filter_button">Filter</string>
     <string name="reset_button">Reset</string>
     <string name="distance_label">Distance: </string>
+    <string name="add_book_fab_text">ADD BOOK</string>
+    <string name="exchange_button_text">Exchange</string>
 </resources>

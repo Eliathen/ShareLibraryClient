@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.listView
 
+import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.sharelibrary.R
@@ -54,5 +55,15 @@ class ExchangesListViewFragment :
         exchanges_list_view.adapter = null
         exchanges_list_view.layoutManager = null
         super.onDestroyView()
+    }
+
+    override fun onIdleState() {
+        super.onIdleState()
+        exchanges_list_view_progress_bar.visibility = View.GONE
+    }
+
+    override fun onPendingState() {
+        super.onPendingState()
+        exchanges_list_view_progress_bar.visibility = View.VISIBLE
     }
 }

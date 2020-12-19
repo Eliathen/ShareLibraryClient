@@ -13,4 +13,6 @@
         android:background="@drawable/ic_launcher_background"
         android:layout_height="250dp"
         android:theme="@style/toolbar_style" />
+
+
 </com.google.android.material.appbar.AppBarLayout>

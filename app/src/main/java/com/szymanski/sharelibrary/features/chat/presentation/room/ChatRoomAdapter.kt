@@ -56,13 +56,12 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val message = this.messages[position]
         when (holder) {
             is SendMessageViewHolder -> {
-                holder.bind(message)
+                holder.bind(position)
             }
             is ReceiveMessageViewHolder -> {
-                holder.bind(message)
+                holder.bind(position)
             }
             else -> {
             }
@@ -73,8 +72,15 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(view) {
 
         @SuppressLint("NewApi")
-        fun bind(messageDisplayable: MessageDisplayable) {
+        fun bind(position: Int) {
+            val messageDisplayable = messages[position]
             with(view) {
+                if (shouldDisplayDate(position)) {
+                    user_message_date.text =
+                        messageDisplayable.timestamp?.toLocalDate().toString()
+                } else {
+                    user_message_date.visibility = View.GONE
+                }
                 val fullName =
                     "${messageDisplayable.sender!!.name} ${messageDisplayable.sender.surname}"
                 user_text_message_name.text = fullName
@@ -87,8 +93,16 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class ReceiveMessageViewHolder(private val view: View) :
         RecyclerView.ViewHolder(view) {
 
-        fun bind(messageDisplayable: MessageDisplayable) {
+        @SuppressLint("NewApi")
+        fun bind(position: Int) {
+            val messageDisplayable = messages[position]
             with(view) {
+                if (shouldDisplayDate(position)) {
+                    other_user_message_date.text =
+                        messageDisplayable.timestamp?.toLocalDate().toString()
+                } else {
+                    this.other_user_message_date.visibility = View.GONE
+                }
                 val fullName =
                     "${messageDisplayable.sender!!.name} ${messageDisplayable.sender.surname}"
                 other_user_text_message_name.text = fullName
@@ -100,7 +114,21 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     @SuppressLint("NewApi")
+    private fun shouldDisplayDate(position: Int): Boolean {
+        val messageDisplayable = messages[position]
+        if (position == 0) {
+            return true
+        } else if (messageDisplayable.timestamp?.toLocalDate() != messages[position - 1].timestamp?.toLocalDate()) {
+            return true
+        }
+        return false
+    }
+
+    @SuppressLint("NewApi")
     private fun formatDateToString(date: LocalDateTime): String {
-        return "${date.toLocalDate()} ${date.hour}:${date.minute}"
+        if (date.minute < 10) {
+            return "${date.hour}:0${date.minute}"
+        }
+        return "${date.hour}:${date.minute}"
     }
 }

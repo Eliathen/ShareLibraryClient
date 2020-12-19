@@ -49,7 +49,7 @@ class OtherUserFragment : BaseFragment<OtherUserViewModel>(R.layout.fragment_oth
 
     private fun initListeners() {
         send_message_button.setOnClickListener {
-
+            viewModel.openChatRoom()
         }
         view_books_button.setOnClickListener {
             Log.d(TAG, "initListeners: ")
