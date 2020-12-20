@@ -73,12 +73,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         setSearchView(menu)
     }
 
-    override fun onPause() {
-        super.onPause()
-        if (isLocationEnabled()) {
-            viewModel.resetFilters()
-        }
-    }
 
     private fun setSearchView(menu: Menu) {
         val searchItem = menu.findItem(R.id.exchange_searchView)
