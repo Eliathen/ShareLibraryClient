@@ -1,5 +1,5 @@
 package com.szymanski.sharelibrary.core.utils
 
-val TAG = "ShareLibrary"
+const val TAG = "ShareLibrary"
 
-val defaultRadiusDistance: Double = 100.0
+const val defaultRadiusDistance: Double = 100.0
