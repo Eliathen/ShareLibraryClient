@@ -3,6 +3,7 @@ package com.szymanski.sharelibrary.features.user.navigation
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
 import com.szymanski.sharelibrary.features.book.presentation.otheruserbook.OtherUserBooksFragment
+import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
 import com.szymanski.sharelibrary.features.chat.presentation.room.ChatRoomFragment
 import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 
@@ -42,8 +43,13 @@ class UserNavigationImpl(
             Pair(OtherUserBooksFragment.OTHER_USER_BOOKS_KEY, userId))
     }
 
-    override fun openChatRoomScreen(otherUser: UserDisplayable) {
+    override fun openNotExistingChatRoomScreen(otherUser: UserDisplayable) {
         fragmentNavigator.navigateTo(R.id.action_navigate_from_other_user_screen_to_chat_room_screen,
             Pair(ChatRoomFragment.CHAT_ROOM_OTHER_USER_KEY, otherUser))
+    }
+
+    override fun openExistingChatRoomScreen(room: RoomDisplayable) {
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_other_user_screen_to_chat_room_screen,
+            Pair(ChatRoomFragment.CHAT_ROOM_KEY, room))
     }
 }

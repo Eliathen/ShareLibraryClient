@@ -51,7 +51,7 @@ val userModule = module {
         ProfileViewModel(get(), get(), get(), get(), get())
     }
     viewModel {
-        OtherUserViewModel(get(), get(), get(), get())
+        OtherUserViewModel(get(), get(), get(), get(), get())
     }
 
 

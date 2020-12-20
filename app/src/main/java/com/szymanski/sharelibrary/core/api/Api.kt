@@ -94,4 +94,10 @@ interface Api {
         @Query("q") query: String?,
     ): List<ExchangeResponse>
 
+    @GET("chat/rooms")
+    suspend fun getRoomBySenderIdAndRecipientId(
+        @Query("sender") senderId: Long,
+        @Query("recipient") recipient: Long,
+    ): ChatRoomResponse
+
 }

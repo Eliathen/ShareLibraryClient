@@ -2,6 +2,7 @@ package com.szymanski.sharelibrary.features.chat.di
 
 import com.szymanski.sharelibrary.features.chat.data.ChatRepositoryImpl
 import com.szymanski.sharelibrary.features.chat.domain.ChatRepository
+import com.szymanski.sharelibrary.features.chat.domain.usecase.GetRoomBySenderIdAndRecipientIdUseCase
 import com.szymanski.sharelibrary.features.chat.domain.usecase.GetRoomMessagesUseCase
 import com.szymanski.sharelibrary.features.chat.domain.usecase.GetUserRoomsUseCase
 import com.szymanski.sharelibrary.features.chat.navigation.ChatNavigation
@@ -16,11 +17,12 @@ import org.koin.dsl.module
 val chatModule = module {
     //viewModel
     viewModel { ChatViewModel(get(), get(), get(), get()) }
-    viewModel { ChatRoomViewModel(get(), get(), get(), get()) }
+    viewModel { ChatRoomViewModel(get(), get(), get(), get(), get()) }
 
     //useCase
     factory { GetUserRoomsUseCase(get()) }
     factory { GetRoomMessagesUseCase(get()) }
+    factory { GetRoomBySenderIdAndRecipientIdUseCase(get()) }
     //repository
     factory<ChatRepository> { ChatRepositoryImpl(get(), get()) }
 

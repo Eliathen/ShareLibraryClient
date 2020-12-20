@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.features.user.navigation
 
+import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
 import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 
 interface UserNavigation {
@@ -18,6 +19,8 @@ interface UserNavigation {
 
     fun openOtherUserBooksScreen(userId: Long)
 
-    fun openChatRoomScreen(otherUser: UserDisplayable)
+    fun openNotExistingChatRoomScreen(otherUser: UserDisplayable)
+
+    fun openExistingChatRoomScreen(room: RoomDisplayable)
 
 }

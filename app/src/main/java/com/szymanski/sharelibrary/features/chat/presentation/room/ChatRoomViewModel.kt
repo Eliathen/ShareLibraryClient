@@ -1,7 +1,6 @@
 package com.szymanski.sharelibrary.features.chat.presentation.room
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -29,6 +28,7 @@ import okhttp3.OkHttpClient
 class ChatRoomViewModel(
     private val userStorage: UserStorage,
     private val getMessagesFromRoomUseCase: GetRoomMessagesUseCase,
+    private val converter: Gson,
     private val api: Api,
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
@@ -91,27 +91,30 @@ class ChatRoomViewModel(
         stomp = StompClient(client, intervalMillis).apply {
             this.url = url
         }
-        val gson = Gson()
-        val stompConnection = stomp.connect().subscribe {
-            when (it.type) {
+        val stompConnection = stomp.connect().subscribe { event ->
+            when (event.type) {
                 Event.Type.OPENED -> {
                     stomp.url = url
-                    val topic = stomp.join("/user/${userId}/queue/messages").subscribe {
-                        val message = gson.fromJson(it, MessageResponse::class.java)
-                        val all = _messages.value
-                        all?.add(message.toMessage())
-                        GlobalScope.launch {
-                            _messages.postValue(all)
+                    val topic =
+                        stomp.join("/user/${userId}/queue/messages").subscribe { newMessage ->
+                            val message =
+                                converter.fromJson(newMessage, MessageResponse::class.java)
+
+                            var all = _messages.value
+                            if (all == null) {
+                                all = mutableListOf()
+                            }
+                            all.add(message.toMessage())
+                            GlobalScope.launch {
+                                _messages.postValue(all)
+                            }
                         }
-                        Log.d(TAG, "message: $message")
-                    }
                 }
                 Event.Type.CLOSED -> {
-                    Log.d(TAG, "connectSocket: CLOSED")
 
                 }
                 Event.Type.ERROR -> {
-                    Log.d(TAG, "connectSocket: ERROR")
+
                 }
             }
         }
@@ -119,10 +122,10 @@ class ChatRoomViewModel(
     }
 
     fun sendFirstMessage(message: String) {
-        val mess = SendMessageRequest(null,
-            userId,
-            otherUser.value?.id,
-            message
+        val mess = SendMessageRequest(chatId = null,
+            senderId = userId,
+            recipientId = otherUser.value?.id,
+            content = message
         )
         sendMessageUsingSocket(mess)
     }
@@ -138,13 +141,9 @@ class ChatRoomViewModel(
     }
 
     private fun sendMessageUsingSocket(message: SendMessageRequest) {
-        val gson = Gson()
-        val sending = stomp.send("/app/chat", gson.toJson(message)).subscribe {
+        val sending = stomp.send("/app/chat", converter.toJson(message)).subscribe() {
             if (it) {
-                val messages = _messages.value
-                Log.d(TAG, "sendMessage: send")
             } else {
-                Log.d(TAG, "sendMessage: Not send")
             }
         }
     }
