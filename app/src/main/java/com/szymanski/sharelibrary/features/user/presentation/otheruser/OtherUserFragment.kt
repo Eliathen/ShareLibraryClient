@@ -1,7 +1,6 @@
 package com.szymanski.sharelibrary.features.user.presentation.otheruser
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
@@ -52,7 +51,6 @@ class OtherUserFragment : BaseFragment<OtherUserViewModel>(R.layout.fragment_oth
             viewModel.openChatRoom()
         }
         view_books_button.setOnClickListener {
-            Log.d(TAG, "initListeners: ")
             viewModel.openOtherUserBooksScreen(viewModel.user.value?.id!!)
         }
     }

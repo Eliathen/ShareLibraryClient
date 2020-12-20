@@ -75,9 +75,7 @@ class ExchangesViewModel(
     }
 
     val mapOfExchanges: MutableLiveData<Map<Coordinate, MutableList<Exchange>>> by lazy {
-        MutableLiveData<Map<Coordinate, MutableList<Exchange>>>().also {
-            getExchanges()
-        }
+        MutableLiveData<Map<Coordinate, MutableList<Exchange>>>()
     }
 
     private val _currentCoordinates: MutableLiveData<Coordinate> by lazy {
@@ -142,6 +140,7 @@ class ExchangesViewModel(
             result.onSuccess {
                 circleRadius.value = radius
                 _exchanges.value = it
+                createMapFromExchanges(it)
             }
             result.onFailure {
                 handleFailure(it)

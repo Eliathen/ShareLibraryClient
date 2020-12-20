@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.os.StrictMode
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -78,6 +77,10 @@ class ExchangesMapViewFragment :
 
     private var distanceCircle: Polygon? = null
 
+    private var userMarker: Marker? = null
+
+    private var defaultMarker: Marker? = null
+
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             val location: Location = locationResult.lastLocation!!
@@ -117,21 +120,23 @@ class ExchangesMapViewFragment :
     override fun initObservers() {
         super.initObservers()
         viewModel.mapOfExchanges.observe(this) { exchanges ->
+            val toRemove: Collection<Overlay> =
+                map?.overlays?.filter { it::class.java != Polygon::class.java && it != userMarker && it != defaultMarker }!!
+                    .toList()
+            map?.overlays!!.removeAll(toRemove)
             exchanges.keys.forEach { coordinate ->
                 displayLocation(coordinate.latitude!!, coordinate.longitude!!)
             }
         }
         viewModel.user.observe(this)
         {
-            displayUserLocation(it.coordinates?.latitude!!,
+            displayDefaultLocation(it.coordinates?.latitude!!,
                 it.coordinates?.longitude!!,
                 R.string.default_location,
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_default_location_on_24)!!)
         }
         viewModel.circleRadius.observe(this) { radius ->
-            map?.overlays?.remove(distanceCircle)
-            map?.invalidate()
-            var toRemove: MutableCollection<Overlay> = mutableListOf()
+            val toRemove: MutableCollection<Overlay> = mutableListOf()
             map?.overlays?.filter { it::class.java == Polygon::class.java }?.toCollection(toRemove)
             map?.overlays?.removeAll(toRemove)
             if (radius != defaultRadiusDistance) {
@@ -304,24 +309,27 @@ class ExchangesMapViewFragment :
         )
     }
 
-    private fun displayUserLocation(
+    private fun displayDefaultLocation(
         latitude: Double,
         longitude: Double,
         titleId: Int,
         icon: Drawable,
     ) {
+        if (defaultMarker != null) {
+            map?.overlays?.remove(defaultMarker)
+        }
         map_view_progress_bar.visibility = View.GONE
         val mapController: IMapController = map?.controller!!
         mapController.setZoom(13.0)
         val startPoint = GeoPoint(latitude, longitude)
-        val newMarker = Marker(map)
-        newMarker.title = getString(titleId)
+        defaultMarker = Marker(map)
+        defaultMarker?.title = getString(titleId)
         if (titleId == R.string.current_location) {
             mapController.setCenter(startPoint)
         }
-        newMarker.icon = icon
-        newMarker.position = startPoint
-        newMarker.setOnMarkerClickListener { marker, _ ->
+        defaultMarker?.icon = icon
+        defaultMarker?.position = startPoint
+        defaultMarker?.setOnMarkerClickListener { marker, _ ->
             if (marker.isInfoWindowOpen) {
                 marker.infoWindow.close()
             } else {
@@ -329,7 +337,38 @@ class ExchangesMapViewFragment :
             }
             true
         }
-        map?.overlays?.add(newMarker)
+        map?.overlays?.add(defaultMarker)
+    }
+
+    private fun displayUserLocation(
+        latitude: Double,
+        longitude: Double,
+        titleId: Int,
+        icon: Drawable,
+    ) {
+        if (userMarker != null) {
+            map?.overlays?.remove(userMarker)
+        }
+        map_view_progress_bar.visibility = View.GONE
+        val mapController: IMapController = map?.controller!!
+        mapController.setZoom(13.0)
+        val startPoint = GeoPoint(latitude, longitude)
+        userMarker = Marker(map)
+        userMarker?.title = getString(titleId)
+        if (titleId == R.string.current_location) {
+            mapController.setCenter(startPoint)
+        }
+        userMarker?.icon = icon
+        userMarker?.position = startPoint
+        userMarker?.setOnMarkerClickListener { marker, _ ->
+            if (marker.isInfoWindowOpen) {
+                marker.infoWindow.close()
+            } else {
+                marker.showInfoWindow()
+            }
+            true
+        }
+        map?.overlays?.add(userMarker)
     }
 
 
@@ -348,7 +387,6 @@ class ExchangesMapViewFragment :
         longitude: Double,
         radius: Double,
     ) {
-        Log.d(TAG, "drawCircleAroundPointWithRadius: $radius")
         val circle = Polygon.pointsAsCircle(GeoPoint(latitude, longitude), radius * 1000.0)
         val distanceCircle = Polygon(map)
         distanceCircle.fillPaint.color =
@@ -359,11 +397,14 @@ class ExchangesMapViewFragment :
             ContextCompat.getColor(requireContext(), R.color.mapCircleInnerColor)
         distanceCircle.outlinePaint.strokeWidth = 5.0F
         distanceCircle.points = circle
-        map?.overlayManager?.add(distanceCircle)
+        distanceCircle.setOnClickListener { polygon, mapView, eventPos ->
+            false
+        }
+        map?.overlays?.add(0, distanceCircle)
+//        map?.overlayManager?.add(distanceCircle)
         map?.invalidate()
     }
 
-    @SuppressLint("InflateParams")
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
         val key = viewModel.mapOfExchanges.value?.keys?.first {
             it.latitude == marker?.position?.latitude && it.longitude == marker?.position?.longitude
