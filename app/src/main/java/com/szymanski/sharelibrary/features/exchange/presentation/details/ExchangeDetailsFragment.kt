@@ -83,7 +83,13 @@ class ExchangeDetailsFragment :
             viewModel.openOtherUserScreen()
         }
         exchange_details_request_book.setOnClickListener {
-            viewModel.exchange.value?.let { it1 -> viewModel.requirementBook(it1) }
+            viewModel.exchange.value?.let { exchange ->
+                viewModel.requirementBook(exchange)
+                exchange_details_scroll_view.postDelayed({
+                    exchange_details_scroll_view.smoothScrollTo(0,
+                        exchange_details_scroll_view.height)
+                }, 500)
+            }
         }
     }
 
