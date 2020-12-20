@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.os.StrictMode
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.*
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
 import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesViewModel
 import com.szymanski.sharelibrary.features.exchange.presentation.listView.ExchangesListViewAdapter
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
@@ -39,6 +41,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.CopyrightOverlay
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Overlay
 import org.osmdroid.views.overlay.Polygon
 import org.osmdroid.wms.BuildConfig
 import java.io.File
@@ -73,13 +76,16 @@ class ExchangesMapViewFragment :
 
     private var mPrefs: SharedPreferences? = null
 
+    private var distanceCircle: Polygon? = null
+
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             val location: Location = locationResult.lastLocation!!
             displayUserLocation(latitude = location.latitude,
                 longitude = location.longitude,
                 titleId = R.string.current_location,
-                icon = requireContext().getDrawable(R.drawable.ic_current_location_on_24)!!)
+                icon = ContextCompat.getDrawable(requireContext(),
+                    R.drawable.ic_current_location_on_24)!!)
         }
     }
 
@@ -117,9 +123,21 @@ class ExchangesMapViewFragment :
         }
         viewModel.user.observe(this)
         {
-            displayUserLocation(it.coordinates?.latitude!!, it.coordinates?.longitude!!,
+            displayUserLocation(it.coordinates?.latitude!!,
+                it.coordinates?.longitude!!,
                 R.string.default_location,
-                requireContext().getDrawable(R.drawable.ic_default_location_on_24)!!)
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_default_location_on_24)!!)
+        }
+        viewModel.circleRadius.observe(this) { radius ->
+            map?.overlays?.remove(distanceCircle)
+            map?.invalidate()
+            var toRemove: MutableCollection<Overlay> = mutableListOf()
+            map?.overlays?.filter { it::class.java == Polygon::class.java }?.toCollection(toRemove)
+            map?.overlays?.removeAll(toRemove)
+            if (radius != defaultRadiusDistance) {
+                drawCircleAroundPointWithRadius(viewModel.currentCoordinates.value?.latitude!!,
+                    viewModel.currentCoordinates.value?.longitude!!, radius)
+            }
         }
     }
 
@@ -211,7 +229,8 @@ class ExchangesMapViewFragment :
                         displayUserLocation(latitude = location.latitude,
                             longitude = location.longitude,
                             R.string.current_location,
-                            requireContext().getDrawable(R.drawable.ic_current_location_on_24)!!)
+                            ContextCompat.getDrawable(requireContext(),
+                                R.drawable.ic_current_location_on_24)!!)
                     }
                 }
             } else {
@@ -318,7 +337,8 @@ class ExchangesMapViewFragment :
         val point = GeoPoint(latitude, longitude)
         val marker = Marker(map)
         marker.position = point
-        marker.icon = requireContext().getDrawable(R.drawable.ic_exchange_location_on_24)
+        marker.icon =
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_exchange_location_on_24)!!
         map?.overlays?.add(marker)
         marker.setOnMarkerClickListener(this)
     }
@@ -328,17 +348,18 @@ class ExchangesMapViewFragment :
         longitude: Double,
         radius: Double,
     ) {
-        val circle = Polygon.pointsAsCircle(GeoPoint(latitude, longitude), radius)
-        val polygon = Polygon(mapView)
-        polygon.fillPaint.color =
+        Log.d(TAG, "drawCircleAroundPointWithRadius: $radius")
+        val circle = Polygon.pointsAsCircle(GeoPoint(latitude, longitude), radius * 1000.0)
+        val distanceCircle = Polygon(map)
+        distanceCircle.fillPaint.color =
             ContextCompat.getColor(requireContext(), R.color.mapCircleInnerColor)
-        polygon.fillPaint.strokeCap = Paint.Cap.ROUND
-        polygon.fillPaint.strokeJoin = Paint.Join.ROUND
-        polygon.outlinePaint.color =
+        distanceCircle.fillPaint.strokeCap = Paint.Cap.ROUND
+        distanceCircle.fillPaint.strokeJoin = Paint.Join.ROUND
+        distanceCircle.outlinePaint.color =
             ContextCompat.getColor(requireContext(), R.color.mapCircleInnerColor)
-        polygon.outlinePaint.strokeWidth = 5.0F
-        polygon.points = circle
-        map?.overlayManager?.add(polygon)
+        distanceCircle.outlinePaint.strokeWidth = 5.0F
+        distanceCircle.points = circle
+        map?.overlayManager?.add(distanceCircle)
         map?.invalidate()
     }
 

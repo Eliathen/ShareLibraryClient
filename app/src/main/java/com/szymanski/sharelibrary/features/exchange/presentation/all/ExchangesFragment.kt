@@ -201,7 +201,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
                 viewModel.getFilteredExchanges()
             }
             dialog_filters_distance_picker.apply {
-                maxValue = 100
+                maxValue = 99
                 minValue = 1
                 value = viewModel.getRadius()?.toInt()!!
                 setOnValueChangedListener { _, _, newVal ->

@@ -9,6 +9,7 @@ import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.core.utils.SortOption
+import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
 import com.szymanski.sharelibrary.features.book.domain.model.Category
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCategoriesUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
@@ -61,8 +62,6 @@ class ExchangesViewModel(
         }
     }
 
-    private val copyExchanges: MutableList<Exchange> = mutableListOf()
-
     private val _exchanges: MutableLiveData<List<Exchange>> by lazy {
         MutableLiveData<List<Exchange>>()
     }
@@ -91,9 +90,13 @@ class ExchangesViewModel(
     }
     private var query: String? = ""
 
-    private var radius: Double? = 100.0
+    private var radius: Double? = defaultRadiusDistance
 
     private val chosenCategories: MutableMap<String, Boolean>? = mutableMapOf()
+
+    val circleRadius: MutableLiveData<Double> by lazy {
+        MutableLiveData(radius!! * 1000.0)
+    }
 
     fun setQuery(query: String) {
         this.query = query
@@ -137,6 +140,7 @@ class ExchangesViewModel(
         ) { result ->
             setIdleState()
             result.onSuccess {
+                circleRadius.value = radius
                 _exchanges.value = it
             }
             result.onFailure {
@@ -147,8 +151,9 @@ class ExchangesViewModel(
 
     fun resetFilters() {
         query = ""
-        radius = 100.0
+        radius = defaultRadiusDistance
         chosenCategories!!.clear()
+        circleRadius.value = defaultRadiusDistance
     }
 
     private fun getExchanges() {
@@ -162,8 +167,6 @@ class ExchangesViewModel(
                 if (sortOption != null) {
                     _exchanges.value = sort(sortOption!!)
                 } else _exchanges.value = it
-                copyExchanges.clear()
-                copyExchanges.addAll(it)
                 createMapFromExchanges(it)
             }
             result.onFailure {

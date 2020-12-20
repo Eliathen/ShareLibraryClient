@@ -1,7 +1,6 @@
 package com.szymanski.sharelibrary.features.home.presentation.requirements
 
 import android.app.AlertDialog
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -73,7 +72,6 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         val requirement = viewModel.requirement.value?.get(position)!!
         viewModel.getUserBooks(requirement.user?.id!!)
         viewModel.otherUserBooks.observe(this) {
-            Log.d(TAG, "onItemClick: ")
             displayExchangeDialog(requirement)
         }
     }
