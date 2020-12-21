@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.book.presentation.save
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -83,7 +82,6 @@ class SaveBookViewModel(
                 bookNavigator.openBooksScreen()
             }
             it.onFailure { throwable ->
-                Log.d("Save Book", "saveBook: ${throwable.message}")
                 handleFailure(throwable)
             }
         }

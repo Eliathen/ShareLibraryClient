@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.user.presentation.profile
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -53,7 +52,6 @@ class ProfileViewModel(
     val editMode: LiveData<EditModeState> by lazy {
         _editMode
     }
-    private val TAG = "ProfileViewModel"
 
     private fun loadUser() {
         setPendingState()
@@ -64,12 +62,10 @@ class ProfileViewModel(
         ) { result ->
             setIdleState()
             result.onSuccess {
-                Log.d(TAG, "loadUser: success")
                 _user.value = it
                 _coordinate.value = it.coordinates
             }
             result.onFailure {
-                Log.d(TAG, "loadUser: ${it.message}")
                 handleFailure(it)
             }
         }

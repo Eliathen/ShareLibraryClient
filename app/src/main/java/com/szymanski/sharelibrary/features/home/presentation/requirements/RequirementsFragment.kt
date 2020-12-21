@@ -29,9 +29,6 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
 
     private val requirementsAdapter: RequirementsAdapter by inject()
 
-
-    private val TAG = "RequirementsFragment"
-
     override fun initViews() {
         super.initViews()
         initRecyclerView()

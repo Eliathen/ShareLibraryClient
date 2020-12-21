@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
@@ -66,7 +65,6 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
 
     private var bookId: Long? = null
 
-    private val TAG = "BooksFragment"
 
     override fun initViews() {
         super.initViews()
@@ -372,7 +370,6 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
     }
 
     override fun onIdleState() {
-        Log.d(TAG, "onIdleState: ")
         books_swipeRefreshLayout.isRefreshing = false
     }
 

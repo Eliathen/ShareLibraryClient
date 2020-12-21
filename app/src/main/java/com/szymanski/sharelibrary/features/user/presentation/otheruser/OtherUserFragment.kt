@@ -12,8 +12,6 @@ import org.koin.android.ext.android.inject
 class OtherUserFragment : BaseFragment<OtherUserViewModel>(R.layout.fragment_other_user) {
     override val viewModel: OtherUserViewModel by inject()
 
-    private val TAG = "OtherUserFragment"
-
     companion object {
         const val OTHER_USER_FRAGMENT_KEY = "OtherUserIdKey"
     }

@@ -13,8 +13,6 @@ import com.szymanski.sharelibrary.features.user.presentation.login.LoginFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private val TAG = "MainActivity"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

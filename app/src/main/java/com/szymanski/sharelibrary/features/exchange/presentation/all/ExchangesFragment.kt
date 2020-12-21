@@ -39,8 +39,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
     override val viewModel: ExchangesViewModel by sharedViewModel()
 
-    private val TAG = "ExchangesFragment"
-
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val REQUEST_LOCATION_CODE = 101
@@ -239,6 +237,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
             .setMessage(getString(R.string.get_location_message))
             .setNegativeButton(getString(R.string.cancel_button_text)) { dialog: DialogInterface, _: Int ->
                 dialog.cancel()
+                viewModel.navigateBack()
             }
             .setNeutralButton(getString(R.string.accept_button_text)) { _: DialogInterface, _: Int ->
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
@@ -290,6 +289,13 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
             return true
         }
         return false
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (!isLocationEnabled()) {
+            viewModel.navigateBack()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun requestPermissions() {

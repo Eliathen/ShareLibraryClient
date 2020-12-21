@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.user.presentation.otheruser
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
-import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.chat.domain.usecase.GetRoomBySenderIdAndRecipientIdUseCase
 import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
 import com.szymanski.sharelibrary.features.user.domain.model.User
@@ -61,11 +59,9 @@ class OtherUserViewModel(
         ) { result ->
             setIdleState()
             result.onSuccess {
-                Log.d(TAG, "openChatRoom: room exists")
                 userNavigation.openExistingChatRoomScreen(RoomDisplayable(it))
             }
             result.onFailure {
-                Log.d(TAG, "openChatRoom: room doesn't exist")
                 user.value?.let { userNavigation.openNotExistingChatRoomScreen(UserDisplayable(_user.value!!)) }
 
             }

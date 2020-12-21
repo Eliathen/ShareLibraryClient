@@ -39,7 +39,6 @@ class ExchangesListViewFragment :
 
     }
 
-    private val TAG = "ExchangesListViewFragme"
     override fun initObservers() {
         super.initObservers()
         viewModel.exchanges.observe(this) {

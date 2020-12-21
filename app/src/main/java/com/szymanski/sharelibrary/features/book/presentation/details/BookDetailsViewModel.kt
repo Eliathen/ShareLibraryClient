@@ -18,7 +18,6 @@ class BookDetailsViewModel(
     private val finishExchangeUseCase: FinishExchangeUseCase,
 ) : BaseViewModel(errorMapper) {
 
-    private val TAG = "BookDetailsViewModel"
 
     private val _book: MutableLiveData<Book> by lazy {
         MutableLiveData()

@@ -25,7 +25,6 @@ class SearchBookFragment : BaseFragment<SearchBookViewModel>(R.layout.fragment_s
 
     private val dividerItemDecoration: DividerItemDecoration by inject()
 
-    private val TAG = "SearchBookFragment"
 
     override fun initViews() {
         super.initViews()

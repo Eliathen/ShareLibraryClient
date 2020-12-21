@@ -67,8 +67,6 @@ class ExchangesMapViewFragment :
 
     private var dialogContent: View? = null
 
-    private val TAG = "ExchangesMapViewFragment"
-
     private val PREFERENCES_KEY = "ShareLibraryPreferences"
     private val PREFS_TILE_SOURCE = "tilesource"
 
@@ -140,8 +138,12 @@ class ExchangesMapViewFragment :
             map?.overlays?.filter { it::class.java == Polygon::class.java }?.toCollection(toRemove)
             map?.overlays?.removeAll(toRemove)
             if (radius != defaultRadiusDistance) {
-                drawCircleAroundPointWithRadius(viewModel.currentCoordinates.value?.latitude!!,
-                    viewModel.currentCoordinates.value?.longitude!!, radius)
+                viewModel.currentCoordinates.value?.latitude?.let { latitude ->
+                    viewModel.currentCoordinates.value?.longitude?.let { longitude ->
+                        drawCircleAroundPointWithRadius(latitude,
+                            longitude, radius)
+                    }
+                }
             }
         }
     }
@@ -405,6 +407,7 @@ class ExchangesMapViewFragment :
         map?.invalidate()
     }
 
+    @SuppressLint("InflateParams")
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
         val key = viewModel.mapOfExchanges.value?.keys?.first {
             it.latitude == marker?.position?.latitude && it.longitude == marker?.position?.longitude

@@ -18,7 +18,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment_book_details) {
     override val viewModel: BookDetailsViewModel by viewModel()
 
-    private val TAG = "BookDetailsFragment"
 
     companion object {
         const val BOOK_DETAILS_KEY = "bookDetailsKey"

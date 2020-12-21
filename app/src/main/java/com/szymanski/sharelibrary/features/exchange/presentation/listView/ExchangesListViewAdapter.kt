@@ -1,13 +1,11 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.listView
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.helpers.convertAuthorDisplayableListToString
-import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import kotlinx.android.synthetic.main.item_exchanges_list_view.view.*
 
@@ -52,7 +50,6 @@ class ExchangesListViewAdapter : RecyclerView.Adapter<ExchangesListViewAdapter.V
         fun bind(exchangeDisplayable: ExchangeDisplayable) {
             val distance = exchangeDisplayable.distance
             with(view) {
-                Log.d(TAG, "bind: $distance")
                 if (distance != null) {
                     exchange_distance.text = if (distance < 1.0) {
                         "$distance m"

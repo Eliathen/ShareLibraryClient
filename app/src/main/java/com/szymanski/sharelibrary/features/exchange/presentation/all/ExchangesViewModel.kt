@@ -93,7 +93,7 @@ class ExchangesViewModel(
     private val chosenCategories: MutableMap<String, Boolean>? = mutableMapOf()
 
     val circleRadius: MutableLiveData<Double> by lazy {
-        MutableLiveData(radius!! * 1000.0)
+        MutableLiveData(radius?.times(1000.0))
     }
 
     fun setQuery(query: String) {
@@ -120,8 +120,6 @@ class ExchangesViewModel(
             result.onSuccess { _user.value = it }
         }
     }
-
-    private val TAG = "ExchangesViewModel"
 
     fun getFilteredExchanges() {
         val request = SearchRequest(
@@ -153,25 +151,6 @@ class ExchangesViewModel(
         radius = defaultRadiusDistance
         chosenCategories!!.clear()
         circleRadius.value = defaultRadiusDistance
-    }
-
-    private fun getExchanges() {
-        setPendingState()
-        getExchangesUseCase(
-            scope = viewModelScope,
-            params = userId
-        ) { result ->
-            setIdleState()
-            result.onSuccess {
-                if (sortOption != null) {
-                    _exchanges.value = sort(sortOption!!)
-                } else _exchanges.value = it
-                createMapFromExchanges(it)
-            }
-            result.onFailure {
-                handleFailure(it)
-            }
-        }
     }
 
     private fun createMapFromExchanges(exchanges: List<Exchange>) {

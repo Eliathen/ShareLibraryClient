@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.book.presentation.all
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -36,7 +35,6 @@ class BooksViewModel(
     private val userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
 
-    private val TAG = "BooksViewModel"
 
     private val _books by lazy {
         MutableLiveData<List<Book>>()
@@ -61,7 +59,6 @@ class BooksViewModel(
             }
 
             result.onFailure { throwable ->
-                Log.d(TAG, "getUsersBook: ${throwable.message}")
                 handleFailure(throwable)
             }
         }

@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.chat.presentation.room
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -15,6 +16,7 @@ import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.network.HeaderInterceptor
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.chat.domain.model.Message
 import com.szymanski.sharelibrary.features.chat.domain.model.Room
 import com.szymanski.sharelibrary.features.chat.domain.usecase.GetRoomMessagesUseCase
@@ -32,7 +34,6 @@ class ChatRoomViewModel(
     private val api: Api,
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
-    private val TAG = "ChatRoomViewModel"
 
     val userId: Long = userStorage.getUserId()
 
@@ -91,24 +92,23 @@ class ChatRoomViewModel(
         stomp = StompClient(client, intervalMillis).apply {
             this.url = url
         }
-        val stompConnection = stomp.connect().subscribe { event ->
+        stomp.connect().subscribe { event ->
             when (event.type) {
                 Event.Type.OPENED -> {
                     stomp.url = url
-                    val topic =
-                        stomp.join("/user/${userId}/queue/messages").subscribe { newMessage ->
-                            val message =
-                                converter.fromJson(newMessage, MessageResponse::class.java)
+                    stomp.join("/user/${userId}/queue/messages").subscribe { newMessage ->
+                        val message =
+                            converter.fromJson(newMessage, MessageResponse::class.java)
 
-                            var all = _messages.value
-                            if (all == null) {
-                                all = mutableListOf()
-                            }
-                            all.add(message.toMessage())
-                            GlobalScope.launch {
-                                _messages.postValue(all)
-                            }
+                        var all = _messages.value
+                        if (all == null) {
+                            all = mutableListOf()
                         }
+                        all.add(message.toMessage())
+                        GlobalScope.launch {
+                            _messages.postValue(all)
+                        }
+                    }
                 }
                 Event.Type.CLOSED -> {
 
@@ -140,10 +140,13 @@ class ChatRoomViewModel(
         sendMessageUsingSocket(mess)
     }
 
+    @SuppressLint("CheckResult")
     private fun sendMessageUsingSocket(message: SendMessageRequest) {
-        val sending = stomp.send("/app/chat", converter.toJson(message)).subscribe() {
+        stomp.send("/app/chat", converter.toJson(message)).subscribe() {
             if (it) {
+                Log.d(TAG, "sendMessageUsingSocket: sended")
             } else {
+                Log.d(TAG, "sendMessageUsingSocket: not sended")
             }
         }
     }

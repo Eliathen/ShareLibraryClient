@@ -33,8 +33,6 @@ class RequirementsViewModel(
     private val userStorage: UserStorage,
 ) : BaseViewModel() {
 
-    private val TAG = "RequirementsViewModel"
-
     private val _requirements: MutableLiveData<List<Requirement>> by lazy {
         MutableLiveData<List<Requirement>>().also {
             getRequirements()

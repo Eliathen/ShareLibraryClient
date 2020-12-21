@@ -27,8 +27,6 @@ class ExchangeDetailsViewModel(
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
 
-    private val TAG = "ExchangeDetailsViewMode"
-
     val userId = userStorage.getUserId()
 
     private val _exchange: MutableLiveData<Exchange> by lazy {

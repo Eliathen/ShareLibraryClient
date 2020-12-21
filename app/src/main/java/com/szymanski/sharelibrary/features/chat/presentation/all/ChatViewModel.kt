@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.chat.presentation.all
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -19,7 +18,6 @@ class ChatViewModel(
     private val chatNavigation: ChatNavigation,
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
-    private val TAG = "ChatViewModel"
 
     private val _rooms: MutableLiveData<List<Room>> by lazy {
         MutableLiveData<List<Room>>().also {
@@ -44,7 +42,6 @@ class ChatViewModel(
         ) { result ->
             setIdleState()
             result.onSuccess {
-                Log.d(TAG, "loadRooms: $it ")
                 _rooms.value = it
             }
             result.onFailure { handleFailure(it) }

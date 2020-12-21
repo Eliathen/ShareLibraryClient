@@ -1,7 +1,6 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.exchangedbook
 
 import android.app.AlertDialog
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,7 +73,6 @@ class ExchangedBookFragment :
         }
     }
 
-    private val TAG = "ExchangedBookFragment"
     private fun displayBookDetails(exchange: ExchangeDisplayable) {
         val book = exchange.book
         val content = layoutInflater.inflate(R.layout.dialog_other_user_book_details, null)
@@ -99,7 +97,6 @@ class ExchangedBookFragment :
             dialog_other_user_details_full_name.text = fullName
             dialog_other_user_book_details_status_wrapper.visibility = View.GONE
             dialog_other_user_send_message_button.setOnClickListener {
-                Log.d(TAG, "displayBookDetails: XDDD")
                 //TODO open chat room screen
             }
         }
