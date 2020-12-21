@@ -403,7 +403,6 @@ class ExchangesMapViewFragment :
             false
         }
         map?.overlays?.add(0, distanceCircle)
-//        map?.overlayManager?.add(distanceCircle)
         map?.invalidate()
     }
 

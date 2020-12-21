@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.exchange.presentation.listView.ExchangesListViewAdapter
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
@@ -91,13 +92,17 @@ class ExchangedBookFragment :
             other_user_book_details_author.text = book.authorsDisplayable?.let {
                 convertAuthorDisplayableListToString(it)
             }
+            other_user_book_category.text = book.categoriesDisplayable?.let {
+                convertCategoriesDisplayableListToString(it)
+            }
             dialog_other_user_details_label.text = context.getString(R.string.owner_label)
             dialog_other_user_details_wrapper.visibility = View.VISIBLE
             val fullName = "${exchange.user.name} ${exchange.user.surname}"
             dialog_other_user_details_full_name.text = fullName
             dialog_other_user_book_details_status_wrapper.visibility = View.GONE
             dialog_other_user_send_message_button.setOnClickListener {
-                //TODO open chat room screen
+                dialog.dismiss()
+                exchange.user.let { viewModel.openChatRoom(it) }
             }
         }
     }
