@@ -21,6 +21,6 @@ data class ExchangeResponse(
         distance = this.distance,
         exchangeStatus = this.exchangeStatus,
         id = this.id,
-        user = this.user.toUser(),
+        user = this.user.toUser()
     )
 }

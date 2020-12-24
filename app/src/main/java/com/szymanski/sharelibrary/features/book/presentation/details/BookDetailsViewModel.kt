@@ -6,16 +6,21 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
+import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.FinishExchangeUseCase
+import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetUserExchangesUseCase
+import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 
 class BookDetailsViewModel(
     private val bookNavigator: BookNavigator,
-    errorMapper: ErrorMapper,
     private val finishExchangeUseCase: FinishExchangeUseCase,
+    private val userStorage: UserStorage,
+    private val getUserExchangesUseCase: GetUserExchangesUseCase,
+    errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
 
 
@@ -65,6 +70,22 @@ class BookDetailsViewModel(
 
     fun displayUserProfile() {
         bookNavigator.openOtherUserProfileScreen(_book.value?.atUser?.id!!)
+    }
+
+    fun displayExchangeOnMap() {
+        getUserExchangesUseCase(
+            scope = viewModelScope,
+            params = userStorage.getUserId()
+        ) { result ->
+            result.onSuccess { exchanges ->
+                val exchange =
+                    exchanges.first { it.book.id == _book.value?.id }
+                bookNavigator.displayExchangeOnMap(ExchangeDisplayable(exchange))
+            }
+            result.onFailure {
+                handleFailure(it)
+            }
+        }
     }
 
 }

@@ -15,7 +15,7 @@ import org.koin.dsl.module
 
 val exchangesModule = module {
     //viewModel
-    viewModel { ExchangesViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { ExchangesViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { ExchangeDetailsViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { ExchangedBookViewModel(get(), get(), get(), get(), get(), get()) }
 
@@ -30,6 +30,8 @@ val exchangesModule = module {
     factory { ExecuteExchangeUseCase(get()) }
     factory { GetExchangesByAtUserId(get()) }
     factory { GetExchangesByFiltersUseCase(get()) }
+    factory { GetUserExchangesUseCase(get()) }
+
     //adapter
     factory { ExchangesListViewAdapter() }
 

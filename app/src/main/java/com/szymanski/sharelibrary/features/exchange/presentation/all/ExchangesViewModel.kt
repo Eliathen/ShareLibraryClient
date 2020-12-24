@@ -14,7 +14,6 @@ import com.szymanski.sharelibrary.features.book.domain.model.Category
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCategoriesUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesByFiltersUseCase
-import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesUseCase
 import com.szymanski.sharelibrary.features.exchange.navigation.ExchangeNavigation
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
@@ -25,7 +24,6 @@ import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayab
 
 class ExchangesViewModel(
     errorMapper: ErrorMapper,
-    private val getExchangesUseCase: GetExchangesUseCase,
     private val exchangeNavigation: ExchangeNavigation,
     private val getUserUseCase: GetUserUseCase,
     private val getExchangesByFiltersUseCase: GetExchangesByFiltersUseCase,
@@ -53,15 +51,6 @@ class ExchangesViewModel(
             getCategories()
         }
 
-    private fun getCategories() {
-        getCategoriesUseCase(
-            scope = viewModelScope,
-            params = Unit
-        ) { result ->
-            result.onSuccess { listOfCategories.value = it.sortedBy { category -> category.name } }
-        }
-    }
-
     private val _exchanges: MutableLiveData<List<Exchange>> by lazy {
         MutableLiveData<List<Exchange>>()
     }
@@ -81,19 +70,43 @@ class ExchangesViewModel(
     private val _currentCoordinates: MutableLiveData<Coordinate> by lazy {
         MutableLiveData<Coordinate>()
     }
+
     val currentCoordinates: LiveData<CoordinateDisplayable> by lazy {
         _currentCoordinates.map {
             CoordinateDisplayable(it)
         }
     }
-    private var query: String? = ""
 
+    private var query: String? = ""
     private var radius: Double? = defaultRadiusDistance
 
     private val chosenCategories: MutableMap<String, Boolean>? = mutableMapOf()
 
     val circleRadius: MutableLiveData<Double> by lazy {
         MutableLiveData(radius?.times(1000.0))
+    }
+
+    private val _exchangeToDisplay: MutableLiveData<Exchange> by lazy {
+        MutableLiveData<Exchange>()
+    }
+
+    val exchangeToDisplay: LiveData<ExchangeDisplayable> by lazy {
+        _exchangeToDisplay.map {
+            ExchangeDisplayable(it)
+        }
+    }
+
+    fun setExchangeToDisplay(exchange: ExchangeDisplayable) {
+        _exchangeToDisplay.value = exchange.toExchange()
+    }
+
+    private fun getCategories() {
+        getCategoriesUseCase(
+            scope = viewModelScope,
+            params = Unit
+        ) { result ->
+            result.onSuccess { listOfCategories.value = it.sortedBy { category -> category.name } }
+        }
     }
 
     fun setQuery(query: String) {
@@ -202,6 +215,5 @@ class ExchangesViewModel(
     fun navigateBack() {
         exchangeNavigation.navigateBack()
     }
-
 
 }

@@ -98,6 +98,9 @@
         <action
             android:id="@+id/action_navigate_from_book_details_screen_to_other_user_screen"
             app:destination="@id/other_user_screen" />
+        <action
+            android:id="@+id/action_navigate_from_book_details_screen_to_exchanges_screen"
+            app:destination="@+id/exchanges_screen" />
     </fragment>
 
     <fragment

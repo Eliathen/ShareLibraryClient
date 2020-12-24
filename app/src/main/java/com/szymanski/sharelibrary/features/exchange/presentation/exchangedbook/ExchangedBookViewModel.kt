@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.exchangedbook
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
-import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
@@ -59,7 +57,6 @@ class ExchangedBookViewModel(
         ) { result ->
             setIdleState()
             result.onSuccess {
-                Log.d(TAG, "loadExchanges: $it")
                 _exchanges.value = it
             }
             result.onFailure { handleFailure(it) }

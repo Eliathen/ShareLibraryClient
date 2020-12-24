@@ -4,6 +4,8 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
 import com.szymanski.sharelibrary.features.book.presentation.details.BookDetailsFragment
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
+import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesFragment
+import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import com.szymanski.sharelibrary.features.user.presentation.otheruser.OtherUserFragment
 
 
@@ -36,5 +38,10 @@ class BookNavigatorImpl(
     override fun openOtherUserProfileScreen(otherUserId: Long) {
         fragmentNavigator.navigateTo(R.id.action_navigate_from_book_details_screen_to_other_user_screen,
             OtherUserFragment.OTHER_USER_FRAGMENT_KEY to otherUserId)
+    }
+
+    override fun displayExchangeOnMap(exchange: ExchangeDisplayable) {
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_book_details_screen_to_exchanges_screen,
+            ExchangesFragment.EXCHANGE_KEY to exchange)
     }
 }

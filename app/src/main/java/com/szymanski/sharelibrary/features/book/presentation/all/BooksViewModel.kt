@@ -79,7 +79,7 @@ class BooksViewModel(
                         _books.value?.let { it1 -> booksWithCovers.addAll(it1) }
                         _books.value = booksWithCovers.sortedBy { book -> book.id }.toList()
                     }
-                    result.onFailure { it ->
+                    result.onFailure {
                         handleFailure(it)
 
                     }
@@ -147,7 +147,7 @@ class BooksViewModel(
             deposit = deposit,
             exchangeStatus = ExchangeStatus.STARTED,
             coordinates = coordinate,
-            distance = null
+            distance = null,
         )
 
         shareBookUseCase(

@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.view.Menu
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
@@ -28,6 +30,8 @@ import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.utils.SortOption
+import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
+import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_sort.view.*
 import kotlinx.android.synthetic.main.dialog_filters.view.*
 import kotlinx.android.synthetic.main.fragment_exchange.*
@@ -43,11 +47,29 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
     private val REQUEST_LOCATION_CODE = 101
 
+    private lateinit var pagerAdapter: ExchangesViewPagerAdapter
+
+    private lateinit var viewPager: ViewPager2
+
+    companion object {
+        const val EXCHANGE_KEY = "ExchangeToDisplayKey"
+    }
+
     override fun initViews() {
         super.initViews()
         initAppBar()
         setViewPager()
         getLastLocation()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (arguments != null && arguments?.containsKey(EXCHANGE_KEY)!!) {
+            val exchange = arguments?.get(EXCHANGE_KEY) as ExchangeDisplayable
+            viewModel.setExchangeToDisplay(exchange)
+            viewPager.postDelayed({ viewPager.currentItem = 1 }, 10)
+        }
+
     }
 
     private fun initAppBar() {
@@ -71,7 +93,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         setSearchView(menu)
     }
 
-
     private fun setSearchView(menu: Menu) {
         val searchItem = menu.findItem(R.id.exchange_searchView)
         val filterItem = menu.findItem(R.id.exchange_filter)
@@ -81,7 +102,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
         val displayMetrics = requireActivity().resources.displayMetrics
         searchView.maxWidth = displayMetrics.widthPixels - filterItem.icon.intrinsicWidth * 2
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.setQuery(query!!)
@@ -113,8 +133,8 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
     }
 
     private fun setViewPager() {
-        val viewPager = exchange_viewPager
-        val pagerAdapter = ExchangesViewPagerAdapter(requireActivity())
+        viewPager = exchange_viewPager
+        pagerAdapter = ExchangesViewPagerAdapter(requireActivity())
         viewPager.isUserInputEnabled = false
         viewPager.adapter = pagerAdapter
         TabLayoutMediator(exchangeTabLayout, viewPager) { tab: TabLayout.Tab, position: Int ->
@@ -179,6 +199,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
             }
             dialog_filters_cancel_button.setOnClickListener { dialog.dismiss() }
             dialog_filters_filter_button.setOnClickListener {
+                if (viewModel.getRadius() == defaultRadiusDistance) viewModel.setRadius(1.0)
                 viewModel.getFilteredExchanges()
                 dialog.dismiss()
             }

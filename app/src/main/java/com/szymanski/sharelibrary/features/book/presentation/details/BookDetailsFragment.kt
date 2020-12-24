@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.book.presentation.details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
@@ -8,6 +9,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookStatus
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.fragment_book_details.*
@@ -52,6 +54,10 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         finish_exchange.setOnClickListener {
             viewModel.finishExchange(viewModel.book.value?.id!!)
         }
+        book_details_show_on_map.setOnClickListener {
+            Log.d(TAG, "initListeners: Clicked on show on map")
+            viewModel.displayExchangeOnMap()
+        }
     }
 
     override fun initObservers() {
@@ -78,6 +84,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         status_during_exchange_wrapper.visibility = View.VISIBLE
         status_exchanged_wrapper.visibility = View.GONE
         user_details_wrapper.visibility = View.GONE
+        book_details_show_on_map.visibility = View.VISIBLE
 
     }
 
@@ -85,6 +92,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         status_exchanged_wrapper.visibility = View.GONE
         status_during_exchange_wrapper.visibility = View.GONE
         user_details_wrapper.visibility = View.GONE
+        book_details_show_on_map.visibility = View.GONE
 
     }
 
@@ -92,6 +100,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         status_exchanged_wrapper.visibility = View.VISIBLE
         user_details_wrapper.visibility = View.VISIBLE
         status_during_exchange_wrapper.visibility = View.GONE
+        book_details_show_on_map.visibility = View.VISIBLE
     }
 
     private fun showBookDetails(bookDisplayable: BookDisplayable) {
