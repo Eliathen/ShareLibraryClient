@@ -5,4 +5,5 @@ interface ExchangeNavigation {
     fun openExchangeDetails(exchangeId: Long)
 
     fun openOtherUserScreen(userId: Long)
+    fun navigateBack()
 }

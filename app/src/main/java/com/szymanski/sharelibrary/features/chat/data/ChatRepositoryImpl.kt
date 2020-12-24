@@ -20,4 +20,11 @@ class ChatRepositoryImpl(
         return callOrThrow(errorWrapper) { api.getRoomMessages(roomId).map { it.toMessage() } }
     }
 
+    override suspend fun getRoomBySenderIdAndRecipientId(senderId: Long, recipientId: Long): Room {
+        return callOrThrow(errorWrapper) {
+            api.getRoomBySenderIdAndRecipientId(senderId,
+                recipientId).toRoom()
+        }
+    }
+
 }

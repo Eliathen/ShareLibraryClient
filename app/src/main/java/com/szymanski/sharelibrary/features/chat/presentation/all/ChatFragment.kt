@@ -16,7 +16,6 @@ class ChatFragment : BaseFragment<ChatViewModel>(R.layout.fragment_chat), ChatAd
 
     private val linearLayoutManager: LinearLayoutManager by inject()
 
-    private val TAG = "ChatFragment"
 
     override fun initViews() {
         super.initViews()
@@ -29,6 +28,7 @@ class ChatFragment : BaseFragment<ChatViewModel>(R.layout.fragment_chat), ChatAd
             adapter = chatAdapter
         }
         chatAdapter.setListeners(this)
+        chatAdapter.setUserId(viewModel.userId)
     }
 
     override fun initObservers() {
@@ -49,7 +49,9 @@ class ChatFragment : BaseFragment<ChatViewModel>(R.layout.fragment_chat), ChatAd
     }
 
     override fun onItemClick(position: Int) {
-        viewModel.rooms.value?.get(position)?.id?.let { viewModel.openChatRoom(it) }
+        viewModel.rooms.value?.get(position)?.let {
+            viewModel.openChatRoom(it)
+        }
     }
 
     override fun onDestroyView() {

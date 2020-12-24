@@ -1,13 +1,13 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.exchangedbook
 
 import android.app.AlertDialog
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.exchange.presentation.listView.ExchangesListViewAdapter
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
@@ -74,7 +74,6 @@ class ExchangedBookFragment :
         }
     }
 
-    private val TAG = "ExchangedBookFragment"
     private fun displayBookDetails(exchange: ExchangeDisplayable) {
         val book = exchange.book
         val content = layoutInflater.inflate(R.layout.dialog_other_user_book_details, null)
@@ -93,14 +92,17 @@ class ExchangedBookFragment :
             other_user_book_details_author.text = book.authorsDisplayable?.let {
                 convertAuthorDisplayableListToString(it)
             }
+            other_user_book_category.text = book.categoriesDisplayable?.let {
+                convertCategoriesDisplayableListToString(it)
+            }
             dialog_other_user_details_label.text = context.getString(R.string.owner_label)
             dialog_other_user_details_wrapper.visibility = View.VISIBLE
-            dialog_other_user_details_user_name.text = exchange.user.name
-            dialog_other_user_details_user_surname.text = exchange.user.surname
+            val fullName = "${exchange.user.name} ${exchange.user.surname}"
+            dialog_other_user_details_full_name.text = fullName
             dialog_other_user_book_details_status_wrapper.visibility = View.GONE
             dialog_other_user_send_message_button.setOnClickListener {
-                Log.d(TAG, "displayBookDetails: XDDD")
-                //TODO open chat room screen
+                dialog.dismiss()
+                exchange.user.let { viewModel.openChatRoom(it) }
             }
         }
     }

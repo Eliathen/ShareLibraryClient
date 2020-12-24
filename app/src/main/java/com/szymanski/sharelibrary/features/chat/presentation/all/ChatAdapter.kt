@@ -14,6 +14,8 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     private var listener: Listener? = null
 
+    private var userId: Long? = null
+
     fun setRooms(rooms: List<RoomDisplayable>) {
         if (this.rooms.isNotEmpty()) this.rooms.clear()
         this.rooms.addAll(rooms)
@@ -22,6 +24,10 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     fun setListeners(listener: Listener) {
         this.listener = listener
+    }
+
+    fun setUserId(userId: Long) {
+        this.userId = userId
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatAdapter.ViewHolder {
@@ -43,9 +49,17 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
         fun bind(room: RoomDisplayable) {
             with(view) {
                 setOnClickListener(this@ViewHolder)
-                val fullName = "${room.recipient?.name} ${room.recipient?.surname}"
+                var fullName = ""
+                var username = ""
+                if (room.recipient?.id == userId) {
+                    fullName = "${room.sender?.name} ${room.sender?.surname}"
+                    username = room.sender?.username!!
+                } else {
+                    fullName = "${room.recipient?.name} ${room.recipient?.surname}"
+                    username = room.recipient?.username!!
+                }
                 item_chat_room_full_name.text = fullName
-                item_chat_room_username.text = room.recipient?.username
+                item_chat_room_username.text = username
             }
 
         }

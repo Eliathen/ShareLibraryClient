@@ -1,5 +1,6 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.exchangedbook
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -7,16 +8,23 @@ import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
+import com.szymanski.sharelibrary.features.chat.domain.usecase.GetRoomBySenderIdAndRecipientIdUseCase
+import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesByAtUserId
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
+import com.szymanski.sharelibrary.features.home.navigation.HomeNavigation
+import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 
 class ExchangedBookViewModel(
     errorMapper: ErrorMapper,
     private val getExchangesByAtUserId: GetExchangesByAtUserId,
+    private val getRoomBySenderIdAndRecipientIdUseCase: GetRoomBySenderIdAndRecipientIdUseCase,
+    private val homeNavigation: HomeNavigation,
     private val userStorage: UserStorage,
     private val getCoverUseCase: GetCoverUseCase,
 ) : BaseViewModel(errorMapper) {
@@ -50,7 +58,10 @@ class ExchangedBookViewModel(
             params = userStorage.getUserId()
         ) { result ->
             setIdleState()
-            result.onSuccess { _exchanges.value = it }
+            result.onSuccess {
+                Log.d(TAG, "loadExchanges: $it")
+                _exchanges.value = it
+            }
             result.onFailure { handleFailure(it) }
         }
     }
@@ -67,6 +78,21 @@ class ExchangedBookViewModel(
             result.onFailure {
                 handleFailure(it)
             }
+        }
+    }
+
+    fun openChatRoom(otherUser: UserDisplayable) {
+        getRoomBySenderIdAndRecipientIdUseCase(
+            params = Pair(userStorage.getUserId(), otherUser.id!!),
+            scope = viewModelScope
+        ) { result ->
+            result.onSuccess {
+                homeNavigation.openChatRoomIfExists(RoomDisplayable(it))
+            }
+            result.onFailure {
+                homeNavigation.openChatRoomIfNotExists(otherUser)
+            }
+
         }
     }
 }

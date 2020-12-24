@@ -10,7 +10,8 @@
     <ImageView
         android:layout_width="10dp"
         android:layout_height="match_parent"
-        android:src="@drawable/item_requirement_decoration" />
+        android:src="@drawable/item_requirement_decoration"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,9 +23,22 @@
             android:id="@+id/exchanges_book_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:textSize="25sp"
             tools:text="Władca pierścieni dwie wieże" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/exchanges_authors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                tools:text="Aleksander Kowalski" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,18 +47,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingEnd="10dp"
-                android:text="@string/share_by"
-                tools:ignore="RtlSymmetry" />
-
-            <TextView
-                android:id="@+id/exchanges_user_full_name"
+                android:id="@+id/exchange_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                tools:text="Aleksander Kowalski" />
+                tools:text="1900m" />
         </LinearLayout>
     </LinearLayout>
 

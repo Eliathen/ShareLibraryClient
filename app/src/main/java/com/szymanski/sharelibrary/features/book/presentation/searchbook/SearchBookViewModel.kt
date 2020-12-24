@@ -101,6 +101,7 @@ class SearchBookViewModel(
             scope = viewModelScope,
             params = AssignBookRequest(userStorage.getUserId(), bookDisplayable?.id!!)
         ) { result ->
+            setIdleState()
             result.onSuccess {
                 _usersBooks.value = it.books
             }

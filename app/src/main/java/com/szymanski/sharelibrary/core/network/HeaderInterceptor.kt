@@ -1,15 +1,15 @@
 package com.szymanski.sharelibrary.core.network
 
-import com.szymanski.sharelibrary.core.api.Constant
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
+import com.szymanski.sharelibrary.core.utils.API_URL
 import okhttp3.Interceptor
 import okhttp3.Response
 
 class HeaderInterceptor(private val userStorage: UserStorage) : Interceptor {
 
     private val urlWithNoAuthorization = arrayListOf(
-        Constant.apiUrl + "login",
-        Constant.apiUrl + "users/register")
+        API_URL + "login",
+        API_URL + "users/register")
 
     override fun intercept(chain: Interceptor.Chain): Response {
         if (urlWithNoAuthorization.contains(chain.request().url.toString())) {

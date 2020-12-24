@@ -34,8 +34,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private val TAG = "ProfileFragment"
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbar()

@@ -16,6 +16,9 @@ interface Api {
     @POST("login")
     suspend fun login(@Body loginRequest: LoginRequest): LoginResponse
 
+    @GET("categories")
+    suspend fun getCategories(): List<CategoryResponse>
+
     @POST("books")
     @Multipart
     @JvmSuppressWildcards
@@ -23,6 +26,7 @@ interface Api {
         @Part("title") title: String,
         @Part image: MultipartBody.Part,
         @PartMap authors: Map<String, RequestBody>,
+        @PartMap categories: Map<String, RequestBody>,
         @Part("userId") userId: Long,
     )
 
@@ -80,5 +84,20 @@ interface Api {
 
     @GET("chat/rooms/{roomId}/messages")
     suspend fun getRoomMessages(@Path("roomId") roomId: Long): List<MessageResponse>
+
+    @GET("exchanges/filter")
+    suspend fun getExchangesWithFilter(
+        @Query("lat") latitude: Double,
+        @Query("long") longitude: Double,
+        @Query("rad") radius: Double?,
+        @Query("cat") categories: List<String>?,
+        @Query("q") query: String?,
+    ): List<ExchangeResponse>
+
+    @GET("chat/rooms")
+    suspend fun getRoomBySenderIdAndRecipientId(
+        @Query("sender") senderId: Long,
+        @Query("recipient") recipient: Long,
+    ): ChatRoomResponse
 
 }

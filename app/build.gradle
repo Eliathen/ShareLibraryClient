@@ -71,6 +71,11 @@ dependencies {
 
     implementation preferencesDependencies.values()
 
+    implementation 'com.shawnlin:number-picker:2.4.11'
+
+    def stompClientVersion = "2.0.5"
+    implementation "com.github.bishoybasily.stomp:lib:" + stompClientVersion
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

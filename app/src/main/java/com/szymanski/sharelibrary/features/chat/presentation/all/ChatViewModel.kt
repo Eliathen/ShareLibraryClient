@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.chat.presentation.all
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -19,13 +18,13 @@ class ChatViewModel(
     private val chatNavigation: ChatNavigation,
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
-    private val TAG = "ChatViewModel"
 
     private val _rooms: MutableLiveData<List<Room>> by lazy {
         MutableLiveData<List<Room>>().also {
             loadRooms()
         }
     }
+    val userId = userStorage.getUserId()
 
     val rooms: LiveData<List<RoomDisplayable>> by lazy {
         _rooms.map {
@@ -43,14 +42,13 @@ class ChatViewModel(
         ) { result ->
             setIdleState()
             result.onSuccess {
-                Log.d(TAG, "loadRooms: $it ")
                 _rooms.value = it
             }
             result.onFailure { handleFailure(it) }
         }
     }
 
-    fun openChatRoom(roomId: Long) {
-        chatNavigation.openChatRoom(roomId)
+    fun openChatRoom(room: RoomDisplayable) {
+        chatNavigation.openChatRoom(room)
     }
 }

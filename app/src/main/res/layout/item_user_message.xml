@@ -6,12 +6,21 @@
     android:layout_marginHorizontal="10dp">
 
     <TextView
+        android:id="@+id/user_message_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:textSize="12sp"
+        tools:text="25/12/2020" />
+
+    <TextView
         android:id="@+id/user_text_message_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@id/user_text_message_body"
-        android:layout_marginVertical="5dp"
         android:textSize="14sp"
+        android:layout_below="@id/user_message_date"
         tools:text="John Doe" />
 
     <TextView
@@ -23,7 +32,7 @@
         android:layout_marginBottom="5dp"
         android:background="@drawable/user_message"
         android:maxWidth="240dp"
-        android:padding="8dp"
+        android:padding="@dimen/dp_8"
         android:textColor="#ffffff"
         tools:text="hi man, how are you?" />
 
@@ -32,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/user_text_message_body"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/dp_4"
         android:layout_toStartOf="@id/user_text_message_body"
         android:textSize="12sp"
         tools:text="11:40" />

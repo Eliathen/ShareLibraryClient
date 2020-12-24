@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".features.exchange.presentation.details.ExchangeDetailsFragment">
 
     <include layout="@layout/toolbar_base" />
 
     <ScrollView
+        android:id="@+id/exchange_details_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -41,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:orientation="vertical"
-                android:paddingBottom="20dp">
+                android:paddingBottom="10dp">
 
 
                 <TextView
@@ -60,6 +62,32 @@
                     android:textSize="18sp"
                     tools:text="Authors" />
 
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/category_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:layout_marginHorizontal="20dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category_label"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/exchange_details_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:textSize="18sp"
+                    android:layout_marginStart="5dp"
+                    tools:text="Category" />
 
             </LinearLayout>
 
@@ -118,7 +146,8 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/register_button_background"
                         android:src="@drawable/ic_person_24"
-                        android:tint="@color/colorPrimaryDark" />
+                        app:tint="@color/colorPrimaryDark"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:id="@+id/exchange_details_user_name"
@@ -158,21 +187,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/register_button_background"
                     android:paddingHorizontal="10dp"
                     android:text="@string/user_profile"
-                    android:textColor="@color/colorPrimaryDark" />
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    tools:ignore="ButtonStyle" />
 
                 <Button
                     android:id="@+id/exchange_details_request_book"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/login_button_background"
                     android:paddingHorizontal="10dp"
+                    style="@style/Widget.MaterialComponents.Button"
                     android:text="@string/request_book"
-                    android:textColor="@color/white"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:ignore="ButtonStyle" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

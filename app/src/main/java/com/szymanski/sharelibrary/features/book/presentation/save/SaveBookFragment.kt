@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.book.presentation.save
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -64,6 +65,16 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         }
     }
 
+    override fun initObservers() {
+        super.initObservers()
+        viewModel.categories.observe(this) {
+            if (it != null) {
+                save_book_category_button.isClickable = true
+            }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     private fun setListeners() {
         imageButton.setOnClickListener {
             if (checkSelfPermission(requireContext(),
@@ -77,6 +88,29 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         saveButton.setOnClickListener {
             attemptSaveBook()
         }
+        save_book_category_button.setOnClickListener {
+            displayCategoryDialog()
+        }
+    }
+
+    private fun displayCategoryDialog() {
+        val choices = mutableListOf<String>()
+        viewModel.categories.value?.forEach {
+            choices.add(it.name)
+        }
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setCancelable(false)
+            .setTitle(getString(R.string.choose_categories))
+            .setMultiChoiceItems(
+                choices.toTypedArray(),
+                viewModel.chosenCategories.toBooleanArray()
+            ) { _, which, isChecked ->
+                viewModel.chosenCategories[which] = isChecked
+            }
+            .setNeutralButton("Accept") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create().show()
     }
 
     private fun attemptSaveBook() {
@@ -107,7 +141,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         if (cover.isEmpty()) {
             cancel = true
             focusView = cover_image
-            displayAlertDialog()
+            displayDialogCoverIsRequired()
         }
 
         if (cancel) {
@@ -120,15 +154,15 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
                 authorsDisplayable = authors,
                 cover = this.cover,
                 status = BookStatus.AT_OWNER,
-                atUserDisplayable = null
+                atUserDisplayable = null,
+                categoriesDisplayable = null
             )
             viewModel.saveBook(book)
         }
     }
 
-    private fun displayAlertDialog() {
+    private fun displayDialogCoverIsRequired() {
         val builder = AlertDialog.Builder(requireContext())
-
         builder.setCancelable(false)
             .setMessage("Cover image is required")
             .setNeutralButton("OK") { dialog, _ -> dialog.cancel() }

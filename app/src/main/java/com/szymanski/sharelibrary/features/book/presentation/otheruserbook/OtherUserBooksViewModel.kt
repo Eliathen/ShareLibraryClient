@@ -27,7 +27,6 @@ class OtherUserBooksViewModel(
     private val createRequirementUseCase: CreateRequirementUseCase,
 ) : BaseViewModel(errorMapper) {
 
-    private val TAG = "BooksViewModel"
 
     val userId: Long = userStorage.getUserId()
 

@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.szymanski.sharelibrary.R
+import com.szymanski.sharelibrary.core.helpers.convertAuthorDisplayableListToString
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import kotlinx.android.synthetic.main.item_exchanges_list_view.view.*
 
-class ExchangesListViewAdapter() : RecyclerView.Adapter<ExchangesListViewAdapter.ViewHolder>() {
+class ExchangesListViewAdapter : RecyclerView.Adapter<ExchangesListViewAdapter.ViewHolder>() {
 
     private val exchanges: MutableList<ExchangeDisplayable> = mutableListOf()
 
@@ -47,11 +48,18 @@ class ExchangesListViewAdapter() : RecyclerView.Adapter<ExchangesListViewAdapter
     ) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         fun bind(exchangeDisplayable: ExchangeDisplayable) {
+            val distance = exchangeDisplayable.distance
             with(view) {
+                if (distance != null) {
+                    exchange_distance.text = if (distance < 1.0) {
+                        "$distance m"
+                    } else {
+                        "${String.format(" % .2f ", (distance / 1000))} km"
+                    }
+                }
                 exchanges_book_title.text = exchangeDisplayable.book.title
-                val fullName =
-                    "${exchangeDisplayable.user.name} ${exchangeDisplayable.user.surname}"
-                exchanges_user_full_name.text = fullName
+                exchanges_authors.text =
+                    convertAuthorDisplayableListToString(exchangeDisplayable.book.authorsDisplayable!!)
             }
             view.setOnClickListener(this)
         }

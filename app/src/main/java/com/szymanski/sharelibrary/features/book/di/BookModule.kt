@@ -1,7 +1,9 @@
 package com.szymanski.sharelibrary.features.book.di
 
 import com.szymanski.sharelibrary.features.book.data.BookRepositoryImpl
+import com.szymanski.sharelibrary.features.book.data.CategoryRepositoryImpl
 import com.szymanski.sharelibrary.features.book.domain.BookRepository
+import com.szymanski.sharelibrary.features.book.domain.CategoryRepository
 import com.szymanski.sharelibrary.features.book.domain.usecase.*
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigatorImpl
@@ -23,10 +25,11 @@ val bookModule = module {
     viewModel { BooksViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { BookDetailsViewModel(get(), get(), get()) }
     viewModel { SearchBookViewModel(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { SaveBookViewModel(get(), get(), get()) }
+    viewModel { SaveBookViewModel(get(), get(), get(), get()) }
     viewModel { OtherUserBooksViewModel(get(), get(), get(), get(), get(), get(), get()) }
     //repository
     factory<BookRepository> { BookRepositoryImpl(get(), get(), get()) }
+    factory<CategoryRepository> { CategoryRepositoryImpl(get(), get()) }
 
     //navigation
     factory<BookNavigator> { BookNavigatorImpl(get()) }
@@ -37,6 +40,7 @@ val bookModule = module {
     factory { SearchBookUseCase(get()) }
     factory { GetCoverUseCase(get()) }
     factory { AssignBookToUserUseCase(get()) }
+    factory { GetCategoriesUseCase(get()) }
 
     //Adapters
     factory { SearchBookAdapter() }

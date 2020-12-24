@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.book.presentation.all
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -36,7 +35,6 @@ class BooksViewModel(
     private val userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
 
-    private val TAG = "BooksViewModel"
 
     private val _books by lazy {
         MutableLiveData<List<Book>>()
@@ -54,10 +52,8 @@ class BooksViewModel(
         val userId = userStorage.getUserId()
         setPendingState()
         getUsersBookUseCase(scope = viewModelScope, params = userId) { result ->
-            Log.d(TAG, "getUsersBook: got result")
             setIdleState()
             result.onSuccess { books ->
-                Log.d(TAG, "getUsersBook: onSuccess")
                 _books.value = books
                 downloadImage(books)
             }
@@ -69,7 +65,6 @@ class BooksViewModel(
     }
 
     fun refreshBooks() {
-        Log.d(TAG, "refreshBooks: ")
         getUsersBook()
     }
 
@@ -152,6 +147,7 @@ class BooksViewModel(
             deposit = deposit,
             exchangeStatus = ExchangeStatus.STARTED,
             coordinates = coordinate,
+            distance = null
         )
 
         shareBookUseCase(
@@ -197,7 +193,6 @@ class BooksViewModel(
                     _books.value = newBooks
                 }
                 result.onFailure { throwable ->
-                    Log.d(TAG, "finishExchange: ${throwable.message}")
                     handleFailure(throwable)
                 }
             }

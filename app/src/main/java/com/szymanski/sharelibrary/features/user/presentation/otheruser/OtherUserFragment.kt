@@ -1,7 +1,6 @@
 package com.szymanski.sharelibrary.features.user.presentation.otheruser
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
@@ -12,8 +11,6 @@ import org.koin.android.ext.android.inject
 
 class OtherUserFragment : BaseFragment<OtherUserViewModel>(R.layout.fragment_other_user) {
     override val viewModel: OtherUserViewModel by inject()
-
-    private val TAG = "OtherUserFragment"
 
     companion object {
         const val OTHER_USER_FRAGMENT_KEY = "OtherUserIdKey"
@@ -49,10 +46,9 @@ class OtherUserFragment : BaseFragment<OtherUserViewModel>(R.layout.fragment_oth
 
     private fun initListeners() {
         send_message_button.setOnClickListener {
-
+            viewModel.openChatRoom()
         }
         view_books_button.setOnClickListener {
-            Log.d(TAG, "initListeners: ")
             viewModel.openOtherUserBooksScreen(viewModel.user.value?.id!!)
         }
     }

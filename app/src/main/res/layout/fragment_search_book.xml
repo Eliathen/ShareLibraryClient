@@ -11,25 +11,18 @@
         android:id="@+id/toolbar_wrapper"
         layout="@layout/toolbar_search_books" />
 
+    <ProgressBar
+        android:id="@+id/search_book_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_wrapper"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_wrapper">
-
-        <!--        <androidx.appcompat.widget.SearchView-->
-        <!--            android:id="@+id/books_search_view"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="15dp"-->
-        <!--            app:queryHint="@string/search_title"-->
-        <!--            android:background="@drawable/register_button_background" />-->
-
-        <!--        <androidx.core.widget.ContentLoadingProgressBar-->
-        <!--            android:visibility="gone"-->
-        <!--            android:id="@+id/progress_bar"-->
-        <!--            android:layout_width="50dp"-->
-        <!--            android:layout_height="50dp"-->
-        <!--            android:layout_centerHorizontal="true" />-->
+        android:layout_below="@+id/search_book_progress_bar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_books_recyclerView"
@@ -50,11 +43,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/register_button_background"
                 android:paddingHorizontal="20dp"
                 android:requiresFadingEdge="vertical"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="@string/not_found_add_new"
-                android:textColor="@color/black"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/right_guideline"

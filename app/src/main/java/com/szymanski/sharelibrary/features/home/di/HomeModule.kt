@@ -5,6 +5,8 @@ import com.szymanski.sharelibrary.features.home.domain.RequirementRepository
 import com.szymanski.sharelibrary.features.home.domain.usecase.CreateRequirementUseCase
 import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByIdUseCase
 import com.szymanski.sharelibrary.features.home.domain.usecase.GetUserRequirements
+import com.szymanski.sharelibrary.features.home.navigation.HomeNavigation
+import com.szymanski.sharelibrary.features.home.navigation.HomeNavigationImpl
 import com.szymanski.sharelibrary.features.home.presentation.all.HomeViewModel
 import com.szymanski.sharelibrary.features.home.presentation.requirements.RequirementsAdapter
 import com.szymanski.sharelibrary.features.home.presentation.requirements.RequirementsViewModel
@@ -16,7 +18,7 @@ val homeModule = module {
 
     //viewModel
     viewModel { HomeViewModel() }
-    viewModel { RequirementsViewModel(get(), get(), get(), get(), get()) }
+    viewModel { RequirementsViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     //repository
     factory<RequirementRepository> { RequirementRepositoryImpl(get(), get()) }
 
@@ -27,5 +29,8 @@ val homeModule = module {
 
     //adapter
     factory { RequirementsAdapter() }
+
+    //navigation
+    factory<HomeNavigation> { HomeNavigationImpl(get()) }
 
 }

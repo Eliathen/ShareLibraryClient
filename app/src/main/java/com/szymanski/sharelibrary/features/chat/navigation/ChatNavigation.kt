@@ -1,6 +1,8 @@
 package com.szymanski.sharelibrary.features.chat.navigation
 
+import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
+
 interface ChatNavigation {
 
-    fun openChatRoom(roomId: Long)
+    fun openChatRoom(room: RoomDisplayable)
 }

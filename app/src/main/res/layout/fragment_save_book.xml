@@ -42,12 +42,25 @@
                 android:layout_width="120dp"
                 android:layout_marginVertical="20dp"
                 android:layout_height="150dp"
+                android:layout_marginHorizontal="50dp"
                 android:src="@drawable/ic_launcher_background"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/book_title"
                 android:contentDescription="@string/books_cover_description"
                 tools:ignore="ContentDescription" />
+
+            <Button
+                android:id="@+id/save_book_category_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/categories_button"
+                style="@style/Widget.MaterialComponents.Button"
+                android:textColor="@color/white"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cover_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cover_image"
+                app:layout_constraintTop_toTopOf="@+id/cover_image" />
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -75,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/login_button_background"
                 android:paddingHorizontal="50dp"
+                android:paddingVertical="@dimen/dp_16"
                 android:text="@string/save_book"
                 android:textColor="@color/white"
                 android:layout_marginVertical="20dp"

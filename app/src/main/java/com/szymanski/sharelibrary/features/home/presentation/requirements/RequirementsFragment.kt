@@ -1,7 +1,6 @@
 package com.szymanski.sharelibrary.features.home.presentation.requirements
 
 import android.app.AlertDialog
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,9 +28,6 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
     private val dividerItemDecoration: DividerItemDecoration by inject()
 
     private val requirementsAdapter: RequirementsAdapter by inject()
-
-
-    private val TAG = "RequirementsFragment"
 
     override fun initViews() {
         super.initViews()
@@ -73,7 +69,6 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         val requirement = viewModel.requirement.value?.get(position)!!
         viewModel.getUserBooks(requirement.user?.id!!)
         viewModel.otherUserBooks.observe(this) {
-            Log.d(TAG, "onItemClick: ")
             displayExchangeDialog(requirement)
         }
     }
@@ -102,11 +97,6 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
             .setCancelable(false)
             .setView(contentView)
             .setTitle("Choose for what you want to exchange: ")
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setPositiveButton("Exchange") { _, _ ->
-            }
 
         val chooseAdapter = ChooseBookAdapter()
         contentView.dialog_choose_book_recycler_view.apply {
@@ -127,7 +117,10 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         chooseAdapter.setChoices(choices)
         val dialog = builder.create()
         dialog.show()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+        contentView.dialog_choose_book_cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        contentView.dialog_choose_book_exchange.setOnClickListener {
             val position = chooseAdapter.selectedPosition
             var params = mapOf<String, Long>()
             params =

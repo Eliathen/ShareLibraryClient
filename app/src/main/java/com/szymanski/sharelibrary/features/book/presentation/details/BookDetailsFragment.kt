@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
@@ -17,7 +18,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment_book_details) {
     override val viewModel: BookDetailsViewModel by viewModel()
 
-    private val TAG = "BookDetailsFragment"
 
     companion object {
         const val BOOK_DETAILS_KEY = "bookDetailsKey"
@@ -102,6 +102,9 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         bookDisplayable.authorsDisplayable?.let {
             book_details_author.text = convertAuthorDisplayableListToString(it)
         }
+        bookDisplayable.categoriesDisplayable?.let {
+            book_details_category.text = convertCategoriesDisplayableListToString(it)
+        }
         status_value.text = when (bookDisplayable.status) {
             BookStatus.SHARED -> {
                 getString(R.string.book_status_during_exchange)
@@ -113,8 +116,10 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
                 getString(R.string.book_status_at_owner)
             }
         }
+
         user_name_book_details.text = bookDisplayable.atUserDisplayable?.name
         user_surname_book_details.text = bookDisplayable.atUserDisplayable?.surname
+
     }
 
     private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {

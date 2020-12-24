@@ -1,7 +1,6 @@
 package com.szymanski.sharelibrary.features.chat.presentation.room
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import com.szymanski.sharelibrary.core.utils.MessageType
 import com.szymanski.sharelibrary.features.chat.presentation.model.MessageDisplayable
 import kotlinx.android.synthetic.main.item_other_user_message.view.*
 import kotlinx.android.synthetic.main.item_user_message.view.*
+import java.time.LocalDateTime
 
 class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -26,11 +26,9 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (messages.isNotEmpty()) messages.clear()
         messages.addAll(list)
         notifyDataSetChanged()
-        Log.d(TAG, "setMessages: SETTING MESSAGES = ${this.messages.size}")
     }
 
     override fun getItemViewType(position: Int): Int {
-        Log.d(TAG, "getItemViewType: GETTING ITEM VIEW TYPE")
         return if (messages[position].sender?.id == userId) {
             MessageType.IS_SENT.ordinal
         } else {
@@ -39,7 +37,6 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.d(TAG, "onCreateViewHolder: CREATE VIEW HOLDER ")
         return when (viewType) {
             0 -> {//isSent
                 val view = LayoutInflater.from(parent.context)
@@ -59,36 +56,36 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d(TAG, "onBindViewHolder: BIND VIEW HOLDER")
-        val message = this.messages[position]
         when (holder) {
             is SendMessageViewHolder -> {
-                holder.bind(message)
+                holder.bind(position)
             }
             is ReceiveMessageViewHolder -> {
-                holder.bind(message)
+                holder.bind(position)
             }
             else -> {
             }
         }
     }
 
-    private val TAG = "ChatRoomAdapter"
-
     inner class SendMessageViewHolder(private val view: View) :
         RecyclerView.ViewHolder(view) {
 
         @SuppressLint("NewApi")
-        fun bind(messageDisplayable: MessageDisplayable) {
+        fun bind(position: Int) {
+            val messageDisplayable = messages[position]
             with(view) {
-                Log.d(TAG, "bind: User message ")
+                if (shouldDisplayDate(position)) {
+                    user_message_date.text =
+                        messageDisplayable.timestamp?.toLocalDate().toString()
+                } else {
+                    user_message_date.visibility = View.GONE
+                }
                 val fullName =
                     "${messageDisplayable.sender!!.name} ${messageDisplayable.sender.surname}"
                 user_text_message_name.text = fullName
                 user_text_message_body.text = messageDisplayable.content
-                val date =
-                    "${messageDisplayable.timestamp?.toLocalDate()} ${messageDisplayable.timestamp?.hour}:${messageDisplayable.timestamp?.minute}"
-                user_text_message_time.text = date
+                user_text_message_time.text = formatDateToString(messageDisplayable.timestamp!!)
             }
         }
     }
@@ -96,18 +93,42 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class ReceiveMessageViewHolder(private val view: View) :
         RecyclerView.ViewHolder(view) {
 
-        @SuppressLint("SimpleDateFormat", "NewApi")
-        fun bind(messageDisplayable: MessageDisplayable) {
+        @SuppressLint("NewApi")
+        fun bind(position: Int) {
+            val messageDisplayable = messages[position]
             with(view) {
-                Log.d(TAG, "bind: Other user message")
+                if (shouldDisplayDate(position)) {
+                    other_user_message_date.text =
+                        messageDisplayable.timestamp?.toLocalDate().toString()
+                } else {
+                    this.other_user_message_date.visibility = View.GONE
+                }
                 val fullName =
                     "${messageDisplayable.sender!!.name} ${messageDisplayable.sender.surname}"
                 other_user_text_message_name.text = fullName
                 other_user_text_message_body.text = messageDisplayable.content
-                val date =
-                    "${messageDisplayable.timestamp?.toLocalDate()} ${messageDisplayable.timestamp?.hour}:${messageDisplayable.timestamp?.minute}"
-                other_user_text_message_time.text = date
+                other_user_text_message_time.text =
+                    formatDateToString(messageDisplayable.timestamp!!)
             }
         }
+    }
+
+    @SuppressLint("NewApi")
+    private fun shouldDisplayDate(position: Int): Boolean {
+        val messageDisplayable = messages[position]
+        if (position == 0) {
+            return true
+        } else if (messageDisplayable.timestamp?.toLocalDate() != messages[position - 1].timestamp?.toLocalDate()) {
+            return true
+        }
+        return false
+    }
+
+    @SuppressLint("NewApi")
+    private fun formatDateToString(date: LocalDateTime): String {
+        if (date.minute < 10) {
+            return "${date.hour}:0${date.minute}"
+        }
+        return "${date.hour}:${date.minute}"
     }
 }

@@ -14,6 +14,7 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.core.widget.doAfterTextChanged
 import com.google.android.gms.location.*
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
@@ -25,8 +26,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_register) {
     override val viewModel: RegisterViewModel by viewModel()
-
-    private val TAG = "RegisterFragment"
 
     private val REQUEST_LOCATION_CODE = 110
 
@@ -48,6 +47,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         setSignInTextListener()
         setRegisterButtonListener()
         setCoordinateButtonListener()
+        setTextWatchers()
     }
 
     private fun setCoordinateButtonListener() {
@@ -76,43 +76,93 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         }
     }
 
+    private fun setTextWatchers() {
+        password_edit_text.doAfterTextChanged {
+            if (!isPasswordValid(it.toString())) {
+                if (it.toString().isBlank()) {
+                    password_edit_text_wrapper.error = getString(R.string.field_required_error)
+                }
+                password_edit_text_wrapper.error = getString(R.string.invalid_password_error)
+                changeRegisterButtonState(false)
+            } else {
+                password_edit_text_wrapper.error = ""
+                changeRegisterButtonState(true)
+            }
+        }
+        full_name_edit_text.doAfterTextChanged {
+            if (it.toString().isBlank()) {
+                full_name_edit_text_wrapper.error = getString(R.string.field_required_error)
+                changeRegisterButtonState(false)
+            } else {
+                full_name_edit_text_wrapper.error = ""
+                changeRegisterButtonState(true)
+            }
+        }
+        user_name_edit_text.doAfterTextChanged {
+            if (it.toString().isBlank()) {
+                user_name_edit_text_wrapper.error = getString(R.string.field_required_error)
+                changeRegisterButtonState(false)
+            } else {
+                user_name_edit_text_wrapper.error = ""
+                changeRegisterButtonState(true)
+            }
+        }
+        email_edit_text.doAfterTextChanged {
+            if (isEmailInvalid(it.toString())) {
+                email_edit_text_wrapper.error = getString(R.string.invalid_email_error)
+                if (it.toString().isBlank()) {
+                    email_edit_text_wrapper.error = getString(R.string.field_required_error)
+                }
+                changeRegisterButtonState(false)
+            } else {
+                email_edit_text_wrapper.error = ""
+                changeRegisterButtonState(true)
+            }
+        }
+    }
+
+    private fun changeRegisterButtonState(state: Boolean) {
+        register_button.isClickable = state
+        register_button.isFocusable = state
+    }
+
     private fun attemptRegistration() {
-        val fullName = fullNameEditText.text.toString()
-        val userName = userNameEditText.text.toString()
-        val email = emailEditText.text.toString()
-        val password = passwordEditText.text.toString().toCharArray()
+        val fullName = full_name_edit_text.text.toString().trim()
+        val userName = user_name_edit_text.text.toString().trim()
+        val email = email_edit_text.text.toString().trim()
+        val password = password_edit_text.text.toString().trim()
         val coordinate = viewModel.coordinate.value
         var cancel = false
         var focusView = View(context)
-
+        clearErrors()
         if (TextUtils.isEmpty(email)) {
-            emailEditText.error = getString(R.string.field_required_error)
+            email_edit_text_wrapper.error = getString(R.string.field_required_error)
             cancel = true
-            focusView = emailEditText
+            focusView = email_edit_text
         } else if (isEmailInvalid(email)) {
-            emailEditText.error = getString(R.string.invalid_email_error)
+            email_edit_text_wrapper.error = getString(R.string.invalid_email_error)
             cancel = true
-            focusView = emailEditText
+            focusView = email_edit_text
         }
         if (TextUtils.isEmpty(userName)) {
-            userNameEditText.error = getString(R.string.field_required_error)
+            user_name_edit_text_wrapper.error = getString(R.string.field_required_error)
             cancel = true
-            focusView = userNameEditText
+            focusView = user_name_edit_text
         }
         if (TextUtils.isEmpty(fullName)) {
-            fullNameEditText.error = getString(R.string.field_required_error)
+            full_name_edit_text_wrapper.error = getString(R.string.field_required_error)
             cancel = true
-            focusView = fullNameEditText
+            focusView = full_name_edit_text
         }
-        if (TextUtils.isEmpty(password.toString())) {
-            passwordEditText.error = getString(R.string.field_required_error)
+        if (TextUtils.isEmpty(password)) {
+            password_edit_text_wrapper.error = getString(R.string.field_required_error)
             cancel = true
-            focusView = passwordEditText
-        } else if (!isPasswordValid(password.toString())) {
-            passwordEditText.error =
+            focusView = password_edit_text
+        } else if (!isPasswordValid(password)) {
+            password_edit_text_wrapper.error =
                 getString(R.string.invalid_password_error)
             cancel = true
-            focusView = passwordEditText
+            focusView = password_edit_text
         }
         if (coordinate?.latitude == null || coordinate.longitude == null) {
             coordinates_label_register.error = getString(R.string.field_required_error)
@@ -123,28 +173,44 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
         if (cancel) {
             focusView.requestFocus()
         } else {
-            val name: CharSequence
-            var surname: CharSequence = ""
-            val fullNameTemp = fullNameEditText.text.toString().trim()
-            if (fullNameTemp.contains(' ')) {
-                val firstSpace = fullNameTemp.indexOfFirst { it == ' ' }
-                name = fullNameTemp.subSequence(0 until firstSpace)
-                surname = fullNameTemp.subSequence((firstSpace + 1) until fullNameTemp.length)
-            } else {
-                name = fullNameTemp
-            }
-            registerUser(UserDisplayable(
-                id = null,
-                name = name.toString(),
-                surname = surname.toString(),
-                username = userName,
-                email = email,
-                password = password,
-                coordinates = CoordinateDisplayable(
-                    null, coordinate?.latitude, coordinate?.longitude
-                ),
-            ))
+            registerUser(fullName, userName, email, password, coordinate)
         }
+    }
+
+    private fun registerUser(
+        fullName: String,
+        userName: String,
+        email: String,
+        password: String,
+        coordinate: CoordinateDisplayable?,
+    ) {
+        val name: CharSequence
+        var surname: CharSequence = ""
+        if (fullName.contains(' ')) {
+            val firstSpace = fullName.indexOfFirst { it == ' ' }
+            name = fullName.subSequence(0 until firstSpace)
+            surname = fullName.subSequence((firstSpace + 1) until fullName.length)
+        } else {
+            name = fullName
+        }
+        registerUser(UserDisplayable(
+            id = null,
+            name = name.toString(),
+            surname = surname.toString(),
+            username = userName,
+            email = email,
+            password = password.toCharArray(),
+            coordinates = CoordinateDisplayable(
+                null, coordinate?.latitude, coordinate?.longitude
+            ),
+        ))
+    }
+
+    private fun clearErrors() {
+        full_name_edit_text_wrapper.error = ""
+        user_name_edit_text_wrapper.error = ""
+        email_edit_text_wrapper.error = ""
+        password_edit_text_wrapper.error = ""
     }
 
     private fun registerUser(userDisplayable: UserDisplayable) {
@@ -153,15 +219,18 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
 
     override fun onIdleState() {
         progress_bar.visibility = View.INVISIBLE
+        register_button.visibility = View.VISIBLE
     }
 
     override fun onPendingState() {
         error_message_wrapper.visibility = View.GONE
         progress_bar.visibility = View.VISIBLE
+        register_button.visibility = View.INVISIBLE
     }
 
     private fun isPasswordValid(password: String): Boolean {
-        return password.contains("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@\$%^&*-]).{8,}\$")
+        val pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@\$%^&*-]).{8,}\$".toRegex()
+        return pattern.matches(password)
     }
 
     private fun isEmailInvalid(email: String): Boolean {

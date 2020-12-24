@@ -25,7 +25,6 @@ class SearchBookFragment : BaseFragment<SearchBookViewModel>(R.layout.fragment_s
 
     private val dividerItemDecoration: DividerItemDecoration by inject()
 
-    private val TAG = "SearchBookFragment"
 
     override fun initViews() {
         super.initViews()
@@ -119,12 +118,11 @@ class SearchBookFragment : BaseFragment<SearchBookViewModel>(R.layout.fragment_s
     }
 
     override fun onIdleState() {
-//        progress_bar.visibility = View.GONE
+        search_book_progress_bar.visibility = View.GONE
     }
 
     override fun onPendingState() {
-//        progress_bar.visibility = View.VISIBLE
-
+        search_book_progress_bar.visibility = View.VISIBLE
     }
 
     override fun onClick(position: Int) {

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.R
+import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.item_search_book.view.*
@@ -57,9 +58,12 @@ class SearchBookAdapter : RecyclerView.Adapter<SearchBookAdapter.ViewHolder>() {
     ) : RecyclerView.ViewHolder(view), View.OnClickListener {
         fun onBind(bookDisplayable: BookDisplayable) {
             with(view) {
-                title.text = bookDisplayable.title?.replace("\"", "")
+                toolbar_title.text = bookDisplayable.title?.replace("\"", "")
                 authors.text = bookDisplayable.authorsDisplayable?.let {
                     convertAuthorDisplayableListToString(it)
+                }
+                item_search_book_category.text = bookDisplayable.categoriesDisplayable?.let {
+                    convertCategoriesDisplayableListToString(it)
                 }
                 if (usersBooks.any { it.id == bookDisplayable.id }) {
                     save_book_imageButton.setImageResource(R.drawable.ic_add_gray_24)
