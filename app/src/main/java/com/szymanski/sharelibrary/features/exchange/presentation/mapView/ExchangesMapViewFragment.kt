@@ -21,14 +21,18 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.*
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.helpers.convertAuthorDisplayableListToString
+import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
 import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesViewModel
 import com.szymanski.sharelibrary.features.exchange.presentation.listView.ExchangesListViewAdapter
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import kotlinx.android.synthetic.main.dialog_exchanges.view.*
+import kotlinx.android.synthetic.main.fragment_exchange_details.view.*
 import kotlinx.android.synthetic.main.fragment_exchanges_map_view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -197,8 +201,26 @@ class ExchangesMapViewFragment :
         val builder = AlertDialog.Builder(requireContext())
         val dialogContent = layoutInflater.inflate(R.layout.fragment_exchange_details, null)
         val dialog = builder.setCancelable(true)
-            .setTitle(exchange.book.title)
+            .setView(dialogContent)
             .create()
+        with(dialogContent) {
+            exchange_details_title.text = exchange.book.title
+            exchange_details_author.text = exchange.book.authorsDisplayable?.let {
+                convertAuthorDisplayableListToString(it)
+            }
+            exchange_details_category.text = exchange.book.categoriesDisplayable?.let {
+                convertCategoriesDisplayableListToString(it)
+            }
+            exchange_details_deposit_value.text = exchange.deposit.toString()
+            if (exchange.book.cover?.isNotEmpty()!!) {
+                Glide.with(this)
+                    .load(exchange.book.cover)
+                    .into(dialogContent.exchange_details_cover)
+            }
+            exchange_details_user_wrapper.visibility = View.GONE
+            book_requested_info.visibility = View.GONE
+            exchange_details_buttons_wrapper.visibility = View.GONE
+        }
         dialog.show()
     }
 

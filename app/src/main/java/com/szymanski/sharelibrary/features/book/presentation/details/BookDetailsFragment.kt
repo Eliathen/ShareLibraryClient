@@ -1,7 +1,6 @@
 package com.szymanski.sharelibrary.features.book.presentation.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
@@ -9,7 +8,6 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookStatus
-import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.fragment_book_details.*
@@ -55,7 +53,6 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
             viewModel.finishExchange(viewModel.book.value?.id!!)
         }
         book_details_show_on_map.setOnClickListener {
-            Log.d(TAG, "initListeners: Clicked on show on map")
             viewModel.displayExchangeOnMap()
         }
     }

@@ -80,6 +80,9 @@ class BookDetailsViewModel(
             result.onSuccess { exchanges ->
                 val exchange =
                     exchanges.first { it.book.id == _book.value?.id }
+                        .also {
+                            it.book.cover = book.value?.cover
+                        }
                 bookNavigator.displayExchangeOnMap(ExchangeDisplayable(exchange))
             }
             result.onFailure {

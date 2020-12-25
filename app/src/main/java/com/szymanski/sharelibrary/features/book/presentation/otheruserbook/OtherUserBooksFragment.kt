@@ -113,6 +113,7 @@ class OtherUserBooksFragment :
 
     @SuppressLint("InflateParams")
     private fun displayDialogWithBookDetails(book: BookDisplayable) {
+        Log.d(TAG, "displayDialogWithBookDetails: displayDialogWithBookDetails")
         dialogContent = layoutInflater.inflate(R.layout.dialog_other_user_book_details, null)
         val dialog: AlertDialog = AlertDialog.Builder(requireContext()).setCancelable(true)
             .setView(dialogContent)
@@ -147,6 +148,7 @@ class OtherUserBooksFragment :
             }
 
             viewModel.requirements.observe(this@OtherUserBooksFragment) { list ->
+                Log.d(TAG, "displayDialogWithBookDetails: ${book.status}")
                 when {
                     book.status == BookStatus.AT_OWNER || book.status == BookStatus.EXCHANGED -> {
                         you_requested_book_textView.visibility = View.GONE
@@ -157,7 +159,6 @@ class OtherUserBooksFragment :
                         other_user_book_details_request_book.visibility = View.GONE
                     }
                     else -> {
-                        Log.d(TAG, "displayDialogWithBookDetails: ${book.status}")
                         you_requested_book_textView.visibility = View.GONE
                         other_user_book_details_request_book.visibility = View.VISIBLE
                     }

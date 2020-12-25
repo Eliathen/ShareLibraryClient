@@ -11,7 +11,6 @@ class BookDisplayable(
     val id: Long?,
     val title: String?,
     val authorsDisplayable: List<AuthorDisplayable>?,
-    val coverId: Long? = null,
     var cover: ByteArray?,
     var status: BookStatus?,
     val atUserDisplayable: UserDisplayable?,
