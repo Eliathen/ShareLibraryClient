@@ -86,6 +86,8 @@ class ExchangesViewModel(
         MutableLiveData(radius?.times(1000.0))
     }
 
+    var displayUserExchange: Boolean = false
+
     private val _exchangeToDisplay: MutableLiveData<Exchange> by lazy {
         MutableLiveData<Exchange>()
     }

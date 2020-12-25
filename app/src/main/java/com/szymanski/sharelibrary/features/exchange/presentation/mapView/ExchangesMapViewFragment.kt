@@ -71,7 +71,6 @@ class ExchangesMapViewFragment :
 
     private val PREFS_TILE_SOURCE = "tilesource"
 
-
     private var mPrefs: SharedPreferences? = null
 
     private var distanceCircle: Polygon? = null
@@ -151,7 +150,9 @@ class ExchangesMapViewFragment :
             }
         }
         viewModel.exchangeToDisplay.observe(this) {
-            setExchangeMarker(it)
+            if (viewModel.displayUserExchange) {
+                setExchangeMarker(it)
+            }
         }
     }
 
@@ -212,7 +213,9 @@ class ExchangesMapViewFragment :
     }
 
     override fun onPause() {
+        viewModel.displayUserExchange = false
         if (map != null) {
+            map?.overlays?.remove(exchangeMarker)
             val edit: SharedPreferences.Editor = mPrefs!!.edit()
             edit.putString(PREFS_TILE_SOURCE, map!!.tileProvider.tileSource.name())
             edit.apply()
@@ -228,6 +231,10 @@ class ExchangesMapViewFragment :
         val tileSource = TileSourceFactory.getTileSource(tileSourceName)
         map?.setTileSource(tileSource)
         map?.onResume()
+        if (viewModel.user.value != null) {
+            val coordinates = viewModel.user.value?.coordinates
+            displayDefaultLocation(coordinates?.latitude!!, coordinates.longitude!!)
+        }
         requestNewLocationData()
     }
 
@@ -362,9 +369,11 @@ class ExchangesMapViewFragment :
         longitude: Double,
     ) {
         val exchangeCoordinates = viewModel.exchangeToDisplay.value?.coordinates
-        if (exchangeCoordinates != null
+        if (viewModel.displayUserExchange &&
+            exchangeCoordinates != null
             && exchangeCoordinates.latitude == latitude
             && exchangeCoordinates.longitude == longitude
+
         ) {
             Log.d(TAG, "displayDefaultLocation: display default location return")
             return
@@ -402,7 +411,7 @@ class ExchangesMapViewFragment :
         val startPoint = GeoPoint(latitude, longitude)
         userMarker = Marker(map).apply {
             title = getString(R.string.current_location)
-            if (viewModel.exchangeToDisplay.value == null) {
+            if (!viewModel.displayUserExchange) {
                 mapController.setCenter(startPoint)
             }
             this.icon = ContextCompat.getDrawable(requireContext(),
@@ -493,9 +502,5 @@ class ExchangesMapViewFragment :
         exchanges?.let { adapterExchanges.setExchanges(it) }
         dialogContent!!.dialog_exchanges_progress_bar.visibility = View.GONE
         return true
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 }

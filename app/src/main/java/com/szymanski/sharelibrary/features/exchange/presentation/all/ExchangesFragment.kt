@@ -65,6 +65,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (arguments != null && arguments?.containsKey(EXCHANGE_KEY)!!) {
+            viewModel.displayUserExchange = true
             val exchange = arguments?.get(EXCHANGE_KEY) as ExchangeDisplayable
             viewModel.setExchangeToDisplay(exchange)
             viewPager.postDelayed({ viewPager.currentItem = 1 }, 10)
@@ -326,5 +327,10 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
                 Manifest.permission.ACCESS_FINE_LOCATION),
             REQUEST_LOCATION_CODE
         )
+    }
+
+    override fun onStop() {
+        viewModel.displayUserExchange = false
+        super.onStop()
     }
 }
