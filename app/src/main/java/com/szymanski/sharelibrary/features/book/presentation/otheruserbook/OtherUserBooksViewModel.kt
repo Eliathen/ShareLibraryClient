@@ -97,25 +97,29 @@ class OtherUserBooksViewModel(
         setPendingState()
         getExchangesUseCase(
             scope = viewModelScope,
-            params = userId
+            params = otherUserId!!
         ) { result ->
             setIdleState()
             result.onSuccess { exchanges ->
                 val exchange: Exchange?
                 try {
-                    exchange =
-                        exchanges.first { it.book.id == bookDisplayable.id && it.user.id == otherUserId }
+                    exchange = exchanges.first { it.book.id == bookDisplayable.id }
                 } catch (exception: NoSuchElementException) {
+                    _requirements.value = emptyList()
                     return@onSuccess
                 }
                 exchangeId = exchange.id
                 exchange.id?.let { getRequirementsByExchangeId(it) }
+            }
+            result.onFailure {
+                handleFailure(it)
             }
 
         }
     }
 
     private fun getRequirementsByExchangeId(exchangeId: Long) {
+        setPendingState()
         getRequirementByIdUseCase(
             scope = viewModelScope,
             params = exchangeId
@@ -125,6 +129,9 @@ class OtherUserBooksViewModel(
                 requirementsList.let {
                     _requirements.value = it
                 }
+            }
+            result.onFailure {
+                handleFailure(it)
             }
         }
     }
