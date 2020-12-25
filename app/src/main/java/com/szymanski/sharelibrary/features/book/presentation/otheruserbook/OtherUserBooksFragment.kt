@@ -3,6 +3,7 @@ package com.szymanski.sharelibrary.features.book.presentation.otheruserbook
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -14,6 +15,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookStatus
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.dialog_other_user_book_details.view.*
@@ -155,6 +157,7 @@ class OtherUserBooksFragment :
                         other_user_book_details_request_book.visibility = View.GONE
                     }
                     else -> {
+                        Log.d(TAG, "displayDialogWithBookDetails: ${book.status}")
                         you_requested_book_textView.visibility = View.GONE
                         other_user_book_details_request_book.visibility = View.VISIBLE
                     }

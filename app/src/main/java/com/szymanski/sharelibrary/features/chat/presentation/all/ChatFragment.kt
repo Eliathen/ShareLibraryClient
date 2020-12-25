@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.chat.presentation.all
 
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
@@ -16,6 +17,8 @@ class ChatFragment : BaseFragment<ChatViewModel>(R.layout.fragment_chat), ChatAd
 
     private val linearLayoutManager: LinearLayoutManager by inject()
 
+    private val dividerItemDecoration: DividerItemDecoration by inject()
+
 
     override fun initViews() {
         super.initViews()
@@ -25,6 +28,7 @@ class ChatFragment : BaseFragment<ChatViewModel>(R.layout.fragment_chat), ChatAd
     private fun initRecyclerView() {
         chat_recycler_view.apply {
             layoutManager = linearLayoutManager
+            addItemDecoration(dividerItemDecoration)
             adapter = chatAdapter
         }
         chatAdapter.setListeners(this)

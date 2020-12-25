@@ -15,7 +15,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.os.StrictMode
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,7 +24,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.*
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
-import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
 import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesViewModel
 import com.szymanski.sharelibrary.features.exchange.presentation.listView.ExchangesListViewAdapter
@@ -75,13 +73,15 @@ class ExchangesMapViewFragment :
 
     private var distanceCircle: Polygon? = null
 
-    private var userMarker: Marker? = null
+    private var userLocationMarker: Marker? = null
 
-    private var defaultMarker: Marker? = null
+    private var defaultLocationMarker: Marker? = null
 
-    private var exchangeMarker: Marker? = null
+    private var exchangeLocationMarker: Marker? = null
 
     private lateinit var copyrightOverlay: CopyrightOverlay
+
+    private lateinit var mapController: IMapController
 
 
     private val mLocationCallback = object : LocationCallback() {
@@ -114,6 +114,10 @@ class ExchangesMapViewFragment :
     override fun initViews() {
         super.initViews()
         initMap()
+        center_map_fab.setOnClickListener {
+            mapController.setZoom(13.0)
+            mapController.setCenter(userLocationMarker?.position)
+        }
     }
 
 
@@ -157,9 +161,9 @@ class ExchangesMapViewFragment :
     }
 
     private fun shouldRemoveOverlay(it: Overlay): Boolean {
-        return it != userMarker &&
-                it != defaultMarker &&
-                it != exchangeMarker &&
+        return it != userLocationMarker &&
+                it != defaultLocationMarker &&
+                it != exchangeLocationMarker &&
                 it != copyrightOverlay &&
                 it != distanceCircle
     }
@@ -167,7 +171,7 @@ class ExchangesMapViewFragment :
     private fun setExchangeMarker(exchange: ExchangeDisplayable) {
         val coordinates = exchange.coordinates
         val point = GeoPoint(coordinates.latitude!!, coordinates.longitude!!)
-        exchangeMarker = Marker(map).apply {
+        exchangeLocationMarker = Marker(map).apply {
             position = point
             icon =
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_default_location_on_24)!!
@@ -176,13 +180,13 @@ class ExchangesMapViewFragment :
                 true
             }
         }
-        map?.overlays?.add(exchangeMarker)
+        map?.overlays?.add(exchangeLocationMarker)
         if (viewModel.user.value?.coordinates == null || viewModel.user.value?.coordinates?.equals(
                 coordinates)!!
         ) {
-            map?.overlays?.remove(defaultMarker)
+            map?.overlays?.remove(defaultLocationMarker)
         }
-        map?.controller?.apply {
+        mapController.apply {
             setCenter(point)
             setZoom(13.0)
         }
@@ -209,13 +213,14 @@ class ExchangesMapViewFragment :
         map?.setDestroyMode(false)
         map?.setTileSource(TileSourceFactory.MAPNIK)
         map?.setMultiTouchControls(true)
+        mapController = map?.controller!!
         getLastLocation()
     }
 
     override fun onPause() {
         viewModel.displayUserExchange = false
         if (map != null) {
-            map?.overlays?.remove(exchangeMarker)
+            map?.overlays?.remove(exchangeLocationMarker)
             val edit: SharedPreferences.Editor = mPrefs!!.edit()
             edit.putString(PREFS_TILE_SOURCE, map!!.tileProvider.tileSource.name())
             edit.apply()
@@ -375,13 +380,11 @@ class ExchangesMapViewFragment :
             && exchangeCoordinates.longitude == longitude
 
         ) {
-            Log.d(TAG, "displayDefaultLocation: display default location return")
             return
         }
-        Log.d(TAG, "displayDefaultLocation: Display default location!!")
         map_view_progress_bar.visibility = View.GONE
         val startPoint = GeoPoint(latitude, longitude)
-        defaultMarker = Marker(map).apply {
+        defaultLocationMarker = Marker(map).apply {
             title = getString(R.string.default_location)
             icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_default_location_24)!!
             position = startPoint
@@ -394,7 +397,7 @@ class ExchangesMapViewFragment :
                 true
             }
         }
-        map?.overlays?.add(defaultMarker)
+        map?.overlays?.add(defaultLocationMarker)
         map?.invalidate()
     }
 
@@ -402,20 +405,19 @@ class ExchangesMapViewFragment :
         latitude: Double,
         longitude: Double,
     ) {
-        if (userMarker != null) {
-            map?.overlays?.remove(userMarker)
+        if (userLocationMarker != null) {
+            map?.overlays?.remove(userLocationMarker)
         }
         map_view_progress_bar.visibility = View.GONE
-        val mapController: IMapController = map?.controller!!
         mapController.setZoom(13.0)
         val startPoint = GeoPoint(latitude, longitude)
-        userMarker = Marker(map).apply {
+        userLocationMarker = Marker(map).apply {
             title = getString(R.string.current_location)
             if (!viewModel.displayUserExchange) {
                 mapController.setCenter(startPoint)
             }
             this.icon = ContextCompat.getDrawable(requireContext(),
-                R.drawable.ic_current_location_24)
+                R.drawable.ic_gps_fixed_24)
             position = startPoint
             setOnMarkerClickListener { marker, _ ->
                 if (marker.isInfoWindowOpen) {
@@ -426,7 +428,7 @@ class ExchangesMapViewFragment :
                 true
             }
         }
-        map?.overlays?.add(userMarker)
+        map?.overlays?.add(userLocationMarker)
     }
 
 

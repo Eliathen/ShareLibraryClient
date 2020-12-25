@@ -24,7 +24,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(R.layout.fragment_home) {
         val toolbar = toolbar_base
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).supportActionBar.apply {
-            toolbar_title.text = ""
+            this?.title = ""
         }
     }
 

@@ -77,7 +77,12 @@ class ExchangesViewModel(
         }
     }
 
-    private var query: String? = ""
+    private val _query: MutableLiveData<String> by lazy {
+        MutableLiveData("")
+    }
+    val query: LiveData<String> by lazy {
+        _query
+    }
     private var radius: Double? = defaultRadiusDistance
 
     private val chosenCategories: MutableMap<String, Boolean>? = mutableMapOf()
@@ -112,7 +117,7 @@ class ExchangesViewModel(
     }
 
     fun setQuery(query: String) {
-        this.query = query
+        _query.value = query
     }
 
     fun setRadius(radius: Double) {
@@ -142,7 +147,7 @@ class ExchangesViewModel(
             _currentCoordinates.value?.longitude!!,
             radius,
             chosenCategories?.filter { it.value }?.keys?.toList(),
-            query
+            _query.value
         )
         setPendingState()
         getExchangesByFiltersUseCase(
@@ -162,7 +167,7 @@ class ExchangesViewModel(
     }
 
     fun resetFilters() {
-        query = ""
+        _query.value = ""
         radius = defaultRadiusDistance
         chosenCategories!!.clear()
         circleRadius.value = defaultRadiusDistance

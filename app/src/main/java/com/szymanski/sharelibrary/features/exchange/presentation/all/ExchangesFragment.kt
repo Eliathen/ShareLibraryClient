@@ -103,10 +103,17 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
         val displayMetrics = requireActivity().resources.displayMetrics
         searchView.maxWidth = displayMetrics.widthPixels - filterItem.icon.intrinsicWidth * 2
+        viewModel.query.observe(this@ExchangesFragment) {
+            if (it == "") {
+                searchView.setQuery(it, false)
+                searchView.clearFocus()
+            }
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.setQuery(query!!)
                 viewModel.getFilteredExchanges()
+                searchView.clearFocus()
                 return true
             }
 

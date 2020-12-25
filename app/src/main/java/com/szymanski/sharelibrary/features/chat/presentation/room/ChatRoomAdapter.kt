@@ -76,8 +76,9 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val messageDisplayable = messages[position]
             with(view) {
                 if (shouldDisplayDate(position)) {
-                    user_message_date.text =
-                        messageDisplayable.timestamp?.toLocalDate().toString()
+                    val date = messageDisplayable.timestamp?.toLocalDate()
+                    val dateToDisplay = "${date?.dayOfMonth}-${date?.monthValue}-${date?.year}"
+                    user_message_date.text = dateToDisplay
                 } else {
                     user_message_date.visibility = View.GONE
                 }
@@ -98,8 +99,9 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val messageDisplayable = messages[position]
             with(view) {
                 if (shouldDisplayDate(position)) {
-                    other_user_message_date.text =
-                        messageDisplayable.timestamp?.toLocalDate().toString()
+                    val date = messageDisplayable.timestamp?.toLocalDate()
+                    val dateToDisplay = "${date?.dayOfMonth}-${date?.monthValue}-${date?.year}"
+                    other_user_message_date.text = dateToDisplay
                 } else {
                     this.other_user_message_date.visibility = View.GONE
                 }
