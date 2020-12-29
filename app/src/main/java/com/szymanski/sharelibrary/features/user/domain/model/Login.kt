@@ -34,4 +34,5 @@ data class Login(
         result = 31 * result + (token?.hashCode() ?: 0)
         return result
     }
+    companion object
 }

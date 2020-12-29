@@ -21,4 +21,5 @@ data class CoordinateDisplayable(
         latitude = this.latitude,
         longitude = this.longitude
     )
+    companion object
 }

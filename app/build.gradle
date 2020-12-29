@@ -72,6 +72,7 @@ dependencies {
     implementation preferencesDependencies.values()
 
     implementation 'com.shawnlin:number-picker:2.4.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 
     def stompClientVersion = "2.0.5"
     implementation "com.github.bishoybasily.stomp:lib:" + stompClientVersion

@@ -18,4 +18,5 @@ data class CategoryDisplayable(
         id = this.id,
         name = this.name
     )
+    companion object
 }

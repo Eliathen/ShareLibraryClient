@@ -44,5 +44,5 @@ data class User(
         result = 31 * result + (books?.hashCode() ?: 0)
         return result
     }
-
+    companion object
 }

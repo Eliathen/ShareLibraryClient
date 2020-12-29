@@ -10,8 +10,6 @@ data class RoomDisplayable(
 
     val id: Long? = null,
 
-//    val messages: List<MessageDisplayable>? = null,
-
     val sender: UserDisplayable? = null,
 
     val recipient: UserDisplayable? = null,
@@ -28,4 +26,5 @@ data class RoomDisplayable(
         sender = sender?.toUser(),
         recipient = recipient?.toUser()
     )
+    companion object
 }

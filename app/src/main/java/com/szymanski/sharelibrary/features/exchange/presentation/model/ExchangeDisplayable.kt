@@ -37,4 +37,6 @@ data class ExchangeDisplayable(
         id = id,
         user = user.toUser()
     )
+
+    companion object
 }

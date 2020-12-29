@@ -10,4 +10,6 @@ data class Requirement(
     val user: User?,
     val createTime: LocalDateTime?,
     val isActual: Boolean,
-)
+) {
+    companion object
+}

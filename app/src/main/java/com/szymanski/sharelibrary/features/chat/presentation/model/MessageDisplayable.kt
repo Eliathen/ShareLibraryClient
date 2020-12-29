@@ -26,4 +26,5 @@ data class MessageDisplayable(
         content = message.content,
         timestamp = message.timestamp
     )
+    companion object
 }

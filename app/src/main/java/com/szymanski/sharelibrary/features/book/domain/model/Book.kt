@@ -52,4 +52,6 @@ data class Book(
         result = 31 * result + (categories?.hashCode() ?: 0)
         return result
     }
+
+    companion object
 }

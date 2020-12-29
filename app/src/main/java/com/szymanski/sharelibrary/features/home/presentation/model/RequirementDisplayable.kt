@@ -27,4 +27,5 @@ class RequirementDisplayable(
         isActual = isActual!!,
         exchange = exchange?.toExchange()
     )
+    companion object
 }

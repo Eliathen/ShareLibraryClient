@@ -6,9 +6,9 @@ data class Room(
 
     val id: Long? = null,
 
-//    val messages: List<Message>? = null,
-
     val sender: User? = null,
 
     val recipient: User? = null,
-)
+) {
+    companion object
+}

@@ -58,5 +58,5 @@ data class UserDisplayable(
         result = 31 * result + surname.hashCode()
         return result
     }
-
+    companion object
 }

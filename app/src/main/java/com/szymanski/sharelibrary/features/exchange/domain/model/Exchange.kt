@@ -14,4 +14,6 @@ data class Exchange(
     var exchangeStatus: ExchangeStatus,
     var id: Long?,
     var user: User,
-)
+) {
+    companion object
+}
