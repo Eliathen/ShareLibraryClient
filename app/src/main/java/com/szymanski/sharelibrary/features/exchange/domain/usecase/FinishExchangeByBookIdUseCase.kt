@@ -4,7 +4,7 @@ import com.szymanski.sharelibrary.core.base.BaseUseCase
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.exchange.domain.ExchangeRepository
 
-class FinishExchangeUseCase(
+class FinishExchangeByBookIdUseCase(
     private val exchangeRepository: ExchangeRepository,
     private val userStorage: UserStorage,
 ) : BaseUseCase<Unit, Long>() {

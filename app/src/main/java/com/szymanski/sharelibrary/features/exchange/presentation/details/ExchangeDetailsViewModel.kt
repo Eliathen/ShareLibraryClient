@@ -14,7 +14,7 @@ import com.szymanski.sharelibrary.features.exchange.navigation.ExchangeNavigatio
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import com.szymanski.sharelibrary.features.home.domain.model.Requirement
 import com.szymanski.sharelibrary.features.home.domain.usecase.CreateRequirementUseCase
-import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByIdUseCase
+import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByExchangeIdUseCase
 import com.szymanski.sharelibrary.features.home.presentation.model.RequirementDisplayable
 
 class ExchangeDetailsViewModel(
@@ -22,7 +22,7 @@ class ExchangeDetailsViewModel(
     private val getCoverUseCase: GetCoverUseCase,
     private val createRequirementUseCase: CreateRequirementUseCase,
     private val userStorage: UserStorage,
-    private val getRequirementUseCase: GetRequirementByIdUseCase,
+    private val getRequirementByExchangeIdUseCase: GetRequirementByExchangeIdUseCase,
     private val exchangeNavigation: ExchangeNavigation,
     errorMapper: ErrorMapper,
 ) : BaseViewModel(errorMapper) {
@@ -69,7 +69,7 @@ class ExchangeDetailsViewModel(
     }
 
     private fun getRequirements(id: Long) {
-        getRequirementUseCase(
+        getRequirementByExchangeIdUseCase(
             scope = viewModelScope,
             params = id
         ) { result ->

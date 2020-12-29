@@ -13,14 +13,14 @@ import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayab
 import com.szymanski.sharelibrary.features.chat.domain.usecase.GetRoomBySenderIdAndRecipientIdUseCase
 import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
-import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesByAtUserId
+import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesByAtUserIdUseCase
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import com.szymanski.sharelibrary.features.home.navigation.HomeNavigation
 import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 
 class ExchangedBookViewModel(
     errorMapper: ErrorMapper,
-    private val getExchangesByAtUserId: GetExchangesByAtUserId,
+    private val getExchangesByAtUserIdUseCase: GetExchangesByAtUserIdUseCase,
     private val getRoomBySenderIdAndRecipientIdUseCase: GetRoomBySenderIdAndRecipientIdUseCase,
     private val homeNavigation: HomeNavigation,
     private val userStorage: UserStorage,
@@ -51,7 +51,7 @@ class ExchangedBookViewModel(
 
     private fun loadExchanges() {
         setPendingState()
-        getExchangesByAtUserId(
+        getExchangesByAtUserIdUseCase(
             scope = viewModelScope,
             params = userStorage.getUserId()
         ) { result ->

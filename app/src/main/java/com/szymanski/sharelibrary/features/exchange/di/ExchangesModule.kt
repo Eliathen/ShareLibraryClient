@@ -25,10 +25,10 @@ val exchangesModule = module {
     //useCase
     factory { ShareBookUseCase(get()) }
     factory { GetExchangesUseCase(get()) }
-    factory { FinishExchangeUseCase(get(), get()) }
+    factory { FinishExchangeByBookIdUseCase(get(), get()) }
     factory { GetExchangeByIdUseCase(get()) }
     factory { ExecuteExchangeUseCase(get()) }
-    factory { GetExchangesByAtUserId(get()) }
+    factory { GetExchangesByAtUserIdUseCase(get()) }
     factory { GetExchangesByFiltersUseCase(get()) }
     factory { GetUserExchangesUseCase(get()) }
 

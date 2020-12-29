@@ -3,7 +3,7 @@ package com.szymanski.sharelibrary.features.home.di
 import com.szymanski.sharelibrary.features.home.data.RequirementRepositoryImpl
 import com.szymanski.sharelibrary.features.home.domain.RequirementRepository
 import com.szymanski.sharelibrary.features.home.domain.usecase.CreateRequirementUseCase
-import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByIdUseCase
+import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByExchangeIdUseCase
 import com.szymanski.sharelibrary.features.home.domain.usecase.GetUserRequirements
 import com.szymanski.sharelibrary.features.home.navigation.HomeNavigation
 import com.szymanski.sharelibrary.features.home.navigation.HomeNavigationImpl
@@ -24,7 +24,7 @@ val homeModule = module {
 
     //useCase
     factory { CreateRequirementUseCase(get()) }
-    factory { GetRequirementByIdUseCase(get()) }
+    factory { GetRequirementByExchangeIdUseCase(get()) }
     factory { GetUserRequirements(get()) }
 
     //adapter
