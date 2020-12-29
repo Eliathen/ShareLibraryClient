@@ -7,4 +7,6 @@ import kotlinx.android.parcel.Parcelize
 class Token(
     val accessToken: String?,
     val tokenType: String?,
-) : Parcelable
+) : Parcelable {
+    companion object
+}

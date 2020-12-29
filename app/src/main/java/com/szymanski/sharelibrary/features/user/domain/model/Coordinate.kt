@@ -4,4 +4,6 @@ data class Coordinate(
     val id: Long?,
     val latitude: Double?,
     val longitude: Double?,
-)
+) {
+    companion object
+}

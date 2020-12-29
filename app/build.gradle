@@ -39,38 +39,44 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    //core dependencies
+    //core
     implementation coreDependencies.values()
 
-    //ui dependencies
+    //ui
     implementation uiDependencies.values()
 
-    //navigation dependencies
+    //navigation
     implementation navigationDependencies.values()
 
-    //di dependencies
+    //di
     implementation koinDependencies.values()
 
-    //coroutines dependencies
+    //coroutines
     implementation coroutinesDependencies.values()
 
-    //lifecycle dependencies
+    //lifecycle
     implementation lifecycleDependencies.values()
 
-    //network dependencies
+    //network
     implementation networkDependencies.values()
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
 
-    //fragment dependencies
+    //fragment
     implementation fragmenDependencies.values()
 
-    //room dependencies
-    def roomVersion = "2.2.5"
-    implementation databaseDependencies.values()
-    kapt "androidx.room:room-compiler:$roomVersion"
+    //location
+    implementation locationDependencies.values()
 
-    
+    //map
+    implementation mapDependencies.values()
+
+    implementation preferencesDependencies.values()
+
+    implementation 'com.shawnlin:number-picker:2.4.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    def stompClientVersion = "2.0.5"
+    implementation "com.github.bishoybasily.stomp:lib:" + stompClientVersion
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

@@ -1,11 +1,13 @@
 package com.szymanski.sharelibrary.core.base
 
+import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hadilq.liveevent.LiveEvent
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
+import com.szymanski.sharelibrary.core.utils.TAG
 
 open class BaseViewModel(private val errorMapper: ErrorMapper? = null) : ViewModel(),
     DefaultLifecycleObserver {
@@ -31,6 +33,7 @@ open class BaseViewModel(private val errorMapper: ErrorMapper? = null) : ViewMod
     }
 
     protected fun handleFailure(throwable: Throwable) {
+        Log.d(TAG, "handleFailure: ${throwable.message}")
         errorMapper?.map(throwable)?.let { showMessage(it) }
     }
 }

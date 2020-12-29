@@ -11,29 +11,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/books_swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/books_recyclerView"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/save_book_floating_action_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="@dimen/floating_action_button_margin"
-            android:layout_marginBottom="@dimen/floating_action_button_margin"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_add_24" />
+            <!--            <ProgressBar-->
+            <!--                android:id="@+id/books_progressbar"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center" />-->
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/books_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/save_book_floating_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/floating_action_button_margin"
+                android:layout_marginBottom="@dimen/floating_action_button_margin"
+                style="@style/Widget.MaterialComponents.FloatingActionButton"
+                app:srcCompat="@drawable/ic_add_24"
+                app:tint="@color/white"
+                android:text="@string/add_book_fab_text"
+                android:textColor="@color/white"
+                app:icon="@drawable/ic_add_24"
+                app:iconTint="@color/white"
+                android:backgroundTint="@color/colorPrimary"
+                app:showMotionSpec="@anim/fragment_fade_enter"
+                tools:ignore="ContentDescription" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

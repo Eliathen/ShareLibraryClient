@@ -6,11 +6,12 @@
 
 
     <androidx.appcompat.widget.Toolbar
+
+        android:theme="@style/toolbar_style"
         android:id="@+id/books_screen_app_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:titleTextColor="@color/white"
-        android:theme="@style/toolbar_style">
+        app:titleTextColor="@color/white">
 
     </androidx.appcompat.widget.Toolbar>
 

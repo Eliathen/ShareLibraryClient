@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.user.registration.presentation.RegisterFragment">
+    tools:context=".features.user.presentation.registration.RegisterFragment">
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:paddingTop="100dp"
+        android:paddingTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +44,7 @@
                     android:gravity="center_horizontal"
                     android:text="@string/login_title_text"
                     android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/dp_16"
                     android:textSize="40sp" />
 
             </LinearLayout>
@@ -59,28 +60,32 @@
                 app:layout_constraintTop_toBottomOf="@+id/logoWrapper">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/user_name_or_email_edit_text_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_8"
+                    android:layout_marginHorizontal="20dp"
                     android:hint="@string/username_or_email_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/userNameOrEmailEditText"
+                        android:id="@+id/user_name_or_email_edit_text"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp" />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password_edit_text_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="@dimen/dp_8"
                     android:hint="@string/password_hint"
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/passwordEditText"
+                        android:id="@+id/password_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -126,7 +131,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <CheckBox
+                    <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/save_details_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -143,11 +148,11 @@
                     android:id="@+id/progress_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginStart="5dp"
                     android:paddingVertical="5dp"
                     android:translationZ="3dp"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@id/login_button"
+                    app:layout_constraintEnd_toEndOf="@+id/login_button"
                     app:layout_constraintStart_toStartOf="@id/login_button"
                     app:layout_constraintTop_toTopOf="@id/login_button" />
 
@@ -158,6 +163,7 @@
                     android:layout_centerInParent="true"
                     android:background="@drawable/login_button_background"
                     android:paddingHorizontal="20dp"
+                    android:paddingVertical="@dimen/dp_8"
                     android:requiresFadingEdge="vertical"
                     android:text="@string/login_button"
                     android:textColor="@color/white"

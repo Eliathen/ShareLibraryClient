@@ -1,8 +1,7 @@
 package com.szymanski.sharelibrary.features.user.data
 
 import com.szymanski.sharelibrary.core.api.Api
-import com.szymanski.sharelibrary.core.api.model.request.LoginRequest
-import com.szymanski.sharelibrary.core.api.model.request.RegisterRequest
+import com.szymanski.sharelibrary.core.api.model.request.*
 import com.szymanski.sharelibrary.core.exception.ErrorWrapper
 import com.szymanski.sharelibrary.core.exception.callOrThrow
 import com.szymanski.sharelibrary.features.user.domain.UserRepository
@@ -27,6 +26,24 @@ class UserRepositoryImpl(
     override suspend fun getUser(userId: Long): User {
         return callOrThrow(errorWrapper) {
             api.getUser(userId).toUser()
+        }
+    }
+
+    override suspend fun editUser(user: User): User {
+        return callOrThrow(errorWrapper) {
+            api.editUser(user.id!!, UserRequest(user)).toUser()
+        }
+    }
+
+    override suspend fun assignBook(assignBookRequest: AssignBookRequest): User {
+        return callOrThrow(errorWrapper) {
+            api.assignBook(assignBookRequest).toUser()
+        }
+    }
+
+    override suspend fun withdrawBook(withdrawBookRequest: WithdrawBookRequest): User {
+        return callOrThrow(errorWrapper) {
+            api.withdrawBook(withdrawBookRequest).toUser()
         }
     }
 

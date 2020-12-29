@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".features.book.presentation.details.BookDetailsFragment">
+
+    <include layout="@layout/toolbar_base" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/book_details_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:textSize="40sp"
+                tools:text="Title" />
+
+            <ImageView
+                android:id="@+id/book_details_cover"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_launcher_foreground"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:id="@+id/book_details_authors_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/book_details_cover">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/authors_label"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/book_details_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:textSize="18sp"
+                    tools:text="Authors" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/category_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/book_details_cover">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category_label"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/book_details_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:background="@null"
+                    android:textSize="18sp"
+                    tools:text="Category" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/status_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_label"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/status_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@id/status_label"
+                    tools:text="At owner" />
+
+                <TextView
+                    android:id="@+id/book_details_show_on_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_alignBaseline="@id/status_label"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/show_on_map"
+                    android:textColor="@color/colorPrimary" />
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/user_details_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/user_details"
+                    android:textSize="25sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:layout_marginStart="20dp">
+
+                    <ImageView
+                        android:id="@+id/profile_imageView"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/register_button_background"
+                        android:src="@drawable/ic_person_24"
+                        app:tint="@color/colorPrimaryDark"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/user_name_book_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_toEndOf="@id/profile_imageView"
+                        android:textSize="18sp"
+                        tools:text="Adam" />
+
+                    <TextView
+                        android:id="@+id/user_surname_book_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/user_name_book_details"
+                        android:textSize="18sp"
+                        tools:text="Nowak" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/status_during_exchange_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/cancel_exchange_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/cancel_button_text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/status_exchanged_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/display_user_profile_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/title_profile"
+                    tools:ignore="ButtonStyle" />
+
+                <Button
+                    android:id="@+id/finish_exchange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@drawable/login_button_background"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/finish_exchange"
+                    android:textColor="@color/white"
+                    tools:ignore="ButtonStyle" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -9,6 +9,5 @@ class GetUsersBookUseCase(
 ) : BaseUseCase<List<Book>, Long>() {
     override suspend fun action(params: Long): List<Book> {
         return bookRepository.getUsersBook(params)
-
     }
 }

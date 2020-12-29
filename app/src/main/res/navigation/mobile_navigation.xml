@@ -4,11 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/login_screen">
+
     <fragment
         android:id="@+id/chat_screen"
-        android:name="com.szymanski.sharelibrary.features.chat.presentation.ChatFragment"
+        android:name="com.szymanski.sharelibrary.features.chat.presentation.all.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat">
+        <action
+            android:id="@+id/action_navigate_from_chat_screen_to_chat_room_screen"
+            app:destination="@id/chat_room_screen" />
+    </fragment>
     <fragment
         android:id="@+id/books_screen"
         android:name="com.szymanski.sharelibrary.features.book.presentation.all.BooksFragment"
@@ -16,44 +21,54 @@
         tools:layout="@layout/fragment_books">
         <action
             android:id="@+id/action_navigate_from_books_screen_to_search_book_screen"
-            app:destination="@id/search_book_screen"
-            app:popUpTo="@id/books_screen" />
+            app:destination="@id/search_book_screen" />
+        <action
+            android:id="@+id/action_navigate_from_books_screen_to_book_details_screen"
+            app:destination="@id/book_details_screen" />
     </fragment>
     <fragment
         android:id="@+id/register_screen"
-        android:name="com.szymanski.sharelibrary.features.user.registration.presentation.RegisterFragment"
+        android:name="com.szymanski.sharelibrary.features.user.presentation.registration.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
-            android:id="@+id/action_navigate_from_register_screen_to_books_screen"
-            app:destination="@id/books_screen"
+            android:id="@+id/action_navigate_from_register_screen_to_home_screen"
+            app:destination="@id/home_screen"
             app:popUpTo="@id/register_screen"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/login_screen"
-        android:name="com.szymanski.sharelibrary.features.user.login.presentation.LoginFragment"
+        android:name="com.szymanski.sharelibrary.features.user.presentation.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_navigate_from_login_screen_to_register_screen"
             app:destination="@id/register_screen" />
         <action
-            android:id="@+id/action_navigate_from_login_screen_to_book_screen"
+            android:id="@+id/action_navigate_from_login_screen_to_home_screen"
+            app:destination="@id/home_screen"
             app:popUpTo="@id/login_screen"
-            app:popUpToInclusive="true"
-            app:destination="@id/books_screen" />
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/exchanges_screen"
-        android:name="com.szymanski.sharelibrary.features.exchange.presentation.ExchangesFragment"
+        android:name="com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesFragment"
         android:label="fragment_exchange"
-        tools:layout="@layout/fragment_exchange" />
+        tools:layout="@layout/fragment_exchange">
+        <action
+            android:id="@+id/action_navigate_from_exchange_screen_to_exchange_details_screen"
+            app:destination="@id/exchange_details_screen" />
+    </fragment>
     <fragment
         android:id="@+id/profile_screen"
-        android:name="com.szymanski.sharelibrary.features.user.profile.presentation.ProfileFragment"
+        android:name="com.szymanski.sharelibrary.features.user.presentation.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_navigate_from_profile_screen_to_login_screen"
+            app:destination="@id/mobile_navigation" />
+    </fragment>
     <fragment
         android:id="@+id/save_book_screen"
         android:name="com.szymanski.sharelibrary.features.book.presentation.save.SaveBookFragment"
@@ -75,4 +90,70 @@
             app:destination="@id/save_book_screen" />
 
     </fragment>
+    <fragment
+        android:id="@+id/book_details_screen"
+        android:name="com.szymanski.sharelibrary.features.book.presentation.details.BookDetailsFragment"
+        android:label="fragment_book_details"
+        tools:layout="@layout/fragment_book_details">
+        <action
+            android:id="@+id/action_navigate_from_book_details_screen_to_other_user_screen"
+            app:destination="@id/other_user_screen" />
+        <action
+            android:id="@+id/action_navigate_from_book_details_screen_to_exchanges_screen"
+            app:destination="@+id/exchanges_screen" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/exchange_details_screen"
+        android:name="com.szymanski.sharelibrary.features.exchange.presentation.details.ExchangeDetailsFragment"
+        android:label="fragment_exchange_details"
+        tools:layout="@layout/fragment_exchange_details">
+        <action
+            android:id="@+id/action_navigate_from_exchange_details_screen_to_other_user_screen"
+            app:destination="@id/other_user_screen" />
+    </fragment>
+    <fragment
+        android:id="@+id/other_user_screen"
+        android:name="com.szymanski.sharelibrary.features.user.presentation.otheruser.OtherUserFragment"
+        android:label="fragment_other_user"
+        tools:layout="@layout/fragment_other_user">
+        <action
+            android:id="@+id/action_navigate_from_other_user_screen_to_other_user_books_screen"
+            app:destination="@id/other_user_books_screen" />
+        <action
+            android:id="@+id/action_navigate_from_other_user_screen_to_chat_room_screen"
+            app:destination="@+id/chat_room_screen" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/other_user_books_screen"
+        android:name="com.szymanski.sharelibrary.features.book.presentation.otheruserbook.OtherUserBooksFragment"
+        android:label="fragment_other_user_books"
+        tools:layout="@layout/fragment_other_user_books">
+        <action
+            android:id="@+id/action_navigate_from_other_user_books_screen_to_book_details_screen"
+            app:destination="@id/book_details_screen" />
+    </fragment>
+    <fragment
+        android:id="@+id/home_screen"
+        android:name="com.szymanski.sharelibrary.features.home.presentation.all.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_navigate_from_home_screen_to_chat_room_screen"
+            app:destination="@id/chat_room_screen" />
+    </fragment>
+    <fragment
+        android:id="@+id/chat_room_screen"
+        android:name="com.szymanski.sharelibrary.features.chat.presentation.room.ChatRoomFragment"
+        android:label="fragment_chat_room"
+        tools:layout="@layout/fragment_chat_room" />
+    <fragment
+        android:id="@+id/requirementsFragment"
+        android:name="com.szymanski.sharelibrary.features.home.presentation.requirements.RequirementsFragment"
+        android:label="fragment_requirements"
+        tools:layout="@layout/fragment_requirements">
+
+    </fragment>
+
 </navigation>

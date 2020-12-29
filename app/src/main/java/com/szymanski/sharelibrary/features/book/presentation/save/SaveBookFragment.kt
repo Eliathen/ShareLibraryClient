@@ -1,11 +1,13 @@
 package com.szymanski.sharelibrary.features.book.presentation.save
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.view.View
 import androidx.core.content.PermissionChecker
 import androidx.core.content.PermissionChecker.checkSelfPermission
@@ -15,8 +17,10 @@ import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.fragment_save_book.*
+import kotlinx.android.synthetic.main.item_author.view.*
 import kotlinx.android.synthetic.main.toolbar_base.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,10 +42,6 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
     val REQUEST_IMAGE_CAPTURE = 100
     val PERMISSION_CODE = 101
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun initViews() {
         super.initViews()
         initActionBar()
@@ -50,11 +50,11 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
     }
 
     private fun initActionBar() {
-        val toolbar = base_toolbar
+        val toolbar = toolbar_base
         (activity as MainActivity).setSupportActionBar(toolbar)
         toolbar.title = ""
-        (activity as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true);
-        (activity as MainActivity).supportActionBar!!.setDisplayShowHomeEnabled(true);
+        (activity as MainActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).supportActionBar!!.setDisplayShowHomeEnabled(true)
     }
 
     private fun initRecyclerView() {
@@ -65,7 +65,16 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         }
     }
 
+    override fun initObservers() {
+        super.initObservers()
+        viewModel.categories.observe(this) {
+            if (it != null) {
+                save_book_category_button.isClickable = true
+            }
+        }
+    }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setListeners() {
         imageButton.setOnClickListener {
             if (checkSelfPermission(requireContext(),
@@ -77,15 +86,90 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
             }
         }
         saveButton.setOnClickListener {
+            attemptSaveBook()
+        }
+        save_book_category_button.setOnClickListener {
+            displayCategoryDialog()
+        }
+    }
+
+    private fun displayCategoryDialog() {
+        val choices = mutableListOf<String>()
+        viewModel.categories.value?.forEach {
+            choices.add(it.name)
+        }
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setCancelable(false)
+            .setTitle(getString(R.string.choose_categories))
+            .setMultiChoiceItems(
+                choices.toTypedArray(),
+                viewModel.chosenCategories.toBooleanArray()
+            ) { _, which, isChecked ->
+                viewModel.chosenCategories[which] = isChecked
+            }
+            .setNeutralButton("Accept") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create().show()
+    }
+
+    private fun attemptSaveBook() {
+        saveButton.isClickable = false
+        val title = book_title.text.toString().replace("\"", "")
+        val authors = addAuthorAdapter.getAuthors()
+        var cancel = false
+        var focusView = View(requireContext())
+        if (TextUtils.isEmpty(title)) {
+            book_title.error = getString(R.string.field_required_error)
+            cancel = true
+            focusView = book_title
+        }
+        authors.forEachIndexed { index, author ->
+            if (TextUtils.isEmpty(author.name)) {
+                val view = author_list.getChildAt(index)
+                view.author_name.error = getString(R.string.field_required_error)
+                focusView = view.author_name
+                cancel = true
+            }
+            if (TextUtils.isEmpty(author.surname)) {
+                val view = author_list.getChildAt(index)
+                view.author_surname.error = getString(R.string.field_required_error)
+                focusView = view.author_surname
+                cancel = true
+            }
+        }
+        if (cover.isEmpty()) {
+            cancel = true
+            focusView = cover_image
+            displayDialogCoverIsRequired()
+        }
+
+        if (cancel) {
+            focusView.requestFocus()
+            saveButton.isClickable = false
+        } else {
             val book = BookDisplayable(
                 id = null,
-                title = book_title.text.toString(),
-                authorsDisplayable = addAuthorAdapter.getAuthors(),
-                cover = this.cover
+                title = title,
+                authorsDisplayable = authors,
+                cover = this.cover,
+                status = BookStatus.AT_OWNER,
+                atUserDisplayable = null,
+                categoriesDisplayable = null
             )
             viewModel.saveBook(book)
         }
     }
+
+    private fun displayDialogCoverIsRequired() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setCancelable(false)
+            .setMessage("Cover image is required")
+            .setNeutralButton("OK") { dialog, _ -> dialog.cancel() }
+            .create()
+            .show()
+    }
+
 
     private fun getPhoto() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
@@ -124,10 +208,6 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         super.onDestroyView()
         author_list.adapter = null
         author_list.layoutManager = null
-    }
-
-    override fun initObservers() {
-        super.initObservers()
     }
 
     override fun onIdleState() {

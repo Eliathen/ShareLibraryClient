@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/dp_8"
+    android:layout_marginTop="@dimen/dp_8">
+
+    <TextView
+        android:id="@+id/sort_title_asc"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"
+        android:gravity="center"
+        android:text="@string/sort_by_title_asc"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/sort_title_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"
+        android:gravity="center"
+        android:text="@string/sort_by_title_desc"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/sort_distance_asc"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"
+        android:gravity="center"
+        android:text="@string/sort_by_distance_asc"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/sort_distance_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"
+        android:gravity="center"
+        android:text="@string/sort_by_distance_desc"
+        android:textSize="16sp" />
+</LinearLayout>

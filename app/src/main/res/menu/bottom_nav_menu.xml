@@ -4,20 +4,30 @@
     <item
         android:id="@+id/books_screen"
         android:icon="@drawable/ic_library_books_24"
+        android:menuCategory="secondary"
         android:title="@string/title_books" />
 
     <item
         android:id="@+id/exchanges_screen"
         android:icon="@drawable/ic_repeat_24"
+        android:menuCategory="secondary"
         android:title="@string/title_exchanges" />
+
+    <item
+        android:id="@+id/home_screen"
+        android:icon="@drawable/ic_home_24"
+        android:menuCategory="secondary"
+        android:title="@string/title_home" />
 
     <item
         android:id="@+id/chat_screen"
         android:icon="@drawable/ic_chat_24"
+        android:menuCategory="secondary"
         android:title="@string/title_chat" />
     <item
         android:id="@+id/profile_screen"
         android:icon="@drawable/ic_person_24"
+        android:menuCategory="secondary"
         android:title="@string/title_profile" />
 
 </menu>

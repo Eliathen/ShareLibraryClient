@@ -3,7 +3,7 @@ package com.szymanski.sharelibrary.features.book.presentation.model
 import com.szymanski.sharelibrary.features.book.domain.model.Author
 import java.io.Serializable
 
-class AuthorDisplayable(
+data class AuthorDisplayable(
     val id: Long? = null,
     var name: String?,
     var surname: String?,
@@ -20,4 +20,6 @@ class AuthorDisplayable(
         name = this.name,
         surname = this.surname
     )
+
+    companion object
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--    <item-->
+    <!--        android:id="@+id/books_item_remove"-->
+    <!--        android:title="@string/books_item_remove_book"-->
+    <!--        app:showAsAction="never" />-->
+    <item
+        android:id="@+id/books_item_share"
+        android:title="@string/share_book"
+        app:showAsAction="never" />
+</menu>

@@ -4,7 +4,7 @@ import com.szymanski.sharelibrary.features.user.domain.model.User
 
 
 data class RegisterRequest(
-    val defaultAddress: AddressRequest?,
+    val coordinates: CoordinatesRequest?,
     val email: String?,
     val name: String?,
     val password: CharArray?,
@@ -12,7 +12,7 @@ data class RegisterRequest(
     val username: String?,
 ) {
     constructor(user: User) : this(
-        defaultAddress = user.address?.let { AddressRequest(it) },
+        coordinates = user.coordinates?.let { CoordinatesRequest(it) },
         email = user.email,
         name = user.name,
         password = user.password,
@@ -26,7 +26,6 @@ data class RegisterRequest(
 
         other as RegisterRequest
 
-        if (defaultAddress != other.defaultAddress) return false
         if (email != other.email) return false
         if (name != other.name) return false
         if (!password.contentEquals(other.password)) return false
@@ -37,13 +36,14 @@ data class RegisterRequest(
     }
 
     override fun hashCode(): Int {
-        var result = defaultAddress.hashCode()
-        result = 31 * result + email.hashCode()
-        result = 31 * result + name.hashCode()
-        result = 31 * result + password.contentHashCode()
-        result = 31 * result + surname.hashCode()
-        result = 31 * result + username.hashCode()
+        var result = coordinates?.hashCode() ?: 0
+        result = 31 * result + (email?.hashCode() ?: 0)
+        result = 31 * result + (name?.hashCode() ?: 0)
+        result = 31 * result + (password?.contentHashCode() ?: 0)
+        result = 31 * result + (surname?.hashCode() ?: 0)
+        result = 31 * result + (username?.hashCode() ?: 0)
         return result
     }
+
 }
 
