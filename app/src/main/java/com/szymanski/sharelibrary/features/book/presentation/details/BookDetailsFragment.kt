@@ -124,18 +124,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
             }
         }
         book_details_language.text = bookDisplayable.languageDisplayable?.name
-        book_details_condition.text = when (bookDisplayable.condition) {
-            BookCondition.NEW -> {
-                getString(R.string.book_condition_new)
-            }
-            BookCondition.GOOD -> {
-                getString(R.string.book_condition_good)
-            }
-            else -> {
-                getString(R.string.book_condition_bad)
-            }
-
-        }
+        book_details_condition.text = getTextDependingOnBookCondition(bookDisplayable.condition)
 
         user_name_book_details.text = bookDisplayable.atUserDisplayable?.name
         user_surname_book_details.text = bookDisplayable.atUserDisplayable?.surname
@@ -149,6 +138,20 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         }
         endString = endString.trim()
         return endString.substring(endString.indices)
+    }
+
+    private fun getTextDependingOnBookCondition(condition: BookCondition): String {
+        return when (condition) {
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
+        }
     }
 
 

@@ -7,6 +7,7 @@ import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import kotlinx.android.synthetic.main.fragment_exchange_details.*
 import kotlinx.android.synthetic.main.toolbar_base.*
@@ -57,6 +58,9 @@ class ExchangeDetailsFragment :
             exchange_details_category.text =
                 convertCategoriesDisplayableListToString(exchange.book.categoriesDisplayable!!)
             exchange_details_deposit_value.text = exchange.deposit.toString()
+            exchange_details_condition.text =
+                getTextDependingOnBookCondition(exchange.book.condition)
+            exchange_details_language.text = exchange.book.languageDisplayable?.name
         }
         viewModel.requirements.observe(this) { requirements ->
             if (requirements.any { it.user?.id == viewModel.userId }) {
@@ -100,6 +104,20 @@ class ExchangeDetailsFragment :
         }
         endString = endString.trim()
         return endString.substring(0 until endString.length - 1)
+    }
+
+    private fun getTextDependingOnBookCondition(condition: BookCondition): String {
+        return when (condition) {
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
+        }
     }
 
 }

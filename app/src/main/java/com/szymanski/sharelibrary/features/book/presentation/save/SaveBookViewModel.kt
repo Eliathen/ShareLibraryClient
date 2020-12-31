@@ -1,6 +1,5 @@
 package com.szymanski.sharelibrary.features.book.presentation.save
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.utils.BookCondition
-import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.model.Category
 import com.szymanski.sharelibrary.features.book.domain.model.Language
@@ -111,7 +109,6 @@ class SaveBookViewModel(
         val saveBook = book.toBook()
         saveBook.categories = createListOfCategories()
         saveBook.condition = condition
-        Log.d(TAG, "saveBook: $saveBook")
         saveBookUseCase(
             scope = viewModelScope,
             params = saveBook

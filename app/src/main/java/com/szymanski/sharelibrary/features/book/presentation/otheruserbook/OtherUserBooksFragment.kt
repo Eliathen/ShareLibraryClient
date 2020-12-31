@@ -13,6 +13,7 @@ import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
@@ -143,6 +144,8 @@ class OtherUserBooksFragment :
                     getString(R.string.book_status_at_owner)
                 }
             }
+            other_user_book_condition.text = getTextDependingOnBookCondition(book.condition)
+            other_user_book_language.text = book.languageDisplayable?.name
             viewModel.requirements.observe(this@OtherUserBooksFragment) { list ->
                 when {
                     book.status == BookStatus.AT_OWNER || book.status == BookStatus.EXCHANGED -> {
@@ -170,6 +173,20 @@ class OtherUserBooksFragment :
         }
         endString = endString.trim()
         return endString.substring(endString.indices)
+    }
+
+    private fun getTextDependingOnBookCondition(condition: BookCondition): String {
+        return when (condition) {
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
+        }
     }
 
     companion object {

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.hadilq.liveevent.LiveEvent
 import com.szymanski.sharelibrary.core.api.model.request.ExecuteExchangeRequest
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
@@ -55,8 +56,8 @@ class RequirementsViewModel(
             }
         }
     }
-    private val _bookDetails: MutableLiveData<Book> by lazy {
-        MutableLiveData<Book>()
+    private val _bookDetails: LiveEvent<Book> by lazy {
+        LiveEvent()
     }
     val bookDetails: LiveData<BookDisplayable> by lazy {
         _bookDetails.map {
@@ -101,13 +102,15 @@ class RequirementsViewModel(
     }
 
     fun downloadImage(bookDisplayable: BookDisplayable) {
+        setPendingState()
         bookDisplayable.id?.let {
             getCoverUseCase(viewModelScope, params = it) { result ->
                 result.onSuccess { cover ->
+                    setIdleState()
                     val book =
                         _otherUserBooks.value?.first { book -> book.id == bookDisplayable.id }
                     book?.cover = cover
-                    _bookDetails.value = book
+                    _bookDetails.postValue(book)
                 }
                 result.onFailure { it ->
                     handleFailure(it)
@@ -127,7 +130,7 @@ class RequirementsViewModel(
             result.onSuccess {
                 showMessage("Exchange has been made")
                 getRequirements()
-                params.get(ExecuteExchangeRequest.WITH_USER_ID_KEY)
+                params[ExecuteExchangeRequest.WITH_USER_ID_KEY]
                     ?.let { it1 -> openChatRoom(it1) }
             }
             result.onFailure { handleFailure(it) }

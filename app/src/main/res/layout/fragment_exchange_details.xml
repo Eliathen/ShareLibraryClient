@@ -23,7 +23,7 @@
                 android:id="@+id/exchange_details_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/dp_16"
                 android:gravity="center_horizontal"
                 android:textSize="40sp"
                 tools:text="Title" />
@@ -33,14 +33,14 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/dp_16"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="@dimen/dp_16"
                 android:orientation="vertical"
                 android:paddingBottom="10dp">
 
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:layout_marginHorizontal="20dp">
+                android:layout_marginHorizontal="@dimen/dp_16">
 
 
                 <TextView
@@ -86,7 +86,64 @@
                     android:background="@null"
                     android:textSize="18sp"
                     android:layout_marginStart="5dp"
+                    android:textColor="@color/gold"
+
                     tools:text="Category" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/exchange_details_language_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:layout_marginHorizontal="@dimen/dp_16">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/language_label"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/exchange_details_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:textSize="18sp"
+                    android:textColor="@color/gold"
+                    android:layout_marginStart="5dp"
+                    tools:text="Language" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/exchange_details_condition_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:layout_marginHorizontal="@dimen/dp_16">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/condition_label"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/exchange_details_condition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:textSize="18sp"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/gold"
+
+                    tools:text="Condition" />
 
             </LinearLayout>
 
@@ -94,9 +151,9 @@
                 android:id="@+id/deposit_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="@dimen/dp_16"
                 android:orientation="horizontal"
-                android:paddingBottom="20dp">
+                android:paddingBottom="@dimen/dp_16">
 
 
                 <TextView
@@ -113,6 +170,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    tools:text="50.0"
+                    android:textColor="@color/gold"
                     android:textSize="18sp" />
 
 
@@ -134,8 +193,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="20dp"
+                    android:layout_marginHorizontal="@dimen/dp_16"
+                    android:layout_marginVertical="@dimen/dp_16"
                     android:gravity="center">
 
                     <ImageView
