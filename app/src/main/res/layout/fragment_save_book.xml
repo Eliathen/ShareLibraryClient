@@ -8,99 +8,220 @@
     tools:context=".features.book.presentation.save.SaveBookFragment">
 
     <include
-        layout="@layout/toolbar_base"
-        style="@style/toolbar_style" />
+        style="@style/toolbar_style"
+        layout="@layout/toolbar_base" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_marginVertical="20dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/dp_8">
 
-            <EditText
-                android:id="@+id/book_title"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/title_edit_text_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
+                android:layout_marginHorizontal="@dimen/dp_16"
                 android:hint="@string/title_hint"
-                android:layout_marginHorizontal="20dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="Autofill" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/book_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/book_title"-->
+            <!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginHorizontal="20dp"-->
+            <!--                android:hint="@string/title_hint"-->
+            <!--                android:inputType="textNoSuggestions"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                tools:ignore="Autofill" />-->
 
             <ImageView
                 android:id="@+id/cover_image"
                 android:layout_width="120dp"
-                android:layout_marginVertical="20dp"
                 android:layout_height="150dp"
-                android:layout_marginHorizontal="50dp"
-                android:src="@drawable/ic_launcher_background"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/book_title"
+                android:layout_marginVertical="@dimen/dp_8"
                 android:contentDescription="@string/books_cover_description"
+                android:src="@drawable/ic_launcher_background"
+                app:layout_constraintStart_toStartOf="@+id/title_edit_text_wrapper"
+                app:layout_constraintTop_toBottomOf="@+id/title_edit_text_wrapper"
                 tools:ignore="ContentDescription" />
 
-            <Button
-                android:id="@+id/save_book_category_button"
+            <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/categories_button"
-                style="@style/Widget.MaterialComponents.Button"
-                android:textColor="@color/white"
-                android:layout_marginHorizontal="30dp"
-                app:layout_constraintBottom_toBottomOf="@+id/cover_image"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/dp_8"
+                app:layout_constraintTop_toTopOf="@id/cover_image"
+                app:layout_constraintBottom_toBottomOf="@id/cover_image"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cover_image"
-                app:layout_constraintTop_toTopOf="@+id/cover_image" />
+                app:layout_constraintStart_toEndOf="@id/cover_image">
+
+                <!--                <Button-->
+                <!--                    android:id="@+id/save_book_category_button"-->
+                <!--                    style="@style/Widget.MaterialComponents.Button"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginHorizontal="@dimen/dp_16"-->
+                <!--                    android:text="@string/categories_button"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:layout_centerHorizontal="true"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent" />-->
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/category_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_16"
+                    android:layout_centerHorizontal="true"
+                    android:hint="@string/category_label"
+                    android:clickable="false">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/category_dropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/language_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_16"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/category_wrapper"
+                    android:hint="@string/language_hint">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/language_dropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/book_condition_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:text="@string/book_condition_label"
+                android:textSize="20sp"
+                android:layout_marginVertical="@dimen/dp_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+
+            <RadioGroup
+                android:id="@+id/book_condition_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_8"
+                android:orientation="horizontal"
+                android:weightSum="6"
+                app:layout_constraintTop_toBottomOf="@+id/book_condition_label">
+
+                <RadioButton
+                    android:id="@+id/condition_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/book_condition_new" />
+
+                <RadioButton
+                    android:id="@+id/condition_good"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/book_condition_good" />
+
+                <RadioButton
+                    android:id="@+id/condition_bad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/book_condition_bad" />
+            </RadioGroup>
 
             <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_camera_24"
                 android:layout_marginVertical="10dp"
+                android:contentDescription="@string/get_photo_image_description"
+                android:src="@drawable/ic_camera_24"
                 app:layout_constraintEnd_toEndOf="@+id/cover_image"
                 app:layout_constraintStart_toStartOf="@+id/cover_image"
-                app:layout_constraintTop_toBottomOf="@+id/cover_image"
-                android:contentDescription="@string/get_photo_image_description" />
+                app:layout_constraintTop_toBottomOf="@+id/cover_image" />
+
+            <TextView
+                android:id="@+id/authors_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:text="@string/authors_label"
+                android:textSize="20sp"
+                android:layout_marginVertical="@dimen/dp_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/book_condition_radio_group" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/author_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageButton" />
-
+                app:layout_constraintTop_toBottomOf="@id/authors_label" />
 
             <Button
                 android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
                 android:background="@drawable/login_button_background"
                 android:paddingHorizontal="50dp"
-                android:paddingVertical="@dimen/dp_16"
+                android:paddingVertical="@dimen/dp_4"
                 android:text="@string/save_book"
                 android:textColor="@color/white"
-                android:layout_marginVertical="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/author_list" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
-                android:translationZ="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:translationZ="3dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/saveButton"
                 app:layout_constraintTop_toTopOf="@+id/saveButton" />

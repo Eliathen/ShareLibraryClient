@@ -3,11 +3,11 @@ package com.szymanski.sharelibrary.features.book.data
 import com.szymanski.sharelibrary.core.api.Api
 import com.szymanski.sharelibrary.core.exception.ErrorWrapper
 import com.szymanski.sharelibrary.core.exception.callOrThrow
-import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.features.book.domain.BookRepository
 import com.szymanski.sharelibrary.features.book.domain.model.Author
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.model.Category
+import com.szymanski.sharelibrary.features.book.domain.model.Language
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -17,7 +17,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class BookRepositoryImpl(
     private val api: Api,
     private val errorWrapper: ErrorWrapper,
-    private val userStorage: UserStorage,
 ) : BookRepository {
     override suspend fun saveBook(book: Book, userId: Long) {
         val image = MultipartBody.Part.createFormData(
@@ -27,9 +26,25 @@ class BookRepositoryImpl(
         )
         val authors = createMapOfRequestBodyFromAuthorList(book.authors!!)
         val categories = createMapOfRequestBodyFromCategories(book.categories!!)
+        val language = createMapOfRequestBodyFromLanguage(book.language!!)
+
         callOrThrow(errorWrapper) {
-            api.saveBook(book.title!!, image, authors, categories, userId)
+            api.saveBook(book.title!!,
+                image,
+                authors,
+                categories,
+                userId,
+                language,
+                book.condition?.ordinal!!)
         }
+    }
+
+    private fun createMapOfRequestBodyFromLanguage(language: Language): Map<String, RequestBody> {
+        val map = hashMapOf<String, RequestBody>()
+        val mT = ("text/plain".toMediaTypeOrNull())
+        map["language.id"] = language.id.toString().toRequestBody(mT)
+        map["language.name"] = language.name?.toRequestBody(mT)!!
+        return map
     }
 
     private fun createMapOfRequestBodyFromAuthorList(authors: List<Author>): Map<String, RequestBody> {
@@ -73,6 +88,14 @@ class BookRepositoryImpl(
     override suspend fun getCoverByBookId(bookId: Long): ByteArray {
         return callOrThrow(errorWrapper) {
             api.getCover(bookId).byteStream().readBytes()
+        }
+    }
+
+    override suspend fun getLanguages(): List<Language> {
+        return callOrThrow(errorWrapper) {
+            api.getLanguageList().map {
+                it.toLanguage()
+            }
         }
     }
 }

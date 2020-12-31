@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.core.api.model.response
 
 import com.google.gson.annotations.SerializedName
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 
@@ -11,6 +12,8 @@ data class BookResponse(
     @SerializedName("status") private val status: BookStatus,
     @SerializedName("atUser") private val atUser: UserWithoutBooks?,
     @SerializedName("categories") private val categories: List<CategoryResponse>,
+    @SerializedName("language") private val language: LanguageResponse?,
+    @SerializedName("condition") private val condition: BookCondition?,
 ) {
 
     fun toBook() = Book(
@@ -20,6 +23,8 @@ data class BookResponse(
         cover = byteArrayOf(),
         status = this.status,
         atUser = this.atUser?.toUser(),
-        categories = this.categories.map { it.toCategory() }
+        categories = this.categories.map { it.toCategory() },
+        language = this.language?.toLanguage(),
+        condition = this.condition
     )
 }

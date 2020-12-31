@@ -24,12 +24,12 @@ val bookModule = module {
     //viewModels
     viewModel { BooksViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { SearchBookViewModel(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { SaveBookViewModel(get(), get(), get(), get()) }
+    viewModel { SaveBookViewModel(get(), get(), get(), get(), get()) }
     viewModel { OtherUserBooksViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { BookDetailsViewModel(get(), get(), get(), get(), get()) }
 
     //repository
-    factory<BookRepository> { BookRepositoryImpl(get(), get(), get()) }
+    factory<BookRepository> { BookRepositoryImpl(get(), get()) }
     factory<CategoryRepository> { CategoryRepositoryImpl(get(), get()) }
 
     //navigation
@@ -42,6 +42,7 @@ val bookModule = module {
     factory { GetCoverUseCase(get()) }
     factory { AssignBookToUserUseCase(get()) }
     factory { GetCategoriesUseCase(get()) }
+    factory { GetLanguagesUseCase(get()) }
 
     //Adapters
     factory { SearchBookAdapter() }
