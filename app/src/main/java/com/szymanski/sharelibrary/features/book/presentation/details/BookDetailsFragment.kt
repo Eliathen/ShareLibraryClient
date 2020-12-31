@@ -7,6 +7,7 @@ import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
@@ -121,6 +122,19 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
             else -> {
                 getString(R.string.book_status_at_owner)
             }
+        }
+        book_details_language.text = bookDisplayable.languageDisplayable?.name
+        book_details_condition.text = when (bookDisplayable.condition) {
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
+
         }
 
         user_name_book_details.text = bookDisplayable.atUserDisplayable?.name

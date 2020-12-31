@@ -107,4 +107,7 @@
     <string name="book_condition_good">Good</string>
     <string name="book_condition_bad">Bad</string>
     <string name="language_hint">Language</string>
+    <string name="language_label">Language:</string>
+    <string name="condition_label">Condition:</string>
+    <string name="cancel_sharing">Cancel Sharing</string>
 </resources>
