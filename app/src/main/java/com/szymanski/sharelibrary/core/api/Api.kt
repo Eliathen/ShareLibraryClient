@@ -94,6 +94,8 @@ interface Api {
         @Query("rad") radius: Double?,
         @Query("cat") categories: List<String>?,
         @Query("q") query: String?,
+        @Query("lan") language: Int?,
+        @Query("con") conditions: List<Int>?,
     ): List<ExchangeResponse>
 
     @GET("chat/rooms")

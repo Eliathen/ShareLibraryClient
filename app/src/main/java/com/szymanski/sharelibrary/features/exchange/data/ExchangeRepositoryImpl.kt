@@ -59,6 +59,8 @@ class ExchangeRepositoryImpl(
         radius: Double,
         categories: List<String>?,
         query: String?,
+        languageId: Int?,
+        conditions: List<Int>?,
     ): List<Exchange> {
         val userId = userStorage.getUserId()
         return callOrThrow(errorWrapper) {
@@ -67,7 +69,9 @@ class ExchangeRepositoryImpl(
                 longitude,
                 radius,
                 categories,
-                if (query.isNullOrEmpty()) null else query
+                if (query.isNullOrEmpty()) null else query,
+                languageId,
+                conditions
             ).filter { it.user.id != userId }.map { it.toExchange() }
         }
     }

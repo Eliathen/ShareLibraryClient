@@ -8,10 +8,13 @@ import com.szymanski.sharelibrary.core.api.model.request.SearchRequest
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.SortOption
 import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
 import com.szymanski.sharelibrary.features.book.domain.model.Category
+import com.szymanski.sharelibrary.features.book.domain.model.Language
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCategoriesUseCase
+import com.szymanski.sharelibrary.features.book.domain.usecase.GetLanguagesUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesByFiltersUseCase
 import com.szymanski.sharelibrary.features.exchange.navigation.ExchangeNavigation
@@ -28,10 +31,13 @@ class ExchangesViewModel(
     private val getUserUseCase: GetUserUseCase,
     private val getExchangesByFiltersUseCase: GetExchangesByFiltersUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getLanguagesUseCase: GetLanguagesUseCase,
     userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
 
     private val userId = userStorage.getUserId()
+
+    var displayUserExchange: Boolean = false
 
     private var sortOption: SortOption? = null
 
@@ -40,16 +46,36 @@ class ExchangesViewModel(
             getUserDetails()
         }
     }
+
     val user: LiveData<UserDisplayable> by lazy {
         _user.map {
             UserDisplayable(it)
         }
     }
-
-    val listOfCategories: MutableLiveData<List<Category>> =
+    val categories: MutableLiveData<List<Category>> =
         MutableLiveData<List<Category>>().also {
             getCategories()
         }
+
+    val languages: MutableLiveData<List<Language>> =
+        MutableLiveData<List<Language>>().also {
+            getLanguages()
+        }
+
+    private fun getLanguages() {
+        getLanguagesUseCase(
+            params = Unit,
+            scope = viewModelScope
+        ) { result ->
+            result.onSuccess { list ->
+                languages.value = list.sortedBy { it.name }
+            }
+            result.onFailure {
+
+            }
+
+        }
+    }
 
     private val _exchanges: MutableLiveData<List<Exchange>> by lazy {
         MutableLiveData<List<Exchange>>()
@@ -76,22 +102,32 @@ class ExchangesViewModel(
             CoordinateDisplayable(it)
         }
     }
-
     private val _query: MutableLiveData<String> by lazy {
         MutableLiveData("")
     }
     val query: LiveData<String> by lazy {
         _query
     }
+
     private var radius: Double? = defaultRadiusDistance
 
     private val chosenCategories: MutableMap<String, Boolean>? = mutableMapOf()
 
+    var chosenLanguageId: Int? = null
+
+    var chosenCondition: MutableSet<BookCondition> = mutableSetOf()
+
+    fun addCondition(condition: BookCondition) {
+        chosenCondition.add(condition)
+    }
+
+    fun removeCondition(condition: BookCondition) {
+        chosenCondition.remove(condition)
+    }
+
     val circleRadius: MutableLiveData<Double> by lazy {
         MutableLiveData(radius?.times(1000.0))
     }
-
-    var displayUserExchange: Boolean = false
 
     private val _exchangeToDisplay: MutableLiveData<Exchange> by lazy {
         MutableLiveData<Exchange>()
@@ -112,7 +148,7 @@ class ExchangesViewModel(
             scope = viewModelScope,
             params = Unit
         ) { result ->
-            result.onSuccess { listOfCategories.value = it.sortedBy { category -> category.name } }
+            result.onSuccess { categories.value = it.sortedBy { category -> category.name } }
         }
     }
 
@@ -147,7 +183,9 @@ class ExchangesViewModel(
             _currentCoordinates.value?.longitude!!,
             radius,
             chosenCategories?.filter { it.value }?.keys?.toList(),
-            _query.value
+            _query.value,
+            chosenLanguageId,
+            chosenCondition.map { it.ordinal }
         )
         setPendingState()
         getExchangesByFiltersUseCase(
@@ -171,6 +209,8 @@ class ExchangesViewModel(
         radius = defaultRadiusDistance
         chosenCategories!!.clear()
         circleRadius.value = defaultRadiusDistance
+        chosenCondition.clear()
+        chosenLanguageId = null
     }
 
     private fun createMapFromExchanges(exchanges: List<Exchange>) {

@@ -14,7 +14,9 @@ class GetExchangesByFiltersUseCase(
             params.longitude,
             params.radius!!,
             params.categories,
-            params.query
+            params.query,
+            params.languageId,
+            params.conditions
         )
     }
 

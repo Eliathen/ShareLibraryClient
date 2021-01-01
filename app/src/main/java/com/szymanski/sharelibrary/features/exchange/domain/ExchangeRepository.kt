@@ -17,5 +17,7 @@ interface ExchangeRepository {
         radius: Double,
         categories: List<String>?,
         query: String?,
+        languageId: Int?,
+        conditions: List<Int>?,
     ): List<Exchange>
 }

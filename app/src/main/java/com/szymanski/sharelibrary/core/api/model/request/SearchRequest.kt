@@ -6,6 +6,8 @@ data class SearchRequest(
     val radius: Double?,
     val categories: List<String>?,
     val query: String?,
+    val languageId: Int?,
+    val conditions: List<Int>?,
 ) {
     companion object
 }

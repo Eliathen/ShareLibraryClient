@@ -110,4 +110,7 @@
     <string name="language_label">Language:</string>
     <string name="condition_label">Condition:</string>
     <string name="cancel_sharing">Cancel Sharing</string>
+    <string name="search_book_author">Title, author</string>
+    <string name="distance_max_value">100 km</string>
+    <string name="not_found_exchanges">Not found</string>
 </resources>
