@@ -1,9 +1,11 @@
 package com.szymanski.sharelibrary.mock
 
 import com.szymanski.sharelibrary.core.api.model.request.*
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.core.utils.ExchangeStatus
 import com.szymanski.sharelibrary.features.book.domain.model.Book
+import com.szymanski.sharelibrary.features.book.domain.model.Language
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.Login
@@ -68,7 +70,15 @@ fun Book.Companion.mock() = Book(
     cover = byteArrayOf(),
     status = BookStatus.AT_OWNER,
     atUser = User.Companion.mock(),
-    categories = listOf()
+    categories = listOf(),
+    language = Language.Companion.mock(),
+    condition = BookCondition.NEW
+)
+
+@TestOnly
+fun Language.Companion.mock() = Language(
+    id = 1,
+    name = "English"
 )
 
 @TestOnly
@@ -100,5 +110,7 @@ fun SearchRequest.Companion.mock() = SearchRequest(
     longitude = 25.12345,
     radius = 1.0,
     categories = listOf(),
-    query = "query"
+    query = "query",
+    languageId = 1,
+    conditions = listOf(BookCondition.NEW.ordinal)
 )

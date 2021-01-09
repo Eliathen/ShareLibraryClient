@@ -107,4 +107,7 @@ interface Api {
     @GET("books/languages")
     suspend fun getLanguageList(): List<LanguageResponse>
 
+    @GET("books/{userId}/exchanged")
+    suspend fun getUsersByBooksWhereAtUserIdIs(@Path("userId") userId: Long): List<UserResponse>
+
 }

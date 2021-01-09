@@ -19,4 +19,6 @@ interface UserRepository {
 
     suspend fun withdrawBook(withdrawBookRequest: WithdrawBookRequest): User
 
+    suspend fun getUsersByBooksWhereAtUserIdIs(params: Long): List<User>
+
 }

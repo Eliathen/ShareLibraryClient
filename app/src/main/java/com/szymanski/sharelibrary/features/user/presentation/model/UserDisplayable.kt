@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.user.presentation.model
 
 import android.os.Parcelable
+import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.user.domain.model.User
 import kotlinx.android.parcel.Parcelize
 
@@ -13,6 +14,7 @@ data class UserDisplayable(
     val name: String?,
     val surname: String?,
     var coordinates: CoordinateDisplayable?,
+    var books: List<BookDisplayable>?,
 ) : Parcelable {
 
     constructor(user: User) : this(
@@ -23,6 +25,7 @@ data class UserDisplayable(
         name = user.name,
         surname = user.surname,
         coordinates = user.coordinates?.let { CoordinateDisplayable(it) },
+        books = user.books?.map { BookDisplayable(it) }
     )
 
     fun toUser() = User(

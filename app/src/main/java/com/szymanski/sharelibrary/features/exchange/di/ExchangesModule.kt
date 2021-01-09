@@ -8,6 +8,7 @@ import com.szymanski.sharelibrary.features.exchange.navigation.ExchangeNavigatio
 import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesViewModel
 import com.szymanski.sharelibrary.features.exchange.presentation.details.ExchangeDetailsViewModel
 import com.szymanski.sharelibrary.features.exchange.presentation.exchangedbook.ExchangedBookViewModel
+import com.szymanski.sharelibrary.features.exchange.presentation.exchangedbook.ExchangedBooksViewAdapter
 import com.szymanski.sharelibrary.features.exchange.presentation.listView.ExchangesListViewAdapter
 import com.szymanski.sharelibrary.features.home.domain.usecase.ExecuteExchangeUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -28,13 +29,13 @@ val exchangesModule = module {
     factory { FinishExchangeByBookIdUseCase(get(), get()) }
     factory { GetExchangeByIdUseCase(get()) }
     factory { ExecuteExchangeUseCase(get()) }
-    factory { GetExchangesByAtUserIdUseCase(get()) }
+    factory { GetUserWhichHaveBookWhereAtUserIdIs(get()) }
     factory { GetExchangesByFiltersUseCase(get()) }
     factory { GetUserExchangesUseCase(get()) }
 
     //adapter
     factory { ExchangesListViewAdapter() }
-
+    factory { ExchangedBooksViewAdapter() }
     //navigation
     factory<ExchangeNavigation> { ExchangeNavigationImpl(get()) }
 }

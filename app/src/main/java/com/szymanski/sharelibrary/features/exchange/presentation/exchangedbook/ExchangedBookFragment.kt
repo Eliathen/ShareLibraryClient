@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.exchange.presentation.exchangedbook
 
 import android.app.AlertDialog
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,9 +9,11 @@ import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
+import com.szymanski.sharelibrary.core.utils.BookCondition
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
-import com.szymanski.sharelibrary.features.exchange.presentation.listView.ExchangesListViewAdapter
-import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
+import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
+import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 import kotlinx.android.synthetic.main.dialog_other_user_book_details.view.*
 import kotlinx.android.synthetic.main.fragment_exchanged_book.*
 import org.koin.android.ext.android.inject
@@ -18,11 +21,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExchangedBookFragment :
     BaseFragment<ExchangedBookViewModel>(R.layout.fragment_exchanged_book),
-    ExchangesListViewAdapter.ExchangesListViewListener {
+    ExchangedBooksViewAdapter.ExchangedBooksListViewListener {
 
     override val viewModel: ExchangedBookViewModel by viewModel()
 
-    private val adapter: ExchangesListViewAdapter by inject()
+    private val adapter: ExchangedBooksViewAdapter by inject()
 
     private val linearLayoutManager: LinearLayoutManager by inject()
 
@@ -44,8 +47,8 @@ class ExchangedBookFragment :
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.exchanges.observe(this) {
-            adapter.setExchanges(it)
+        viewModel.books.observe(this) {
+            adapter.setBooks(it)
         }
     }
 
@@ -68,14 +71,16 @@ class ExchangedBookFragment :
     }
 
     override fun onItemClick(position: Int) {
-        viewModel.downloadCover(viewModel.exchanges.value?.get(position)?.book!!)
+        viewModel.downloadCover(viewModel.books.value?.get(position)!!)
         viewModel.book.observe(this) {
-            viewModel.exchanges.value?.get(position)?.let { displayBookDetails(it) }
+            viewModel.books.value?.get(position)?.let { displayBookDetails(it) }
         }
     }
 
-    private fun displayBookDetails(exchange: ExchangeDisplayable) {
-        val book = exchange.book
+    private fun displayBookDetails(book: BookDisplayable) {
+        Log.d(TAG, "displayBookDetails: ")
+        val user: UserDisplayable? = viewModel.getUserByBook(book)
+        Log.d(TAG, "displayBookDetails: $user")
         val content = layoutInflater.inflate(R.layout.dialog_other_user_book_details, null)
         val dialog = AlertDialog.Builder(requireContext()).setView(content)
             .setNegativeButton("Cancel") { dialog, _ ->
@@ -95,14 +100,20 @@ class ExchangedBookFragment :
             other_user_book_category.text = book.categoriesDisplayable?.let {
                 convertCategoriesDisplayableListToString(it)
             }
+            other_user_book_condition.text = getTextDependingOnBookCondition(book.condition)
+            other_user_book_language.text = book.languageDisplayable?.name
             dialog_other_user_details_label.text = context.getString(R.string.owner_label)
             dialog_other_user_details_wrapper.visibility = View.VISIBLE
-            val fullName = "${exchange.user.name} ${exchange.user.surname}"
+            val fullName = "${user?.name} ${user?.surname}"
             dialog_other_user_details_full_name.text = fullName
             dialog_other_user_book_details_status_wrapper.visibility = View.GONE
             dialog_other_user_send_message_button.setOnClickListener {
                 dialog.dismiss()
-                exchange.user.let { viewModel.openChatRoom(it) }
+                user.let {
+                    if (it != null) {
+                        viewModel.openChatRoom(it)
+                    }
+                }
             }
         }
     }
@@ -114,5 +125,19 @@ class ExchangedBookFragment :
         }
         endString = endString.trim()
         return endString.substring(endString.indices)
+    }
+
+    private fun getTextDependingOnBookCondition(condition: BookCondition): String {
+        return when (condition) {
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
+        }
     }
 }

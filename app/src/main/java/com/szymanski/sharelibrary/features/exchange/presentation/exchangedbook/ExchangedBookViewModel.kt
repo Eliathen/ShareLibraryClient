@@ -12,32 +12,53 @@ import com.szymanski.sharelibrary.features.book.domain.usecase.GetCoverUseCase
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.chat.domain.usecase.GetRoomBySenderIdAndRecipientIdUseCase
 import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
-import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
-import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesByAtUserIdUseCase
-import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
+import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetUserWhichHaveBookWhereAtUserIdIs
 import com.szymanski.sharelibrary.features.home.navigation.HomeNavigation
+import com.szymanski.sharelibrary.features.user.domain.model.User
 import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 
 class ExchangedBookViewModel(
     errorMapper: ErrorMapper,
-    private val getExchangesByAtUserIdUseCase: GetExchangesByAtUserIdUseCase,
+    private val getUserWhichHaveBookWhereAtUserIdIs: GetUserWhichHaveBookWhereAtUserIdIs,
     private val getRoomBySenderIdAndRecipientIdUseCase: GetRoomBySenderIdAndRecipientIdUseCase,
     private val homeNavigation: HomeNavigation,
     private val userStorage: UserStorage,
     private val getCoverUseCase: GetCoverUseCase,
 ) : BaseViewModel(errorMapper) {
 
-    private val _exchanges: MutableLiveData<List<Exchange>> by lazy {
-        MutableLiveData<List<Exchange>>().also {
-            loadExchanges()
+    private val _users: MutableLiveData<List<User>> by lazy {
+        MutableLiveData<List<User>>().also {
+            loadUsers()
         }
     }
-    val exchanges: LiveData<List<ExchangeDisplayable>> by lazy {
-        _exchanges.map {
-            it.map { exchange ->
-                ExchangeDisplayable(exchange)
+    val users: LiveData<List<UserDisplayable>> by lazy {
+        _users.map { list ->
+            list.map {
+                UserDisplayable(it)
             }
         }
+    }
+
+    private val _books: MutableLiveData<List<Book>> by lazy {
+        MutableLiveData(getAllBooks(_users.value)).also {
+            loadUsers()
+        }
+    }
+
+    val books: LiveData<List<BookDisplayable>> by lazy {
+        _books.map { list ->
+            list.map {
+                BookDisplayable(it)
+            }
+        }
+    }
+
+    private fun getAllBooks(value: List<User>?): List<Book> {
+        val result = mutableSetOf<Book>()
+        value?.forEach { user ->
+            user.books?.let { result.addAll(it) }
+        }
+        return result.toList()
     }
 
     private val _book: MutableLiveData<Book> by lazy {
@@ -49,25 +70,28 @@ class ExchangedBookViewModel(
         }
     }
 
-    private fun loadExchanges() {
+    private fun loadUsers() {
         setPendingState()
-        getExchangesByAtUserIdUseCase(
+        getUserWhichHaveBookWhereAtUserIdIs(
             scope = viewModelScope,
             params = userStorage.getUserId()
         ) { result ->
             setIdleState()
             result.onSuccess {
-                _exchanges.value = it
+                _users.value = it
+                _books.value = getAllBooks(it)
             }
             result.onFailure { handleFailure(it) }
         }
     }
 
     fun downloadCover(bookDisplayable: BookDisplayable) {
+        setPendingState()
         getCoverUseCase(
             scope = viewModelScope,
             params = bookDisplayable.id!!
         ) { result ->
+            setIdleState()
             result.onSuccess {
                 bookDisplayable.cover = it
                 _book.value = bookDisplayable.toBook()
@@ -91,5 +115,12 @@ class ExchangedBookViewModel(
             }
 
         }
+    }
+
+    fun getUserByBook(book: BookDisplayable): UserDisplayable? {
+        val user = _users.value?.first { user ->
+            user.books?.any { b -> b.id == book.id }!!
+        }!!
+        return UserDisplayable(user)
     }
 }

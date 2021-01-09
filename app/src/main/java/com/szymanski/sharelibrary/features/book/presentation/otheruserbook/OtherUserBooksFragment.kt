@@ -3,6 +3,7 @@ package com.szymanski.sharelibrary.features.book.presentation.otheruserbook
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -15,6 +16,7 @@ import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.dialog_other_user_book_details.view.*
@@ -112,6 +114,7 @@ class OtherUserBooksFragment :
 
     @SuppressLint("InflateParams")
     private fun displayDialogWithBookDetails(book: BookDisplayable) {
+        Log.d(TAG, "displayDialogWithBookDetails: ${book}")
         dialogContent = layoutInflater.inflate(R.layout.dialog_other_user_book_details, null)
         val dialog: AlertDialog = AlertDialog.Builder(requireContext()).setCancelable(true)
             .setView(dialogContent)

@@ -24,6 +24,8 @@ internal class GetExchangesByFiltersUseCaseTest {
             radius,
             categories,
             query,
+            language,
+            conditions,
         ) = searchRequest
         useCase(
             params = searchRequest,
@@ -36,7 +38,9 @@ internal class GetExchangesByFiltersUseCaseTest {
                 longitude,
                 radius!!,
                 categories,
-                query
+                query,
+                language,
+                conditions
             )
         }
     }

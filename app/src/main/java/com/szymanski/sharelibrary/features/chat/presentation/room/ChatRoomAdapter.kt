@@ -82,9 +82,9 @@ class ChatRoomAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     user_message_date.visibility = View.GONE
                 }
-                val fullName =
-                    "${messageDisplayable.sender!!.name} ${messageDisplayable.sender.surname}"
-                user_text_message_name.text = fullName
+//                val fullName =
+//                    "${messageDisplayable.sender!!.name} ${messageDisplayable.sender.surname}"
+                user_text_message_name.visibility = View.GONE
                 user_text_message_body.text = messageDisplayable.content
                 user_text_message_time.text = formatDateToString(messageDisplayable.timestamp!!)
             }

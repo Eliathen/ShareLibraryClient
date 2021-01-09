@@ -221,6 +221,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
             saveButton.isClickable = false
             clearErrors()
         } else {
+            saveButton.isClickable = true
             val book = BookDisplayable(
                 id = null,
                 title = title,

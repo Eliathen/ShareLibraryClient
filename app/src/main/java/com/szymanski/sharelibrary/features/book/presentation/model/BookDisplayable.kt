@@ -19,6 +19,7 @@ data class BookDisplayable(
     val languageDisplayable: LanguageDisplayable?,
     val condition: BookCondition,
 ) : Parcelable {
+
     constructor(book: Book) : this(
         id = book.id,
         title = book.title,

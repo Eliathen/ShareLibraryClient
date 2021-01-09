@@ -52,7 +52,7 @@ class ExchangesListViewAdapter : RecyclerView.Adapter<ExchangesListViewAdapter.V
             with(view) {
                 if (distance != null) {
                     exchange_distance.text = if (distance < 1.0) {
-                        "$distance m"
+                        "${String.format(" % .2f ", distance)} m"
                     } else {
                         "${String.format(" % .2f ", (distance / 1000))} km"
                     }
