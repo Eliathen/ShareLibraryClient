@@ -12,6 +12,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -34,6 +35,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.SortOption
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_sort.view.*
@@ -446,6 +448,9 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (!isLocationEnabled()) {
             viewModel.navigateBack()
+        } else {
+            Log.d(TAG, "onActivityResult: return from settings ")
+            viewModel.getFilteredExchanges()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

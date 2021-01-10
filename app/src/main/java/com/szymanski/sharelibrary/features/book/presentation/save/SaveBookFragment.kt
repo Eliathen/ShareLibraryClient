@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.content.PermissionChecker
 import androidx.core.content.PermissionChecker.checkSelfPermission
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -83,11 +84,6 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
 
     override fun initObservers() {
         super.initObservers()
-//        viewModel.categories.observe(this) {
-//            if (it != null) {
-//                save_book_category_button.isClickable = true
-//            }
-//        }
         viewModel.categories.observe(this) {
             if (it != null) {
                 category_dropdown.isClickable = true
@@ -122,6 +118,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
             }
         }
         saveButton.setOnClickListener {
+            saveButton.isClickable = false
             attemptSaveBook()
         }
         category_dropdown.setOnTouchListener { v, event ->
@@ -133,9 +130,17 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         category_wrapper.setEndIconOnClickListener {
             displayCategoryDialog()
         }
+        book_title.addTextChangedListener {
+            if (!it.isNullOrBlank()) {
+                title_edit_text_wrapper.error = ""
+            } else {
+                title_edit_text_wrapper.error = getString(R.string.field_required_error)
+            }
+        }
     }
 
     private fun displayCategoryDialog() {
+        category_wrapper.error = ""
         val choices = mutableListOf<String>()
         viewModel.categories.value?.forEach {
             choices.add(it.name)
@@ -154,13 +159,13 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             if (viewModel.chosenCategories.contains(true)) {
-                changeCategoryHint()
+                setChosenCategoriesAsHint()
                 dialog.dismiss()
             }
         }
     }
 
-    private fun changeCategoryHint() {
+    private fun setChosenCategoriesAsHint() {
         var newHint = ""
         val chosenCategories = mutableListOf<String>()
         viewModel.chosenCategories.forEachIndexed { index, b ->
@@ -175,7 +180,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
     }
 
     private fun attemptSaveBook() {
-        saveButton.isClickable = false
+        clearErrors()
         val title = book_title.text.toString().replace("\"", "")
         val authors = addAuthorAdapter.getAuthors()
         val language = language_dropdown.text.toString()
@@ -218,8 +223,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
 
         if (cancel) {
             focusView.requestFocus()
-            saveButton.isClickable = false
-            clearErrors()
+            saveButton.isClickable = true
         } else {
             saveButton.isClickable = true
             val book = BookDisplayable(
@@ -238,7 +242,8 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
     }
 
     private fun clearErrors() {
-
+        title_edit_text_wrapper.error = ""
+        category_wrapper.error = ""
     }
 
     private fun displayDialogCoverIsRequired() {
