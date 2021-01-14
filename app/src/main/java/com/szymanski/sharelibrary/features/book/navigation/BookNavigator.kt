@@ -5,7 +5,7 @@ import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeD
 
 interface BookNavigator {
 
-    fun openSaveBookScreen()
+    fun openSaveBookScreen(bookDisplayable: BookDisplayable?)
 
     fun openBooksScreen()
 

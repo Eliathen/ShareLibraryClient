@@ -65,17 +65,26 @@ class SearchBookAdapter : RecyclerView.Adapter<SearchBookAdapter.ViewHolder>() {
                 item_search_book_category.text = bookDisplayable.categoriesDisplayable?.let {
                     convertCategoriesDisplayableListToString(it)
                 }
-                if (usersBooks.any { it.id == bookDisplayable.id }) {
+                if (usersBooks.any {
+                        isBookEquals(it, bookDisplayable)
+                    }) {
                     save_book_imageButton.setImageResource(R.drawable.ic_add_gray_24)
                 } else {
                     save_book_imageButton.setOnClickListener(this@ViewHolder)
                 }
+                item_search_book_language.text = bookDisplayable.languageDisplayable?.name
                 save_book_imageButton.setOnClickListener(this@ViewHolder)
                 Glide.with(this)
                     .asBitmap()
                     .load(bookDisplayable.cover)
                     .into(cover)
             }
+        }
+
+        private fun isBookEquals(first: BookDisplayable, second: BookDisplayable): Boolean {
+            return first.title.equals(second.title) &&
+                    first.languageDisplayable?.id?.equals(second.languageDisplayable?.id)!! &&
+                    first.categoriesDisplayable?.equals(second.categoriesDisplayable)!!
         }
 
         private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {

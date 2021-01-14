@@ -4,6 +4,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.navigation.FragmentNavigator
 import com.szymanski.sharelibrary.features.book.presentation.details.BookDetailsFragment
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
+import com.szymanski.sharelibrary.features.book.presentation.save.SaveBookFragment
 import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesFragment
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import com.szymanski.sharelibrary.features.user.presentation.otheruser.OtherUserFragment
@@ -13,8 +14,9 @@ class BookNavigatorImpl(
     private val fragmentNavigator: FragmentNavigator,
 ) : BookNavigator {
 
-    override fun openSaveBookScreen() {
-        fragmentNavigator.navigateTo(R.id.action_navigate_from_search_book_screen_to_save_book_screen)
+    override fun openSaveBookScreen(bookDisplayable: BookDisplayable?) {
+        fragmentNavigator.navigateTo(R.id.action_navigate_from_search_book_screen_to_save_book_screen,
+            SaveBookFragment.SAVE_BOOK_SCREEN_KEY to bookDisplayable)
     }
 
     override fun openBooksScreen() {

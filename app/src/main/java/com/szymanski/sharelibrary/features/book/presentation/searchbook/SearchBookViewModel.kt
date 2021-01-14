@@ -72,8 +72,12 @@ class SearchBookViewModel(
         }
     }
 
+    fun openSaveBookScreen(bookDisplayable: BookDisplayable) {
+        bookNavigator.openSaveBookScreen(bookDisplayable)
+    }
+
     fun openSaveBookScreen() {
-        bookNavigator.openSaveBookScreen()
+        bookNavigator.openSaveBookScreen(null)
     }
 
     private fun downloadImage(books: List<Book>) {

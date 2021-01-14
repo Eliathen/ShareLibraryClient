@@ -6,7 +6,9 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
 import android.text.TextUtils
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
@@ -23,6 +25,7 @@ import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
+import com.szymanski.sharelibrary.features.book.presentation.model.LanguageDisplayable
 import kotlinx.android.synthetic.main.fragment_save_book.*
 import kotlinx.android.synthetic.main.item_author.view.*
 import kotlinx.android.synthetic.main.toolbar_base.*
@@ -46,6 +49,21 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
     val REQUEST_IMAGE_CAPTURE = 100
     val PERMISSION_CODE = 101
 
+    companion object {
+        val SAVE_BOOK_SCREEN_KEY = "SaveBookScreenKey"
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (arguments?.containsKey(SAVE_BOOK_SCREEN_KEY)!!) {
+            val bookDisplayable = arguments?.getParcelable<BookDisplayable>(SAVE_BOOK_SCREEN_KEY)
+            if (bookDisplayable != null) {
+                viewModel.setBook(bookDisplayable)
+            }
+        }
+    }
+
     override fun initViews() {
         super.initViews()
         initActionBar()
@@ -55,7 +73,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
     }
 
     private fun initConditionRadioGroup() {
-        book_condition_radio_group.setOnCheckedChangeListener { group, checkedId ->
+        book_condition_radio_group.setOnCheckedChangeListener { _, checkedId ->
             val condition = when (checkedId) {
                 R.id.condition_new -> BookCondition.NEW
                 R.id.condition_good -> BookCondition.GOOD
@@ -87,22 +105,66 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         viewModel.categories.observe(this) {
             if (it != null) {
                 category_dropdown.isClickable = true
+                setActualCategories()
             }
         }
         viewModel.languages.observe(this) {
-            val languages = mutableListOf<String>()
-            for (languageDisplayable in it) {
-                languageDisplayable.name?.let { it1 -> languages.add(it1) }
+            setLanguageList(it)
+        }
+        viewModel.book.observe(this) {
+            book_title.text = Editable.Factory.getInstance().newEditable(it.title)
+            when (it.condition) {
+                BookCondition.NEW -> book_condition_radio_group.check(condition_new.id)
+                BookCondition.GOOD -> book_condition_radio_group.check(condition_good.id)
+                else -> book_condition_radio_group.check(condition_bad.id)
             }
-            val adapter = ArrayAdapter(
-                requireContext(),
-                R.layout.language_spinner_item,
-                languages
-            )
-            language_dropdown.apply {
-                setText(languages.first())
-                setAdapter(adapter)
+            addAuthorAdapter.setAuthors(it.authorsDisplayable!!)
+            Glide.with(requireContext())
+                .load(it.cover)
+                .into(cover_image)
+            cover = it.cover!!
+            var newHint = ""
+            for (chosenCategory in it.categoriesDisplayable!!) {
+                newHint += "${chosenCategory.name}, "
             }
+            category_wrapper.hint = newHint.substring(0..newHint.length - 3)
+            language_dropdown.setText(it.languageDisplayable?.name)
+        }
+    }
+
+    private fun setActualCategories() {
+        val choices = mutableListOf<String>()
+        if (viewModel.book.value != null) {
+            viewModel.categories.value?.forEach {
+                choices.add(it.name)
+            }
+            if (viewModel.book.value?.categoriesDisplayable != null) {
+                viewModel.book.value?.categoriesDisplayable?.forEach {
+                    choices.forEachIndexed { index, s ->
+                        if (s == it.name) {
+                            viewModel.chosenCategories[index] = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setLanguageList(languages: List<LanguageDisplayable>) {
+        val languagesNames = mutableListOf<String>()
+        for (languageDisplayable in languages) {
+            languageDisplayable.name?.let { it1 -> languagesNames.add(it1) }
+        }
+        val adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.language_spinner_item,
+            languagesNames
+        )
+        language_dropdown.apply {
+            if (viewModel.book.value == null) {
+                setText(languagesNames.first())
+            }
+            setAdapter(adapter)
         }
     }
 
@@ -121,7 +183,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
             saveButton.isClickable = false
             attemptSaveBook()
         }
-        category_dropdown.setOnTouchListener { v, event ->
+        category_dropdown.setOnTouchListener { _, event ->
             if (event.action == ACTION_UP) {
                 displayCategoryDialog()
             }
@@ -144,6 +206,15 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
         val choices = mutableListOf<String>()
         viewModel.categories.value?.forEach {
             choices.add(it.name)
+        }
+        if (viewModel.book.value?.categoriesDisplayable != null) {
+            viewModel.book.value?.categoriesDisplayable?.forEach {
+                choices.forEachIndexed { index, s ->
+                    if (s == it.name) {
+                        viewModel.chosenCategories[index] = true
+                    }
+                }
+            }
         }
         val builder = AlertDialog.Builder(requireContext())
         val dialog = builder.setCancelable(false)

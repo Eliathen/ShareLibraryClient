@@ -52,6 +52,16 @@
         tools:text="Henryk Sienkiewicz, J. R. R. Tolkien, Adam Mickiewicz" />
 
     <TextView
+        android:id="@+id/item_search_book_language"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_search_book_category"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="English" />
+
+    <TextView
         android:id="@+id/item_search_book_category"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

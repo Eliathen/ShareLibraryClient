@@ -67,6 +67,10 @@ class SaveBookViewModel(
         return list
     }
 
+    fun setBook(book: BookDisplayable) {
+        _book.value = book.toBook();
+    }
+
     private fun getCategories() {
         getCategoriesUseCase(
             scope = viewModelScope,
