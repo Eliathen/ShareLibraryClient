@@ -5,4 +5,6 @@ data class CreateRequirementRequest(
     private val exchangeId: Long,
 
     private val userId: Long,
-)
+) {
+    companion object
+}

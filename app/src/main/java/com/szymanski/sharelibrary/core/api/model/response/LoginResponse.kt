@@ -16,5 +16,6 @@ data class LoginResponse(
         password = null,
         token = response.toToken()
     )
+    companion object
 }
 

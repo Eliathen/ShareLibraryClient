@@ -23,4 +23,6 @@ data class ExchangeResponse(
         id = this.id,
         user = this.user.toUser()
     )
+
+    companion object
 }

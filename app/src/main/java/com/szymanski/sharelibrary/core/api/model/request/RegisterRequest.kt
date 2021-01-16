@@ -45,5 +45,6 @@ data class RegisterRequest(
         return result
     }
 
+    companion object
 }
 

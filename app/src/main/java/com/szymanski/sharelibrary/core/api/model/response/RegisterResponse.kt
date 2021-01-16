@@ -22,4 +22,5 @@ data class RegisterResponse(
         coordinates = coordinatesResponse.toCoordinates(),
         books = null
     )
+    companion object
 }

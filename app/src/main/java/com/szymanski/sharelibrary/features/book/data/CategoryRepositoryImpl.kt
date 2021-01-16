@@ -10,6 +10,7 @@ class CategoryRepositoryImpl(
     private val errorWrapper: ErrorWrapper,
     private val api: Api,
 ) : CategoryRepository {
+
     override suspend fun getAll(): List<Category> {
         return callOrThrow(errorWrapper) { api.getCategories().map { it.toCategory() } }
     }

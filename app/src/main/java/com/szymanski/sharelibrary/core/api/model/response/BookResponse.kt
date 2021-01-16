@@ -27,4 +27,6 @@ data class BookResponse(
         language = this.language?.toLanguage(),
         condition = this.condition
     )
+
+    companion object
 }

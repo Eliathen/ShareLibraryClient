@@ -30,4 +30,5 @@ data class LoginRequest(
         password = login.password!!
     )
 
+    companion object
 }

@@ -21,4 +21,5 @@ class UserWithoutBooks(
         surname = this.surname,
         coordinates = this.coordinates.toCoordinates(),
     )
+    companion object
 }

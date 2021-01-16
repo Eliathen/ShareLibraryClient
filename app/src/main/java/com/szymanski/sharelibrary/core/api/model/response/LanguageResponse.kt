@@ -11,4 +11,5 @@ data class LanguageResponse(
     fun toLanguage() = Language(
         id = id, name = name
     )
+    companion object
 }

@@ -13,4 +13,6 @@ data class CoordinatesResponse(
         latitude = this.latitude,
         longitude = this.longitude
     )
+
+    companion object
 }
