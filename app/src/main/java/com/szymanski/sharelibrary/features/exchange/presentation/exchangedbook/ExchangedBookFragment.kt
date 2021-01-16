@@ -100,7 +100,9 @@ class ExchangedBookFragment :
             other_user_book_category.text = book.categoriesDisplayable?.let {
                 convertCategoriesDisplayableListToString(it)
             }
-            other_user_book_condition.text = getTextDependingOnBookCondition(book.condition)
+            other_user_book_condition.text = book.condition?.let {
+                getTextDependingOnBookCondition(it)
+            }
             other_user_book_language.text = book.languageDisplayable?.name
             dialog_other_user_details_label.text = context.getString(R.string.owner_label)
             dialog_other_user_details_wrapper.visibility = View.VISIBLE

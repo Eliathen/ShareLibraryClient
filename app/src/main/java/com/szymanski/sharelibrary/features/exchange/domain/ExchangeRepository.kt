@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.exchange.domain
 
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
+import com.szymanski.sharelibrary.features.home.domain.model.ExchangeDetails
 
 interface ExchangeRepository {
 
@@ -20,4 +21,6 @@ interface ExchangeRepository {
         languageId: Int?,
         conditions: List<Int>?,
     ): List<Exchange>
+
+    suspend fun getExchangesLinkedWithUser(userId: Long): List<ExchangeDetails>
 }

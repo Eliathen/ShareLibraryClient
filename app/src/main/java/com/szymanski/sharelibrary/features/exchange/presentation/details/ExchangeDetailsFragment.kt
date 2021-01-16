@@ -59,7 +59,7 @@ class ExchangeDetailsFragment :
                 convertCategoriesDisplayableListToString(exchange.book.categoriesDisplayable!!)
             exchange_details_deposit_value.text = exchange.deposit.toString()
             exchange_details_condition.text =
-                getTextDependingOnBookCondition(exchange.book.condition)
+                exchange.book.condition?.let { getTextDependingOnBookCondition(it) }
             exchange_details_language.text = exchange.book.languageDisplayable?.name
         }
         viewModel.requirements.observe(this) { requirements ->

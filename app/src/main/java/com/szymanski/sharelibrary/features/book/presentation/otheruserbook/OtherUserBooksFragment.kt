@@ -147,7 +147,9 @@ class OtherUserBooksFragment :
                     getString(R.string.book_status_at_owner)
                 }
             }
-            other_user_book_condition.text = getTextDependingOnBookCondition(book.condition)
+            other_user_book_condition.text = book.condition?.let {
+                getTextDependingOnBookCondition(it)
+            }
             other_user_book_language.text = book.languageDisplayable?.name
             viewModel.requirements.observe(this@OtherUserBooksFragment) { list ->
                 when {

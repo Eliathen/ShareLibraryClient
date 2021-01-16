@@ -124,7 +124,9 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
             }
         }
         book_details_language.text = bookDisplayable.languageDisplayable?.name
-        book_details_condition.text = getTextDependingOnBookCondition(bookDisplayable.condition)
+        book_details_condition.text = bookDisplayable.condition?.let {
+            getTextDependingOnBookCondition(it)
+        }
 
         user_name_book_details.text = bookDisplayable.atUserDisplayable?.name
         user_surname_book_details.text = bookDisplayable.atUserDisplayable?.surname

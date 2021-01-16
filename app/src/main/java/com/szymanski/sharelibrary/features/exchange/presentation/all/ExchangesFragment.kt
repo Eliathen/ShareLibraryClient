@@ -328,21 +328,21 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
                 }
             }
         }
-        dialog.dialog_filters_condition_new.setOnCheckedChangeListener { buttonView, isChecked ->
+        dialog.dialog_filters_condition_new.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 viewModel.addCondition(BookCondition.NEW)
             } else {
                 viewModel.removeCondition(BookCondition.NEW)
             }
         }
-        dialog.dialog_filters_condition_good.setOnCheckedChangeListener { buttonView, isChecked ->
+        dialog.dialog_filters_condition_good.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 viewModel.addCondition(BookCondition.GOOD)
             } else {
                 viewModel.removeCondition(BookCondition.GOOD)
             }
         }
-        dialog.dialog_filters_condition_bad.setOnCheckedChangeListener { buttonView, isChecked ->
+        dialog.dialog_filters_condition_bad.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 viewModel.addCondition(BookCondition.BAD)
             } else {

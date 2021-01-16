@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.home.presentation.requirements
 
 import android.app.AlertDialog
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.szymanski.sharelibrary.core.base.UiState
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.home.presentation.model.RequirementDisplayable
@@ -140,8 +142,8 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
                 params = params.plus(Pair(ExecuteExchangeRequest.FOR_BOOK_ID_KEY,
                     viewModel.otherUserBooks.value?.get(position - 1)?.id!!))
             }
-            chooseExchangeDialog.dismiss()
             viewModel.executeExchange(params)
+            chooseExchangeDialog.dismiss()
         }
     }
 
@@ -167,7 +169,9 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
             }
             dialog_other_user_details_wrapper.visibility = View.GONE
             other_user_book_language.text = book.languageDisplayable?.name
-            other_user_book_condition.text = getTextDependingOnBookCondition(book.condition)
+            other_user_book_condition.text = book.condition?.let {
+                getTextDependingOnBookCondition(it)
+            }
             other_user_book_details_status_value.text = when (book.status) {
                 BookStatus.SHARED -> {
                     getString(R.string.book_status_during_exchange)
@@ -206,4 +210,9 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         }
     }
 
+    override fun onResume() {
+        Log.d(TAG, "onResume: RequirementsFragment")
+        viewModel.getRequirements()
+        super.onResume()
+    }
 }

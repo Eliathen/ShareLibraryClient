@@ -110,4 +110,7 @@ interface Api {
     @GET("books/{userId}/exchanged")
     suspend fun getUsersByBooksWhereAtUserIdIs(@Path("userId") userId: Long): List<UserResponse>
 
+    @GET("exchanges/users/{userId}")
+    suspend fun getExchangesLinkedWithUser(@Path("userId") userId: Long): List<ExchangeWithDetailsResponse>
+
 }

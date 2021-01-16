@@ -66,7 +66,7 @@ class RequirementsViewModel(
     }
 
 
-    private fun getRequirements() {
+    fun getRequirements() {
         setPendingState()
         getUserRequirements(
             scope = viewModelScope,
@@ -129,9 +129,16 @@ class RequirementsViewModel(
             setIdleState()
             result.onSuccess {
                 showMessage("Exchange has been made")
-                getRequirements()
-                params[ExecuteExchangeRequest.WITH_USER_ID_KEY]
-                    ?.let { it1 -> openChatRoom(it1) }
+                getUserRequirements(
+                    scope = viewModelScope,
+                    params = userStorage.getUserId()
+                ) { result ->
+                    result.onSuccess {
+                        _requirements.value = it
+                    }
+                    params.get(ExecuteExchangeRequest.WITH_USER_ID_KEY)
+                        ?.let { it1 -> openChatRoom(it1) }
+                }
             }
             result.onFailure { handleFailure(it) }
         }

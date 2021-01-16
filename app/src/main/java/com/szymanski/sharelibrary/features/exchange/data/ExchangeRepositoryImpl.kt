@@ -9,6 +9,7 @@ import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
 import com.szymanski.sharelibrary.core.utils.ExchangeStatus
 import com.szymanski.sharelibrary.features.exchange.domain.ExchangeRepository
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
+import com.szymanski.sharelibrary.features.home.domain.model.ExchangeDetails
 
 class ExchangeRepositoryImpl(
     private val api: Api,
@@ -42,6 +43,14 @@ class ExchangeRepositoryImpl(
         return callOrThrow(errorWrapper) {
             api.getExchangesByUserId(userId).map {
                 it.toExchange()
+            }
+        }
+    }
+
+    override suspend fun getExchangesLinkedWithUser(userId: Long): List<ExchangeDetails> {
+        return callOrThrow(errorWrapper) {
+            api.getExchangesLinkedWithUser(userId).map {
+                it.toExchangeDetails()
             }
         }
     }

@@ -17,7 +17,7 @@ data class BookDisplayable(
     val atUserDisplayable: UserDisplayable?,
     val categoriesDisplayable: List<CategoryDisplayable>?,
     val languageDisplayable: LanguageDisplayable?,
-    val condition: BookCondition,
+    val condition: BookCondition?,
 ) : Parcelable {
 
     constructor(book: Book) : this(
@@ -28,8 +28,8 @@ data class BookDisplayable(
         status = book.status,
         atUserDisplayable = book.atUser?.let { UserDisplayable(it) },
         categoriesDisplayable = book.categories?.map { CategoryDisplayable(it) },
-        languageDisplayable = LanguageDisplayable(book.language!!),
-        condition = book.condition!!
+        languageDisplayable = book.language?.let { LanguageDisplayable(it) },
+        condition = book.condition
     )
 
     fun toBook() = Book(
@@ -40,7 +40,7 @@ data class BookDisplayable(
         status = this.status,
         atUser = this.atUserDisplayable?.toUser(),
         categories = this.categoriesDisplayable?.map { it.toCategory() },
-        language = this.languageDisplayable?.toLanguage()!!,
+        language = this.languageDisplayable?.toLanguage(),
         condition = this.condition
     )
 
