@@ -18,4 +18,5 @@ data class SaveExchangeRequest(
         exchangeStatus = exchange.exchangeStatus,
         userId = exchange.user.id!!
     )
+    companion object
 }

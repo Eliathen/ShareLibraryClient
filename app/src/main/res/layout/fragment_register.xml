@@ -35,7 +35,9 @@
                     android:layout_height="150dp"
                     android:layout_marginVertical="10dp"
                     android:contentDescription="@string/logo_image_description"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:scaleX="2"
+                    android:scaleY="2"
+                    android:src="@drawable/ic_launcher_foreground" />
 
                 <TextView
                     android:layout_width="match_parent"

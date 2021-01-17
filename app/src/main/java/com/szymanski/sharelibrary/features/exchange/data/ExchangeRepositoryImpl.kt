@@ -6,7 +6,6 @@ import com.szymanski.sharelibrary.core.api.model.request.SaveExchangeRequest
 import com.szymanski.sharelibrary.core.exception.ErrorWrapper
 import com.szymanski.sharelibrary.core.exception.callOrThrow
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
-import com.szymanski.sharelibrary.core.utils.ExchangeStatus
 import com.szymanski.sharelibrary.features.exchange.domain.ExchangeRepository
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.home.domain.model.ExchangeDetails
@@ -23,15 +22,15 @@ class ExchangeRepositoryImpl(
         }
     }
 
-    override suspend fun getNotUserExchanges(userId: Long): List<Exchange> {
-        return callOrThrow(errorWrapper) {
-            api.getExchangesByUserId(userId)
-                .filter { it.exchangeStatus == ExchangeStatus.STARTED }
-                .map {
-                    it.toExchange()
-                }
-        }
-    }
+//    override suspend fun getNotUserExchanges(userId: Long): List<Exchange> {
+//        return callOrThrow(errorWrapper) {
+//            api.getExchangesByUserId(userId)
+//                .filter { it.exchangeStatus == ExchangeStatus.STARTED }
+//                .map {
+//                    it.toExchange()
+//                }
+//        }
+//    }
 
     override suspend fun finishExchange(exchangeId: Long?) {
         return callOrThrow(errorWrapper) {

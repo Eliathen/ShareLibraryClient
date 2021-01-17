@@ -213,7 +213,7 @@ class ExchangesViewModel(
         chosenLanguageId = null
     }
 
-    private fun createMapFromExchanges(exchanges: List<Exchange>) {
+    fun createMapFromExchanges(exchanges: List<Exchange>) {
         val map = hashMapOf<Coordinate, MutableList<Exchange>>()
         exchanges.forEach {
             if (!map.containsKey(it.coordinates)) {

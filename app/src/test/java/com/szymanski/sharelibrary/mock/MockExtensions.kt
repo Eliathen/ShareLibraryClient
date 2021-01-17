@@ -8,6 +8,7 @@ import com.szymanski.sharelibrary.core.utils.ExchangeStatus
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.model.Language
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
+import com.szymanski.sharelibrary.features.home.domain.model.ExchangeDetails
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.Login
 import com.szymanski.sharelibrary.features.user.domain.model.Token
@@ -250,3 +251,35 @@ fun LoginResponse.Companion.mock() = LoginResponse(
     userName = "johndee",
     response = TokenResponse.mock()
 )
+
+@TestOnly
+fun SaveExchangeRequest.Companion.mock() = SaveExchangeRequest(
+    Exchange.mock()
+)
+
+@TestOnly
+fun ExchangeDetails.Companion.mock() = ExchangeDetails(
+    book = Book.mock(),
+    coordinates = Coordinate.mock(),
+    deposit = 50.0,
+    distance = 50.0,
+    exchangeStatus = ExchangeStatus.DURING,
+    id = 1,
+    user = User.mock(),
+    withUser = User.mock(),
+    forBook = Book.mock()
+)
+
+@TestOnly
+fun ExchangeWithDetailsResponse.Companion.mock() =
+    com.szymanski.sharelibrary.core.api.model.response.ExchangeWithDetailsResponse(
+        book = BookResponse.mock(),
+        coordinates = CoordinatesResponse.mock(),
+        deposit = 50.0,
+        distance = 50.0,
+        exchangeStatus = ExchangeStatus.DURING,
+        id = 1,
+        user = UserResponse.mock(),
+        withUser = UserResponse.mock(),
+        forBook = BookResponse.mock()
+    )

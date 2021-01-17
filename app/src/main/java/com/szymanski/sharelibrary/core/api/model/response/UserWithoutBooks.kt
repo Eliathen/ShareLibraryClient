@@ -3,7 +3,7 @@ package com.szymanski.sharelibrary.core.api.model.response
 import com.google.gson.annotations.SerializedName
 import com.szymanski.sharelibrary.features.user.domain.model.User
 
-class UserWithoutBooks(
+data class UserWithoutBooks(
     @SerializedName("id") val id: Long,
     @SerializedName("email") val email: String,
     @SerializedName("username") val username: String,

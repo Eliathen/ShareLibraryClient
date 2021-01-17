@@ -5,6 +5,7 @@ import com.szymanski.sharelibrary.features.exchange.domain.ExchangeRepository
 import com.szymanski.sharelibrary.mock.mock
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import org.junit.jupiter.api.Test
 
@@ -29,7 +30,8 @@ internal class GetExchangesByFiltersUseCaseTest {
         ) = searchRequest
         useCase(
             params = searchRequest,
-            scope = GlobalScope
+            scope = GlobalScope,
+            executeDispatcher = Dispatchers.IO
         )
         //then
         coVerify {

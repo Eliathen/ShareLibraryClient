@@ -27,4 +27,5 @@ data class ExchangeWithDetailsResponse(
         withUser = this.withUser?.toUser(),
         forBook = this.forBook?.toBook()
     )
+    companion object
 }

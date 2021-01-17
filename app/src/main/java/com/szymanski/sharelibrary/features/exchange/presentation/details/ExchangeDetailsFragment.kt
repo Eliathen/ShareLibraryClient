@@ -6,9 +6,9 @@ import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.helpers.convertAuthorDisplayableListToString
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
 import com.szymanski.sharelibrary.core.utils.BookCondition
-import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import kotlinx.android.synthetic.main.fragment_exchange_details.*
 import kotlinx.android.synthetic.main.toolbar_base.*
 import org.koin.android.ext.android.inject
@@ -97,14 +97,14 @@ class ExchangeDetailsFragment :
         }
     }
 
-    private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {
-        var endString = ""
-        list.forEach { author ->
-            endString += "${author.name} ${author.surname}\n"
-        }
-        endString = endString.trim()
-        return endString.substring(0 until endString.length - 1)
-    }
+//    private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {
+//        var endString = ""
+//        list.forEach { author ->
+//            endString += "${author.name} ${author.surname}\n"
+//        }
+//        endString = endString.trim()
+//        return endString.substring(0 until endString.length - 1)
+//    }
 
     private fun getTextDependingOnBookCondition(condition: BookCondition): String {
         return when (condition) {

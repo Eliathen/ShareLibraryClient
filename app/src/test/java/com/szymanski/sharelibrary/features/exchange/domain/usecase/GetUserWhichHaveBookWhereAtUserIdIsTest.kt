@@ -3,6 +3,7 @@ package com.szymanski.sharelibrary.features.exchange.domain.usecase
 import com.szymanski.sharelibrary.features.user.domain.UserRepository
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import org.junit.jupiter.api.Test
 
@@ -18,7 +19,8 @@ internal class GetUserWhichHaveBookWhereAtUserIdIsTest {
         val userId = 1L
         useCase(
             params = userId,
-            scope = GlobalScope
+            scope = GlobalScope,
+            executeDispatcher = Dispatchers.IO
         )
         //then
         coVerify { repository.getUsersByBooksWhereAtUserIdIs(userId) }

@@ -3,6 +3,7 @@ package com.szymanski.sharelibrary.features.home.domain.usecase
 import com.szymanski.sharelibrary.features.home.domain.RequirementRepository
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import org.junit.jupiter.api.Test
 
@@ -16,7 +17,8 @@ internal class GetUserRequirementsTest {
         //when
         useCase(
             scope = GlobalScope,
-            params = userId
+            params = userId,
+            executeDispatcher = Dispatchers.IO
         )
         //then
         coVerify { repository.getUserRequirements(userId) }
