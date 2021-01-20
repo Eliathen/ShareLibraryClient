@@ -9,7 +9,7 @@ class GetExchangesUseCase(
 ) : BaseUseCase<List<Exchange>, Long>() {
 
     override suspend fun action(params: Long): List<Exchange> {
-        return exchangeRepository.getNotUserExchanges(params)
+        return exchangeRepository.getUserExchanges(params)
     }
 
 }

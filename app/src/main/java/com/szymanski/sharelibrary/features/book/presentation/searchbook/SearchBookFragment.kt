@@ -126,6 +126,6 @@ class SearchBookFragment : BaseFragment<SearchBookViewModel>(R.layout.fragment_s
     }
 
     override fun onClick(position: Int) {
-        viewModel.assignBook(viewModel.searchBooks.value?.get(position))
+        viewModel.searchBooks.value?.get(position)?.let { viewModel.openSaveBookScreen(it) }
     }
 }

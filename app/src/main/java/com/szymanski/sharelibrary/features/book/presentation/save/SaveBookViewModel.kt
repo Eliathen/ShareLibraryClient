@@ -6,39 +6,58 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.szymanski.sharelibrary.core.base.BaseViewModel
 import com.szymanski.sharelibrary.core.exception.ErrorMapper
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.model.Category
+import com.szymanski.sharelibrary.features.book.domain.model.Language
 import com.szymanski.sharelibrary.features.book.domain.usecase.GetCategoriesUseCase
+import com.szymanski.sharelibrary.features.book.domain.usecase.GetLanguagesUseCase
 import com.szymanski.sharelibrary.features.book.domain.usecase.SaveBookUseCase
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.CategoryDisplayable
+import com.szymanski.sharelibrary.features.book.presentation.model.LanguageDisplayable
 
 class SaveBookViewModel(
     errorMapper: ErrorMapper,
     private val bookNavigator: BookNavigator,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val saveBookUseCase: SaveBookUseCase,
+    private val getLanguagesUseCase: GetLanguagesUseCase,
 ) : BaseViewModel(errorMapper) {
+
+    private val _languages: MutableLiveData<List<Language>> by lazy {
+        MutableLiveData<List<Language>>().also {
+            getLanguageList()
+        }
+    }
+
+    val languages: LiveData<List<LanguageDisplayable>> by lazy {
+        _languages.map { languages ->
+            languages.map { LanguageDisplayable(it) }
+        }
+    }
 
     private val _book: MutableLiveData<Book> by lazy {
         MutableLiveData<Book>()
     }
-
     val book: LiveData<BookDisplayable> by lazy {
         _book.map {
             BookDisplayable(it)
         }
     }
+
     private val _categories: MutableLiveData<List<Category>> by lazy {
         MutableLiveData<List<Category>>().also {
             getCategories()
         }
     }
-
     val chosenCategories: MutableList<Boolean> by lazy {
         createList(_categories.value!!)
     }
+
+    var condition: BookCondition = BookCondition.NEW
+
 
     private fun createList(value: List<Category>): MutableList<Boolean> {
         val list = mutableListOf<Boolean>()
@@ -48,6 +67,10 @@ class SaveBookViewModel(
         return list
     }
 
+    fun setBook(book: BookDisplayable) {
+        _book.value = book.toBook();
+    }
+
     private fun getCategories() {
         getCategoriesUseCase(
             scope = viewModelScope,
@@ -55,6 +78,22 @@ class SaveBookViewModel(
         ) { result ->
             result.onSuccess {
                 _categories.value = it
+            }
+            result.onFailure {
+                handleFailure(it)
+            }
+        }
+    }
+
+    private fun getLanguageList() {
+        setPendingState()
+        getLanguagesUseCase(
+            scope = viewModelScope,
+            params = Unit
+        ) { result ->
+            setIdleState()
+            result.onSuccess {
+                _languages.value = it.sortedBy { lan -> lan.name }
             }
             result.onFailure {
                 handleFailure(it)
@@ -73,6 +112,7 @@ class SaveBookViewModel(
         setPendingState()
         val saveBook = book.toBook()
         saveBook.categories = createListOfCategories()
+        saveBook.condition = condition
         saveBookUseCase(
             scope = viewModelScope,
             params = saveBook

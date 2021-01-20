@@ -49,8 +49,8 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
         fun bind(room: RoomDisplayable) {
             with(view) {
                 setOnClickListener(this@ViewHolder)
-                var fullName = ""
-                var username = ""
+                val fullName: String
+                val username: String
                 if (room.recipient?.id == userId) {
                     fullName = "${room.sender?.name} ${room.sender?.surname}"
                     username = room.sender?.username!!

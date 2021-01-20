@@ -3,6 +3,7 @@ package com.szymanski.sharelibrary.features.book.presentation.otheruserbook
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -13,7 +14,9 @@ import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import kotlinx.android.synthetic.main.dialog_other_user_book_details.view.*
@@ -111,6 +114,7 @@ class OtherUserBooksFragment :
 
     @SuppressLint("InflateParams")
     private fun displayDialogWithBookDetails(book: BookDisplayable) {
+        Log.d(TAG, "displayDialogWithBookDetails: ${book}")
         dialogContent = layoutInflater.inflate(R.layout.dialog_other_user_book_details, null)
         val dialog: AlertDialog = AlertDialog.Builder(requireContext()).setCancelable(true)
             .setView(dialogContent)
@@ -143,6 +147,10 @@ class OtherUserBooksFragment :
                     getString(R.string.book_status_at_owner)
                 }
             }
+            other_user_book_condition.text = book.condition?.let {
+                getTextDependingOnBookCondition(it)
+            }
+            other_user_book_language.text = book.languageDisplayable?.name
             viewModel.requirements.observe(this@OtherUserBooksFragment) { list ->
                 when {
                     book.status == BookStatus.AT_OWNER || book.status == BookStatus.EXCHANGED -> {
@@ -170,6 +178,20 @@ class OtherUserBooksFragment :
         }
         endString = endString.trim()
         return endString.substring(endString.indices)
+    }
+
+    private fun getTextDependingOnBookCondition(condition: BookCondition): String {
+        return when (condition) {
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
+        }
     }
 
     companion object {

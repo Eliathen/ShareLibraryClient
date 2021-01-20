@@ -29,5 +29,6 @@ data class MessageResponse(
         return LocalDateTime.parse(date)
     }
 
+    companion object
 }
 

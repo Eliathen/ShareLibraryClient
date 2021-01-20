@@ -15,4 +15,5 @@ data class ChatRoomResponse(
         sender = sender.toUser(),
         recipient = recipient.toUser(),
     )
+    companion object
 }

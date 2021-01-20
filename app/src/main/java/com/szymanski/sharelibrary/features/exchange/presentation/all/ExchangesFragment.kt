@@ -12,10 +12,13 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.CheckBox
+import android.widget.SeekBar
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,12 +27,15 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.SortOption
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_sort.view.*
@@ -50,6 +56,10 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
     private lateinit var pagerAdapter: ExchangesViewPagerAdapter
 
     private lateinit var viewPager: ViewPager2
+
+    private lateinit var filterDialog: AlertDialog
+
+    private lateinit var filterDialogContent: View
 
     companion object {
         const val EXCHANGE_KEY = "ExchangeToDisplayKey"
@@ -99,7 +109,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         val filterItem = menu.findItem(R.id.exchange_filter)
 
         val searchView = searchItem.actionView as SearchView
-        searchView.queryHint = getString(R.string.search_title)
+        searchView.queryHint = getString(R.string.search_book_author)
 
         val displayMetrics = requireActivity().resources.displayMetrics
         searchView.maxWidth = displayMetrics.widthPixels - filterItem.icon.intrinsicWidth * 2
@@ -185,53 +195,168 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun displayFilterDialog() {
         val builder = AlertDialog.Builder(requireContext())
-        val dialogContent = layoutInflater.inflate(R.layout.dialog_filters, null)
+        filterDialogContent = layoutInflater.inflate(R.layout.dialog_filters, null)
         builder.setCancelable(true)
-            .setView(dialogContent)
-        val dialog = builder.create()
-        with(dialogContent) {
-            val chipGroup = dialog_filters_chip_group
-            viewModel.listOfCategories.value?.forEachIndexed { _, item ->
-                val newChip =
-                    layoutInflater.inflate(R.layout.chip_style_filter, chipGroup, false) as Chip
-                newChip.text = item.name
-                if (viewModel.getChosenCategories()?.containsKey(item.name)!!) {
-                    newChip.isChecked = viewModel.getChosenCategories()?.get(item.name)!!
-                }
-                chipGroup.addView(newChip as View)
-                newChip.setOnCheckedChangeListener { _, isChecked ->
-                    viewModel.setChosenCategory(item.name, isChecked)
-                }
-            }
-            dialog_filters_cancel_button.setOnClickListener { dialog.dismiss() }
+            .setView(filterDialogContent)
+        filterDialog = builder.create()
+        with(filterDialogContent) {
+            val categoriesChipGroup = filterDialogContent.dialog_filters_chip_group
+            val languagesChipGroup = filterDialogContent.dialog_filters_language_chip_group
+            filterDialogContent.dialog_filters_distance.text =
+                "${viewModel.getRadius()?.toInt()} km"
+            setCategoriesChips(categoriesChipGroup)
+            setLanguageChips(languagesChipGroup)
+            setConditionCheckbox(filterDialogContent)
+            dialog_filters_cancel_button.setOnClickListener { filterDialog.dismiss() }
             dialog_filters_filter_button.setOnClickListener {
-                if (viewModel.getRadius() == defaultRadiusDistance) viewModel.setRadius(1.0)
+                if (viewModel.getRadius() == defaultRadiusDistance) viewModel.setRadius(100.0)
                 viewModel.getFilteredExchanges()
-                dialog.dismiss()
+                filterDialog.dismiss()
             }
-            dialog_filters_reset_button.setOnClickListener {
+            filterDialogContent.dialog_filters_reset_button.setOnClickListener {
                 viewModel.resetFilters()
-                chipGroup.forEach {
+                resetFilterOptions(categoriesChipGroup, languagesChipGroup)
+                viewModel.getFilteredExchanges()
+            }
+            setDistancePicker(filterDialogContent)
+        }
+        filterDialog.show()
+    }
+
+    private fun resetFilterOptions(
+        categoriesChipGroup: ChipGroup,
+        languagesChipGroup: ChipGroup,
+    ) {
+        categoriesChipGroup.forEach {
+            if (it is Chip) {
+                it.isChecked = false
+            }
+        }
+        languagesChipGroup.forEach {
+            if (it is Chip) {
+                it.isChecked = false
+            }
+        }
+        filterDialogContent.dialog_filters_distance_picker.progress =
+            viewModel.getRadius()?.toInt()!!
+    }
+
+    private fun setDistancePicker(dialogContent: View) {
+        dialogContent.dialog_filters_distance_picker.apply {
+            max = 100
+            progress = viewModel.getRadius()?.toInt()!!
+            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean,
+                ) {
+                    val distance = "$progress km"
+                    dialogContent.dialog_filters_distance.text = distance
+                    viewModel.setRadius(progress.toDouble())
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+                }
+            })
+        }
+    }
+
+    private fun setLanguageChips(languagesChipGroup: ChipGroup) {
+        viewModel.languages.value?.forEachIndexed { _, item ->
+            val newChip =
+                layoutInflater.inflate(R.layout.chip_style_choice,
+                    languagesChipGroup,
+                    false) as Chip
+            newChip.text = item.name
+            if (viewModel.chosenLanguageId != null && viewModel.chosenLanguageId == item.id) {
+                newChip.isChecked = true
+            }
+            languagesChipGroup.addView(newChip as View)
+            newChip.setOnCheckedChangeListener { button, checked ->
+                languagesChipGroup.forEach {
                     if (it is Chip) {
                         it.isChecked = false
                     }
                 }
-                dialog_filters_distance_picker.value = viewModel.getRadius()?.toInt()!!
-                viewModel.getFilteredExchanges()
-            }
-            dialog_filters_distance_picker.apply {
-                maxValue = 99
-                minValue = 1
-                value = viewModel.getRadius()?.toInt()!!
-                setOnValueChangedListener { _, _, newVal ->
-                    viewModel.setRadius(newVal.toDouble())
+                button.isChecked = checked
+                if (checked) {
+                    viewModel.chosenLanguageId = item.id
+                } else {
+                    viewModel.chosenLanguageId = null
                 }
             }
         }
-        dialog.show()
     }
+
+    private fun setCategoriesChips(categoriesChipGroup: ChipGroup) {
+        viewModel.categories.value?.forEachIndexed { _, item ->
+            val newChip =
+                layoutInflater.inflate(R.layout.chip_style_filter,
+                    categoriesChipGroup,
+                    false) as Chip
+            newChip.text = item.name
+            if (viewModel.getChosenCategories()?.containsKey(item.name)!!) {
+                newChip.isChecked = viewModel.getChosenCategories()?.get(item.name)!!
+            }
+            categoriesChipGroup.addView(newChip as View)
+            newChip.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.setChosenCategory(item.name, isChecked)
+            }
+        }
+    }
+
+    private fun setConditionCheckbox(dialog: View) {
+        BookCondition.values().forEach {
+            when (it) {
+                BookCondition.NEW -> {
+                    markIfContains(dialog.dialog_filters_condition_new, it)
+                }
+                BookCondition.GOOD -> {
+                    markIfContains(dialog.dialog_filters_condition_good, it)
+                }
+                else -> {
+                    markIfContains(dialog.dialog_filters_condition_bad, it)
+                }
+            }
+        }
+        dialog.dialog_filters_condition_new.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.addCondition(BookCondition.NEW)
+            } else {
+                viewModel.removeCondition(BookCondition.NEW)
+            }
+        }
+        dialog.dialog_filters_condition_good.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.addCondition(BookCondition.GOOD)
+            } else {
+                viewModel.removeCondition(BookCondition.GOOD)
+            }
+        }
+        dialog.dialog_filters_condition_bad.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.addCondition(BookCondition.BAD)
+            } else {
+                viewModel.removeCondition(BookCondition.BAD)
+            }
+        }
+    }
+
+    private fun markIfContains(checkBox: CheckBox, it: BookCondition) {
+        if (viewModel.chosenCondition.contains(it)) {
+            checkBox.isChecked = true
+        }
+    }
+
 
     @SuppressLint("MissingPermission")
     private fun getLastLocation() {
@@ -323,6 +448,9 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (!isLocationEnabled()) {
             viewModel.navigateBack()
+        } else {
+            Log.d(TAG, "onActivityResult: return from settings ")
+            viewModel.getFilteredExchanges()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -338,6 +466,11 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>(R.layout.fragment_exc
 
     override fun onStop() {
         viewModel.displayUserExchange = false
+        viewModel.resetFilters()
+        if (this::filterDialogContent.isInitialized) {
+            resetFilterOptions(filterDialogContent.dialog_filters_chip_group,
+                filterDialogContent.dialog_filters_language_chip_group)
+        }
         super.onStop()
     }
 }

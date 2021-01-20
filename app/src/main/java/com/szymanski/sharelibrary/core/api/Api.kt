@@ -28,6 +28,8 @@ interface Api {
         @PartMap authors: Map<String, RequestBody>,
         @PartMap categories: Map<String, RequestBody>,
         @Part("userId") userId: Long,
+        @PartMap language: Map<String, RequestBody>,
+        @Part("conditionId") conditionId: Int,
     )
 
     @GET("books/user/{userId}")
@@ -92,6 +94,8 @@ interface Api {
         @Query("rad") radius: Double?,
         @Query("cat") categories: List<String>?,
         @Query("q") query: String?,
+        @Query("lan") language: Int?,
+        @Query("con") conditions: List<Int>?,
     ): List<ExchangeResponse>
 
     @GET("chat/rooms")
@@ -99,5 +103,14 @@ interface Api {
         @Query("sender") senderId: Long,
         @Query("recipient") recipient: Long,
     ): ChatRoomResponse
+
+    @GET("books/languages")
+    suspend fun getLanguageList(): List<LanguageResponse>
+
+    @GET("books/{userId}/exchanged")
+    suspend fun getUsersByBooksWhereAtUserIdIs(@Path("userId") userId: Long): List<UserResponse>
+
+    @GET("exchanges/users/{userId}")
+    suspend fun getExchangesLinkedWithUser(@Path("userId") userId: Long): List<ExchangeWithDetailsResponse>
 
 }

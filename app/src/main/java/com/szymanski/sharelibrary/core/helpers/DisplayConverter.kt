@@ -2,7 +2,6 @@ package com.szymanski.sharelibrary.core.helpers
 
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.CategoryDisplayable
-import java.util.*
 
 
 fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {
@@ -17,7 +16,7 @@ fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String 
 fun convertCategoriesDisplayableListToString(list: List<CategoryDisplayable>): String {
     var endString = ""
     list.forEach { category ->
-        endString += "${category.name.toLowerCase(Locale.ROOT)}, "
+        endString += "${category.name}, "
     }
     endString = endString.trim()
     return endString.substring(0, endString.length - 1)

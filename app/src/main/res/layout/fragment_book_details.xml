@@ -24,15 +24,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
-                android:textSize="40sp"
+                android:textSize="30sp"
+                android:layout_marginHorizontal="@dimen/dp_16"
                 tools:text="Title" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/book_details_cover"
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/dp_8"
                 android:src="@drawable/ic_launcher_foreground"
                 tools:ignore="ContentDescription" />
 
@@ -40,9 +53,10 @@
                 android:id="@+id/book_details_authors_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:orientation="vertical"
-                android:paddingBottom="20dp"
+                android:layout_marginHorizontal="@dimen/dp_16"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/dp_4"
+                android:layout_marginBottom="@dimen/dp_4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/book_details_cover">
@@ -52,14 +66,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/authors_label"
-                    android:textSize="20sp" />
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/book_details_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     tools:text="Authors" />
 
             </LinearLayout>
@@ -68,9 +83,9 @@
                 android:id="@+id/category_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_8"
                 android:orientation="horizontal"
-                android:paddingBottom="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/book_details_cover">
@@ -80,24 +95,78 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/category_label"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/book_details_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="@dimen/dp_4"
                     android:background="@null"
                     android:textSize="18sp"
+                    android:textColor="@color/gold"
                     tools:text="Category" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/language_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/language_label"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/book_details_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:background="@null"
+                    android:textSize="18sp"
+                    android:textColor="@color/gold"
+                    tools:text="Language" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/condition_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/condition_label"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/book_details_condition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:background="@null"
+                    android:textSize="18sp"
+                    android:textColor="@color/gold"
+                    tools:text="Condition" />
 
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginHorizontal="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_8"
                 android:orientation="horizontal">
 
                 <TextView
@@ -105,27 +174,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/status_label"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/status_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="20sp"
                     android:layout_toEndOf="@id/status_label"
+                    android:textColor="@color/gold"
+                    android:textSize="16sp"
                     tools:text="At owner" />
 
                 <TextView
                     android:id="@+id/book_details_show_on_map"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:layout_alignBaseline="@id/status_label"
                     android:layout_alignParentEnd="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
                     android:text="@string/show_on_map"
                     android:textColor="@color/colorPrimary" />
             </RelativeLayout>
@@ -198,7 +267,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:paddingHorizontal="10dp"
-                    android:text="@string/cancel_button_text" />
+                    android:text="@string/cancel_sharing" />
 
             </LinearLayout>
 

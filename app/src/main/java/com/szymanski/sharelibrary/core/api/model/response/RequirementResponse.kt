@@ -26,4 +26,6 @@ data class RequirementResponse(
     private fun parseStringToLocalDateTime(date: String): LocalDateTime {
         return LocalDateTime.parse(date)
     }
+
+    companion object
 }

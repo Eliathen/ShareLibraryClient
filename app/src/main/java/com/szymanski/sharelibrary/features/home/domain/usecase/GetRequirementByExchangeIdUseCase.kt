@@ -4,7 +4,7 @@ import com.szymanski.sharelibrary.core.base.BaseUseCase
 import com.szymanski.sharelibrary.features.home.domain.RequirementRepository
 import com.szymanski.sharelibrary.features.home.domain.model.Requirement
 
-class GetRequirementByIdUseCase(
+class GetRequirementByExchangeIdUseCase(
     private val requirementRepository: RequirementRepository,
 ) : BaseUseCase<List<Requirement>, Long>() {
     override suspend fun action(params: Long): List<Requirement> {

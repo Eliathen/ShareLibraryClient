@@ -12,4 +12,5 @@ data class CoordinatesRequest(
         latitude = coordinate.latitude,
         longitude = coordinate.longitude
     )
+    companion object
 }

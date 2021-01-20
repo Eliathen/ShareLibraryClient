@@ -47,5 +47,11 @@ class UserRepositoryImpl(
         }
     }
 
+    override suspend fun getUsersByBooksWhereAtUserIdIs(params: Long): List<User> {
+        return callOrThrow(errorWrapper) {
+            api.getUsersByBooksWhereAtUserIdIs(params).map { it.toUser() }
+        }
+    }
+
 
 }

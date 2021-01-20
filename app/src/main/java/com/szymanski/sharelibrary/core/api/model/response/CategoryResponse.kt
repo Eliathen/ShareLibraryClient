@@ -11,4 +11,6 @@ data class CategoryResponse(
         id = id,
         name = name
     )
+
+    companion object
 }

@@ -1,6 +1,7 @@
 package com.szymanski.sharelibrary.features.home.presentation.requirements
 
 import android.app.AlertDialog
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,7 +9,11 @@ import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.api.model.request.ExecuteExchangeRequest
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.base.UiState
+import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.home.presentation.model.RequirementDisplayable
@@ -28,6 +33,10 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
     private val dividerItemDecoration: DividerItemDecoration by inject()
 
     private val requirementsAdapter: RequirementsAdapter by inject()
+
+    private var bookDetailsDialog: AlertDialog? = null
+
+    private lateinit var chooseExchangeDialog: AlertDialog
 
     override fun initViews() {
         super.initViews()
@@ -109,16 +118,18 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
                     val book = viewModel.otherUserBooks.value?.get(position - 1)
                     viewModel.downloadImage(book!!)
                     viewModel.bookDetails.observe(this@RequirementsFragment) {
-                        displayBookDetails(it)
+                        if (bookDetailsDialog == null && viewModel.uiState.value == UiState.Idle) {
+                            displayBookDetails(it)
+                        }
                     }
                 }
             }
         })
         chooseAdapter.setChoices(choices)
-        val dialog = builder.create()
-        dialog.show()
+        chooseExchangeDialog = builder.create()
+        chooseExchangeDialog.show()
         contentView.dialog_choose_book_cancel.setOnClickListener {
-            dialog.dismiss()
+            chooseExchangeDialog.dismiss()
         }
         contentView.dialog_choose_book_exchange.setOnClickListener {
             val position = chooseAdapter.selectedPosition
@@ -131,16 +142,17 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
                 params = params.plus(Pair(ExecuteExchangeRequest.FOR_BOOK_ID_KEY,
                     viewModel.otherUserBooks.value?.get(position - 1)?.id!!))
             }
-            dialog.dismiss()
             viewModel.executeExchange(params)
+            chooseExchangeDialog.dismiss()
         }
     }
 
     private fun displayBookDetails(book: BookDisplayable) {
         val content = layoutInflater.inflate(R.layout.dialog_other_user_book_details, null)
-        val dialog = AlertDialog.Builder(requireContext()).setView(content)
+        bookDetailsDialog = AlertDialog.Builder(requireContext()).setView(content)
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
+                bookDetailsDialog = null
             }.create()
         with(content!!) {
             other_user_book_details_title.text = book.title
@@ -151,6 +163,14 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
             }
             other_user_book_details_author.text = book.authorsDisplayable?.let {
                 convertAuthorDisplayableListToString(it)
+            }
+            other_user_book_category.text = book.categoriesDisplayable?.let {
+                convertCategoriesDisplayableListToString(it)
+            }
+            dialog_other_user_details_wrapper.visibility = View.GONE
+            other_user_book_language.text = book.languageDisplayable?.name
+            other_user_book_condition.text = book.condition?.let {
+                getTextDependingOnBookCondition(it)
             }
             other_user_book_details_status_value.text = when (book.status) {
                 BookStatus.SHARED -> {
@@ -164,7 +184,7 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
                 }
             }
         }
-        dialog.show()
+        bookDetailsDialog?.show()
     }
 
     private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {
@@ -176,4 +196,23 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         return endString.substring(endString.indices)
     }
 
+    private fun getTextDependingOnBookCondition(condition: BookCondition): String {
+        return when (condition) {
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
+        }
+    }
+
+    override fun onResume() {
+        Log.d(TAG, "onResume: RequirementsFragment")
+        viewModel.getRequirements()
+        super.onResume()
+    }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:theme="@style/Theme.MaterialComponents.Light.Dialog.Alert">
 
     <ScrollView
@@ -18,10 +18,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/filter_title"
-                android:textColor="@color/black"
                 android:layout_marginStart="@dimen/dp_8"
                 android:layout_marginBottom="@dimen/dp_16"
+                android:text="@string/filter_title"
+                android:textColor="@color/black"
                 android:textSize="25sp" />
 
             <View
@@ -31,26 +31,132 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/dp_8">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/dp_8"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/dialog_filters_distance_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/dp_8"
+                        android:text="@string/distance_label"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/dialog_filters_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/dp_8"
+                        android:text="@string/distance_max_value"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/dialog_filters_distance_picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/dp_4"
+                    android:thumbTint="@color/colorPrimary"
+                    android:progressBackgroundTint="@color/white"
+                    android:foregroundTint="@color/colorAccent" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#dfdfdf" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/dialog_filters_distance_label"
+                    android:id="@+id/dialog_filters_language_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/distance_label"
-                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="@dimen/dp_8"
-                    android:textSize="20sp"
-                    android:layout_gravity="center_vertical" />
+                    android:text="@string/language_label"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
-                <com.shawnlin.numberpicker.NumberPicker
-                    android:id="@+id/dialog_filters_distance_picker"
+                <HorizontalScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:np_orientation="horizontal"
-                    app:np_textSize="15sp" />
+                    android:scrollbars="none"
+                    android:paddingHorizontal="@dimen/dp_4">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/dialog_filters_language_chip_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_16"
+                        app:singleLine="true" />
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#dfdfdf" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/dp_8"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dialog_filters_condition_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="@dimen/dp_8"
+                    android:text="@string/condition_label"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    android:layout_marginHorizontal="@dimen/dp_8"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/dialog_filters_condition_new"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/book_condition_new" />
+
+                    <CheckBox
+                        android:id="@+id/dialog_filters_condition_good"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:text="@string/book_condition_good" />
+
+                    <CheckBox
+                        android:id="@+id/dialog_filters_condition_bad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:text="@string/book_condition_bad" />
+                </LinearLayout>
             </LinearLayout>
 
             <View
@@ -97,16 +203,16 @@
                     style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cancel_button_text"
-                    android:layout_toStartOf="@id/dialog_filters_filter_button" />
+                    android:layout_toStartOf="@id/dialog_filters_filter_button"
+                    android:text="@string/cancel_button_text" />
 
                 <Button
                     android:id="@+id/dialog_filters_filter_button"
                     style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/filter_button"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/filter_button" />
             </RelativeLayout>
 
 

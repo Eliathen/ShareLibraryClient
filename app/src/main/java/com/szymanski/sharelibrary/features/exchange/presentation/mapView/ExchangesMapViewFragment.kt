@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.os.StrictMode
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -27,6 +28,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertAuthorDisplayableListToString
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
+import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
 import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesViewModel
 import com.szymanski.sharelibrary.features.exchange.presentation.listView.ExchangesListViewAdapter
@@ -487,8 +489,14 @@ class ExchangesMapViewFragment :
         }
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "NewApi")
     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
+        Log.d(TAG, "onMarkerClick: ${viewModel.mapOfExchanges.value?.keys}")
+        viewModel.mapOfExchanges.value?.forEach { t, u ->
+            Log.d(TAG, "onMarkerClick: $t")
+            Log.d(TAG, "onMarkerClick: $u")
+            Log.d(TAG, "")
+        }
         val key = viewModel.mapOfExchanges.value?.keys?.first {
             it.latitude == marker?.position?.latitude && it.longitude == marker?.position?.longitude
         }

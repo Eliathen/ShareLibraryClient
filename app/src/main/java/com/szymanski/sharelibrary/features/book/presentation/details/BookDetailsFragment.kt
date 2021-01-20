@@ -7,6 +7,7 @@ import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
@@ -122,6 +123,10 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
                 getString(R.string.book_status_at_owner)
             }
         }
+        book_details_language.text = bookDisplayable.languageDisplayable?.name
+        book_details_condition.text = bookDisplayable.condition?.let {
+            getTextDependingOnBookCondition(it)
+        }
 
         user_name_book_details.text = bookDisplayable.atUserDisplayable?.name
         user_surname_book_details.text = bookDisplayable.atUserDisplayable?.surname
@@ -135,6 +140,20 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>(R.layout.fragment
         }
         endString = endString.trim()
         return endString.substring(endString.indices)
+    }
+
+    private fun getTextDependingOnBookCondition(condition: BookCondition): String {
+        return when (condition) {
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
+        }
     }
 
 

@@ -6,8 +6,9 @@ import com.bumptech.glide.Glide
 import com.szymanski.sharelibrary.MainActivity
 import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
+import com.szymanski.sharelibrary.core.helpers.convertAuthorDisplayableListToString
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
-import com.szymanski.sharelibrary.features.book.presentation.model.AuthorDisplayable
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import kotlinx.android.synthetic.main.fragment_exchange_details.*
 import kotlinx.android.synthetic.main.toolbar_base.*
 import org.koin.android.ext.android.inject
@@ -57,6 +58,9 @@ class ExchangeDetailsFragment :
             exchange_details_category.text =
                 convertCategoriesDisplayableListToString(exchange.book.categoriesDisplayable!!)
             exchange_details_deposit_value.text = exchange.deposit.toString()
+            exchange_details_condition.text =
+                exchange.book.condition?.let { getTextDependingOnBookCondition(it) }
+            exchange_details_language.text = exchange.book.languageDisplayable?.name
         }
         viewModel.requirements.observe(this) { requirements ->
             if (requirements.any { it.user?.id == viewModel.userId }) {
@@ -93,13 +97,27 @@ class ExchangeDetailsFragment :
         }
     }
 
-    private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {
-        var endString = ""
-        list.forEach { author ->
-            endString += "${author.name} ${author.surname}\n"
+//    private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {
+//        var endString = ""
+//        list.forEach { author ->
+//            endString += "${author.name} ${author.surname}\n"
+//        }
+//        endString = endString.trim()
+//        return endString.substring(0 until endString.length - 1)
+//    }
+
+    private fun getTextDependingOnBookCondition(condition: BookCondition): String {
+        return when (condition) {
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
         }
-        endString = endString.trim()
-        return endString.substring(0 until endString.length - 1)
     }
 
 }

@@ -11,4 +11,5 @@ data class TokenResponse(
         accessToken = accessToken,
         tokenType = tokenType
     )
+    companion object
 }

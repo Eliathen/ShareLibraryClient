@@ -16,7 +16,7 @@ import com.szymanski.sharelibrary.features.book.domain.usecase.WithdrawBookUseCa
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
-import com.szymanski.sharelibrary.features.exchange.domain.usecase.FinishExchangeUseCase
+import com.szymanski.sharelibrary.features.exchange.domain.usecase.FinishExchangeByBookIdUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.ShareBookUseCase
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.User
@@ -31,7 +31,7 @@ class BooksViewModel(
     private val withdrawBookUseCase: WithdrawBookUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val shareBookUseCase: ShareBookUseCase,
-    private val finishExchangeUseCase: FinishExchangeUseCase,
+    private val finishExchangeByBookIdUseCase: FinishExchangeByBookIdUseCase,
     private val userStorage: UserStorage,
 ) : BaseViewModel(errorMapper) {
 
@@ -177,7 +177,7 @@ class BooksViewModel(
     fun finishExchange(booksDisplayable: BookDisplayable) {
         setPendingState()
         booksDisplayable.id?.let { bookId ->
-            finishExchangeUseCase(
+            finishExchangeByBookIdUseCase(
                 scope = viewModelScope,
                 params = bookId
             ) { result ->

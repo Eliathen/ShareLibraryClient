@@ -41,7 +41,7 @@
     <string name="filter_title">Filter</string>
     <string name="not_found_add_new">Book not found. Add new?</string>
     <string name="save_book">Save Book</string>
-    <string name="title_hint">title</string>
+    <string name="title_hint">Title</string>
     <string name="authors_surname_hint">surname</string>
     <string name="author_name_hint">name</string>
     <string name="save_login_details">Save login details</string>
@@ -102,4 +102,15 @@
     <string name="exchange_button_text">Exchange</string>
     <string name="show_on_map"><u>Show on map</u></string>
     <string name="center_map_button_description">Button to center user position</string>
+    <string name="book_condition_label">Book Condition: </string>
+    <string name="book_condition_new">New</string>
+    <string name="book_condition_good">Good</string>
+    <string name="book_condition_bad">Bad</string>
+    <string name="language_hint">Language</string>
+    <string name="language_label">Language:</string>
+    <string name="condition_label">Condition:</string>
+    <string name="cancel_sharing">Cancel Sharing</string>
+    <string name="search_book_author">Title, author</string>
+    <string name="distance_max_value">100 km</string>
+    <string name="not_found_exchanges">Not found</string>
 </resources>

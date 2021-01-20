@@ -203,6 +203,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel>(R.layout.fragment_regis
             coordinates = CoordinateDisplayable(
                 null, coordinate?.latitude, coordinate?.longitude
             ),
+            books = listOf()
         ))
     }
 

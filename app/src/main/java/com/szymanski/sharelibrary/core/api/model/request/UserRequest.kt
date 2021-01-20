@@ -45,5 +45,6 @@ data class UserRequest(
         result = 31 * result + username.hashCode()
         return result
     }
+    companion object
 }
 

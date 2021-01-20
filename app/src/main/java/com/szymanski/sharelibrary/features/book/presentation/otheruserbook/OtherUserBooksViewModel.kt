@@ -14,7 +14,7 @@ import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetExchangesUseCase
 import com.szymanski.sharelibrary.features.home.domain.model.Requirement
 import com.szymanski.sharelibrary.features.home.domain.usecase.CreateRequirementUseCase
-import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByIdUseCase
+import com.szymanski.sharelibrary.features.home.domain.usecase.GetRequirementByExchangeIdUseCase
 import com.szymanski.sharelibrary.features.home.presentation.model.RequirementDisplayable
 
 class OtherUserBooksViewModel(
@@ -22,7 +22,7 @@ class OtherUserBooksViewModel(
     userStorage: UserStorage,
     private val getCoverUseCase: GetCoverUseCase,
     private val getUsersBookUseCase: GetUsersBookUseCase,
-    private val getRequirementByIdUseCase: GetRequirementByIdUseCase,
+    private val getRequirementByExchangeIdUseCase: GetRequirementByExchangeIdUseCase,
     private val getExchangesUseCase: GetExchangesUseCase,
     private val createRequirementUseCase: CreateRequirementUseCase,
 ) : BaseViewModel(errorMapper) {
@@ -93,6 +93,7 @@ class OtherUserBooksViewModel(
         }
     }
 
+    //TODO check if instead GetExchangesUseCase should be GetUserExchanges
     fun getBookRequirements(bookDisplayable: BookDisplayable) {
         setPendingState()
         getExchangesUseCase(
@@ -120,7 +121,7 @@ class OtherUserBooksViewModel(
 
     private fun getRequirementsByExchangeId(exchangeId: Long) {
         setPendingState()
-        getRequirementByIdUseCase(
+        getRequirementByExchangeIdUseCase(
             scope = viewModelScope,
             params = exchangeId
         ) { result ->

@@ -1,8 +1,8 @@
 package com.szymanski.sharelibrary.features.book.domain.model
 
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.user.domain.model.User
-import java.io.Serializable
 
 
 data class Book(
@@ -21,8 +21,11 @@ data class Book(
 
     var categories: List<Category>?,
 
-    ) : Serializable {
+    var language: Language?,
 
+    var condition: BookCondition?,
+
+    ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -39,6 +42,9 @@ data class Book(
         if (status != other.status) return false
         if (atUser != other.atUser) return false
         if (categories != other.categories) return false
+        if (language != other.language) return false
+        if (condition != other.condition) return false
+
         return true
     }
 
@@ -50,6 +56,8 @@ data class Book(
         result = 31 * result + (status?.hashCode() ?: 0)
         result = 31 * result + (atUser?.hashCode() ?: 0)
         result = 31 * result + (categories?.hashCode() ?: 0)
+        result = 31 * result + language.hashCode()
+        result = 31 * result + condition.hashCode()
         return result
     }
 

@@ -11,13 +11,13 @@ import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.navigation.BookNavigator
 import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
-import com.szymanski.sharelibrary.features.exchange.domain.usecase.FinishExchangeUseCase
+import com.szymanski.sharelibrary.features.exchange.domain.usecase.FinishExchangeByBookIdUseCase
 import com.szymanski.sharelibrary.features.exchange.domain.usecase.GetUserExchangesUseCase
 import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 
 class BookDetailsViewModel(
     private val bookNavigator: BookNavigator,
-    private val finishExchangeUseCase: FinishExchangeUseCase,
+    private val finishExchangeByBookIdUseCase: FinishExchangeByBookIdUseCase,
     private val userStorage: UserStorage,
     private val getUserExchangesUseCase: GetUserExchangesUseCase,
     errorMapper: ErrorMapper,
@@ -48,7 +48,7 @@ class BookDetailsViewModel(
     }
 
     fun finishExchange(bookId: Long) {
-        finishExchangeUseCase(
+        finishExchangeByBookIdUseCase(
             scope = viewModelScope,
             params = bookId
         ) { result ->

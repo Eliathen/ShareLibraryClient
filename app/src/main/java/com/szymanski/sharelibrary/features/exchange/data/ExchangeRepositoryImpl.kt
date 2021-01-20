@@ -6,9 +6,9 @@ import com.szymanski.sharelibrary.core.api.model.request.SaveExchangeRequest
 import com.szymanski.sharelibrary.core.exception.ErrorWrapper
 import com.szymanski.sharelibrary.core.exception.callOrThrow
 import com.szymanski.sharelibrary.core.storage.preferences.UserStorage
-import com.szymanski.sharelibrary.core.utils.ExchangeStatus
 import com.szymanski.sharelibrary.features.exchange.domain.ExchangeRepository
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
+import com.szymanski.sharelibrary.features.home.domain.model.ExchangeDetails
 
 class ExchangeRepositoryImpl(
     private val api: Api,
@@ -22,15 +22,15 @@ class ExchangeRepositoryImpl(
         }
     }
 
-    override suspend fun getNotUserExchanges(userId: Long): List<Exchange> {
-        return callOrThrow(errorWrapper) {
-            api.getExchangesByUserId(userId)
-                .filter { it.exchangeStatus == ExchangeStatus.STARTED }
-                .map {
-                    it.toExchange()
-                }
-        }
-    }
+//    override suspend fun getNotUserExchanges(userId: Long): List<Exchange> {
+//        return callOrThrow(errorWrapper) {
+//            api.getExchangesByUserId(userId)
+//                .filter { it.exchangeStatus == ExchangeStatus.STARTED }
+//                .map {
+//                    it.toExchange()
+//                }
+//        }
+//    }
 
     override suspend fun finishExchange(exchangeId: Long?) {
         return callOrThrow(errorWrapper) {
@@ -42,6 +42,14 @@ class ExchangeRepositoryImpl(
         return callOrThrow(errorWrapper) {
             api.getExchangesByUserId(userId).map {
                 it.toExchange()
+            }
+        }
+    }
+
+    override suspend fun getExchangesLinkedWithUser(userId: Long): List<ExchangeDetails> {
+        return callOrThrow(errorWrapper) {
+            api.getExchangesLinkedWithUser(userId).map {
+                it.toExchangeDetails()
             }
         }
     }
@@ -59,6 +67,8 @@ class ExchangeRepositoryImpl(
         radius: Double,
         categories: List<String>?,
         query: String?,
+        languageId: Int?,
+        conditions: List<Int>?,
     ): List<Exchange> {
         val userId = userStorage.getUserId()
         return callOrThrow(errorWrapper) {
@@ -67,7 +77,9 @@ class ExchangeRepositoryImpl(
                 longitude,
                 radius,
                 categories,
-                if (query.isNullOrEmpty()) null else query
+                if (query.isNullOrEmpty()) null else query,
+                languageId,
+                conditions
             ).filter { it.user.id != userId }.map { it.toExchange() }
         }
     }

@@ -12,6 +12,7 @@ data class User(
     val coordinates: Coordinate?,
     val books: List<Book>? = listOf(),
 ) {
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -44,5 +45,6 @@ data class User(
         result = 31 * result + (books?.hashCode() ?: 0)
         return result
     }
+
     companion object
 }

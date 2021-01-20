@@ -23,4 +23,7 @@ data class UserResponse(
         coordinates = this.coordinatesResponse.toCoordinates(),
         books = this.books?.map { book -> book.toBook() }
     )
+
+    companion object
+
 }
