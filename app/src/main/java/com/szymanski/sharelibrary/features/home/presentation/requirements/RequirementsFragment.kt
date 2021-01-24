@@ -36,7 +36,7 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
 
     private var bookDetailsDialog: AlertDialog? = null
 
-    private lateinit var chooseExchangeDialog: AlertDialog
+    private var chooseExchangeDialog: AlertDialog? = null
 
     override fun initViews() {
         super.initViews()
@@ -79,6 +79,7 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         viewModel.getUserBooks(requirement.user?.id!!)
         viewModel.otherUserBooks.observe(this) {
             displayExchangeDialog(requirement)
+            viewModel.otherUserBooks.removeObservers(this)
         }
     }
 
@@ -103,7 +104,7 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         }
         val contentView = layoutInflater.inflate(R.layout.dialog_choose_book, null)
         val builder = dialogBuilder
-            .setCancelable(false)
+            .setCancelable(true)
             .setView(contentView)
             .setTitle("Choose for what you want to exchange: ")
 
@@ -127,9 +128,8 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         })
         chooseAdapter.setChoices(choices)
         chooseExchangeDialog = builder.create()
-        chooseExchangeDialog.show()
         contentView.dialog_choose_book_cancel.setOnClickListener {
-            chooseExchangeDialog.dismiss()
+            chooseExchangeDialog?.dismiss()
         }
         contentView.dialog_choose_book_exchange.setOnClickListener {
             val position = chooseAdapter.selectedPosition
@@ -143,8 +143,9 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
                     viewModel.otherUserBooks.value?.get(position - 1)?.id!!))
             }
             viewModel.executeExchange(params)
-            chooseExchangeDialog.dismiss()
+            chooseExchangeDialog?.dismiss()
         }
+        chooseExchangeDialog?.show()
     }
 
     private fun displayBookDetails(book: BookDisplayable) {
