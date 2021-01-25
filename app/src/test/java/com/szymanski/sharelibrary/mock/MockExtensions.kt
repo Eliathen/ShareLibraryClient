@@ -7,12 +7,17 @@ import com.szymanski.sharelibrary.core.utils.BookStatus
 import com.szymanski.sharelibrary.core.utils.ExchangeStatus
 import com.szymanski.sharelibrary.features.book.domain.model.Book
 import com.szymanski.sharelibrary.features.book.domain.model.Language
+import com.szymanski.sharelibrary.features.book.presentation.model.BookDisplayable
+import com.szymanski.sharelibrary.features.chat.domain.model.Room
+import com.szymanski.sharelibrary.features.chat.presentation.model.RoomDisplayable
 import com.szymanski.sharelibrary.features.exchange.domain.model.Exchange
+import com.szymanski.sharelibrary.features.exchange.presentation.model.ExchangeDisplayable
 import com.szymanski.sharelibrary.features.home.domain.model.ExchangeDetails
 import com.szymanski.sharelibrary.features.user.domain.model.Coordinate
 import com.szymanski.sharelibrary.features.user.domain.model.Login
 import com.szymanski.sharelibrary.features.user.domain.model.Token
 import com.szymanski.sharelibrary.features.user.domain.model.User
+import com.szymanski.sharelibrary.features.user.presentation.model.UserDisplayable
 import org.jetbrains.annotations.TestOnly
 import java.time.LocalDateTime
 
@@ -50,6 +55,25 @@ fun User.Companion.mock() = User(
     username = "johndee",
     password = charArrayOf('z', 'a', 'q', '1', '@', 'W', 'S', 'X')
 )
+
+@TestOnly
+fun UserDisplayable.Companion.mock() = UserDisplayable(User.mock())
+
+@TestOnly
+fun Room.Companion.mock() = Room(
+    id = 1L,
+    User.mock(), User.mock()
+)
+
+@TestOnly
+fun RoomDisplayable.Companion.mock() = RoomDisplayable(Room.mock())
+
+@TestOnly
+fun BookDisplayable.Companion.mock() = BookDisplayable(Book.mock())
+
+@TestOnly
+fun ExchangeDisplayable.Companion.mock() = ExchangeDisplayable(Exchange.mock())
+
 
 @TestOnly
 fun Token.Companion.mock() = Token(
