@@ -15,7 +15,7 @@ class CurrentExchangeAdapter : RecyclerView.Adapter<CurrentExchangeAdapter.ViewH
     private lateinit var listeners: CurrentExchangeAdapterListeners
 
     fun setExchanges(exchanges: List<ExchangeDetailsDisplayable>) {
-        if (exchanges.isNotEmpty()) {
+        if (this.exchanges.isNotEmpty()) {
             this.exchanges.clear()
         }
         this.exchanges.addAll(exchanges)
@@ -25,7 +25,6 @@ class CurrentExchangeAdapter : RecyclerView.Adapter<CurrentExchangeAdapter.ViewH
     fun setListeners(listeners: CurrentExchangeAdapterListeners) {
         this.listeners = listeners
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =

@@ -33,40 +33,33 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    testOptions{
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    //core
     implementation coreDependencies.values()
 
-    //ui
     implementation uiDependencies.values()
 
-    //navigation
     implementation navigationDependencies.values()
 
-    //di
     implementation koinDependencies.values()
 
-    //coroutines
     implementation coroutinesDependencies.values()
 
-    //lifecycle
     implementation lifecycleDependencies.values()
 
-    //network
     implementation networkDependencies.values()
 
-    //fragment
     implementation fragmenDependencies.values()
 
-    //location
     implementation locationDependencies.values()
 
-    //map
     implementation mapDependencies.values()
 
     implementation preferencesDependencies.values()

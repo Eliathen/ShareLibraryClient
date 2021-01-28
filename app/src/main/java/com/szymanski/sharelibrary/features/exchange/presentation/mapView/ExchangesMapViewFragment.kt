@@ -28,6 +28,7 @@ import com.szymanski.sharelibrary.R
 import com.szymanski.sharelibrary.core.base.BaseFragment
 import com.szymanski.sharelibrary.core.helpers.convertAuthorDisplayableListToString
 import com.szymanski.sharelibrary.core.helpers.convertCategoriesDisplayableListToString
+import com.szymanski.sharelibrary.core.utils.BookCondition
 import com.szymanski.sharelibrary.core.utils.TAG
 import com.szymanski.sharelibrary.core.utils.defaultRadiusDistance
 import com.szymanski.sharelibrary.features.exchange.presentation.all.ExchangesViewModel
@@ -218,6 +219,10 @@ class ExchangesMapViewFragment :
                 Glide.with(this)
                     .load(exchange.book.cover)
                     .into(dialogContent.exchange_details_cover)
+            }
+            exchange_details_language.text = exchange.book.languageDisplayable?.name
+            exchange_details_condition.text = exchange.book.condition?.let {
+                getTextDependingOnBookCondition(it)
             }
             exchange_details_user_wrapper.visibility = View.GONE
             book_requested_info.visibility = View.GONE
@@ -534,5 +539,19 @@ class ExchangesMapViewFragment :
         exchanges?.let { adapterExchanges.setExchanges(it) }
         dialogContent!!.dialog_exchanges_progress_bar.visibility = View.GONE
         return true
+    }
+
+    private fun getTextDependingOnBookCondition(condition: BookCondition): String {
+        return when (condition) {
+            BookCondition.GOOD -> {
+                getString(R.string.book_condition_good)
+            }
+            BookCondition.NEW -> {
+                getString(R.string.book_condition_new)
+            }
+            else -> {
+                getString(R.string.book_condition_bad)
+            }
+        }
     }
 }

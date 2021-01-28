@@ -151,6 +151,7 @@ class SaveBookFragment : BaseFragment<SaveBookViewModel>(R.layout.fragment_save_
     }
 
     private fun setLanguageList(languages: List<LanguageDisplayable>) {
+        if (languages.isEmpty()) return
         val languagesNames = mutableListOf<String>()
         for (languageDisplayable in languages) {
             languageDisplayable.name?.let { it1 -> languagesNames.add(it1) }

@@ -46,16 +46,14 @@ class RequirementsViewModel(
             }
         }
     }
-    private val _otherUserBooks: MutableLiveData<List<Book>> by lazy {
-        MutableLiveData<List<Book>>()
-    }
-    val otherUserBooks: LiveData<List<BookDisplayable>> by lazy {
-        _otherUserBooks.map {
-            it.map { book ->
-                BookDisplayable(book)
-            }
+    private val _otherUserBooks: MutableList<Book> = mutableListOf()
+
+    fun getOtherUserBooks(): List<BookDisplayable> {
+        return _otherUserBooks.map {
+            BookDisplayable(it)
         }
     }
+
     private val _bookDetails: LiveEvent<Book> by lazy {
         LiveEvent()
     }
@@ -63,6 +61,9 @@ class RequirementsViewModel(
         _bookDetails.map {
             BookDisplayable(it)
         }
+    }
+    val _canDisplay: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(false)
     }
 
 
@@ -90,10 +91,14 @@ class RequirementsViewModel(
         ) { result ->
             setIdleState()
             result.onSuccess {
-                _otherUserBooks.value =
-                    it.filter { book -> book.status == BookStatus.AT_OWNER || book.status == BookStatus.SHARED }
+                _otherUserBooks.clear()
+                _otherUserBooks.addAll(
+                    it.filter { book -> book.status == BookStatus.AT_OWNER || book.status == BookStatus.SHARED })
+                _canDisplay.value = true
             }
-            result.onFailure { handleFailure(it) }
+            result.onFailure {
+                handleFailure(it)
+            }
         }
     }
 
@@ -108,8 +113,8 @@ class RequirementsViewModel(
                 result.onSuccess { cover ->
                     setIdleState()
                     val book =
-                        _otherUserBooks.value?.first { book -> book.id == bookDisplayable.id }
-                    book?.cover = cover
+                        _otherUserBooks.first { book -> book.id == bookDisplayable.id }
+                    book.cover = cover
                     _bookDetails.postValue(book)
                 }
                 result.onFailure { it ->
@@ -129,12 +134,14 @@ class RequirementsViewModel(
             setIdleState()
             result.onSuccess {
                 showMessage("Exchange has been made")
+                params[ExecuteExchangeRequest.WITH_USER_ID_KEY]?.let { it1 -> getUserBooks(it1) }
                 getUserRequirements(
                     scope = viewModelScope,
                     params = userStorage.getUserId()
                 ) { result ->
                     result.onSuccess {
                         _requirements.value = it
+
                     }
                     params.get(ExecuteExchangeRequest.WITH_USER_ID_KEY)
                         ?.let { it1 -> openChatRoom(it1) }

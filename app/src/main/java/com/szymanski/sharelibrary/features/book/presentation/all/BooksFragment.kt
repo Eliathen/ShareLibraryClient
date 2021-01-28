@@ -230,7 +230,6 @@ class BooksFragment : BaseFragment<BooksViewModel>(R.layout.fragment_books),
         popupMenu: PopupMenu,
         position: Int,
     ) {
-        //TODO create new menu for duringExchangeStatus
         popupMenu.inflate(R.menu.item_books_exchange_state_menu)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {

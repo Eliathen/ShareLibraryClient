@@ -15,22 +15,18 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val chatModule = module {
-    //viewModel
     viewModel { ChatViewModel(get(), get(), get(), get()) }
     viewModel { ChatRoomViewModel(get(), get(), get(), get(), get()) }
 
-    //useCase
     factory { GetUserRoomsUseCase(get()) }
     factory { GetRoomMessagesUseCase(get()) }
     factory { GetRoomBySenderIdAndRecipientIdUseCase(get()) }
-    //repository
+
     factory<ChatRepository> { ChatRepositoryImpl(get(), get()) }
 
-    //adapters
     factory { ChatAdapter() }
     factory { ChatRoomAdapter() }
 
-    //navigation
     factory<ChatNavigation> { ChatNavigationImpl(get()) }
 
 }

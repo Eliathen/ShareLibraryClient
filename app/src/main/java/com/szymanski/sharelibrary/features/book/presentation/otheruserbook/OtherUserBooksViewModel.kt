@@ -93,7 +93,6 @@ class OtherUserBooksViewModel(
         }
     }
 
-    //TODO check if instead GetExchangesUseCase should be GetUserExchanges
     fun getBookRequirements(bookDisplayable: BookDisplayable) {
         setPendingState()
         getExchangesUseCase(
