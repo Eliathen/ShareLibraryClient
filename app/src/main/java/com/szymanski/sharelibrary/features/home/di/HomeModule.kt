@@ -19,24 +19,20 @@ import org.koin.dsl.module
 val homeModule = module {
 
 
-    //viewModel
     viewModel { HomeViewModel() }
     viewModel { RequirementsViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { CurrentExchangeViewModel(get(), get(), get(), get(), get(), get()) }
-    //repository
+
     factory<RequirementRepository> { RequirementRepositoryImpl(get(), get()) }
 
-    //useCase
     factory { CreateRequirementUseCase(get()) }
     factory { GetRequirementByExchangeIdUseCase(get()) }
     factory { GetUserRequirements(get()) }
     factory { GetCurrentExchangesLinkedWithUserUseCase(get()) }
 
-    //adapter
     factory { RequirementsAdapter() }
     factory { CurrentExchangeAdapter() }
 
-    //navigation
     factory<HomeNavigation> { HomeNavigationImpl(get()) }
 
 }

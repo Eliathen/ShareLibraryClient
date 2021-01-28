@@ -22,16 +22,6 @@ class ExchangeRepositoryImpl(
         }
     }
 
-//    override suspend fun getNotUserExchanges(userId: Long): List<Exchange> {
-//        return callOrThrow(errorWrapper) {
-//            api.getExchangesByUserId(userId)
-//                .filter { it.exchangeStatus == ExchangeStatus.STARTED }
-//                .map {
-//                    it.toExchange()
-//                }
-//        }
-//    }
-
     override suspend fun finishExchange(exchangeId: Long?) {
         return callOrThrow(errorWrapper) {
             api.finishExchange(exchangeId)

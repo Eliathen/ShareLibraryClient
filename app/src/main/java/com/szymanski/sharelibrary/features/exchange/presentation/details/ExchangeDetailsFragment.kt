@@ -97,15 +97,6 @@ class ExchangeDetailsFragment :
         }
     }
 
-//    private fun convertAuthorDisplayableListToString(list: List<AuthorDisplayable>): String {
-//        var endString = ""
-//        list.forEach { author ->
-//            endString += "${author.name} ${author.surname}\n"
-//        }
-//        endString = endString.trim()
-//        return endString.substring(0 until endString.length - 1)
-//    }
-
     private fun getTextDependingOnBookCondition(condition: BookCondition): String {
         return when (condition) {
             BookCondition.GOOD -> {

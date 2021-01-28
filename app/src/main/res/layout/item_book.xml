@@ -57,15 +57,17 @@
         app:layout_constraintStart_toEndOf="@+id/cover"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_title"
         android:layout_marginStart="10dp"
+        tools:text="Marek Szymański"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/book_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@id/cover"
-        app:layout_constraintBottom_toBottomOf="@id/cover"
-        android:gravity="center_horizontal" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Shared" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

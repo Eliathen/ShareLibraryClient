@@ -234,9 +234,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
         profile_coordinates_wrapper.visibility = View.VISIBLE
         full_name_profile.visibility = View.VISIBLE
         profile_progress_bar.visibility = View.GONE
-//        progress_bar_profile.visibility = View.GONE
-//        full_name_wrapper.visibility = View.VISIBLE
-//        linearLayout.visibility = View.VISIBLE
 
     }
 
@@ -245,9 +242,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(R.layout.fragment_profile
         profile_coordinates_wrapper.visibility = View.INVISIBLE
         full_name_profile.visibility = View.INVISIBLE
         profile_progress_bar.visibility = View.VISIBLE
-//        progress_bar_profile.visibility = View.VISIBLE
-//        full_name_wrapper.visibility = View.INVISIBLE
-//        linearLayout.visibility = View.INVISIBLE
 
     }
 

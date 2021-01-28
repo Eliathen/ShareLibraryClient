@@ -46,9 +46,6 @@ class CurrentExchangeFragment :
         super.initObservers()
         viewModel.exchanges.observe(this) {
             currentExchangeAdapter.setExchanges(it)
-            if (it.isEmpty()) {
-                currentExchangeAdapter.notifyItemRemoved(0)
-            }
         }
     }
 

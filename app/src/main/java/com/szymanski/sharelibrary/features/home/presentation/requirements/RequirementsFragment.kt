@@ -77,9 +77,13 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
     override fun onItemClick(position: Int) {
         val requirement = viewModel.requirement.value?.get(position)!!
         viewModel.getUserBooks(requirement.user?.id!!)
-        viewModel.otherUserBooks.observe(this) {
-            displayExchangeDialog(requirement)
-            viewModel.otherUserBooks.removeObservers(this)
+        viewModel._canDisplay.observe(this) {
+            if (it == true) {
+                Log.d(TAG, "onItemClick: display dialog")
+                displayExchangeDialog(requirement)
+                viewModel._canDisplay.value = false
+                viewModel._canDisplay.removeObservers(this)
+            }
         }
     }
 
@@ -96,10 +100,11 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
     }
 
     private fun displayExchangeDialog(requirement: RequirementDisplayable) {
+        Log.d(TAG, "displayExchangeDialog: ${viewModel.getOtherUserBooks()}")
         val dialogBuilder = AlertDialog.Builder(requireActivity(),
             android.R.style.Theme_Material_Light_NoActionBar_Fullscreen)
         val choices = mutableListOf("Deposit - ${requirement.exchange?.deposit}")
-        viewModel.otherUserBooks.value?.forEach {
+        viewModel.getOtherUserBooks().forEach {
             choices.add(it.title!!)
         }
         val contentView = layoutInflater.inflate(R.layout.dialog_choose_book, null)
@@ -116,8 +121,8 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
         chooseAdapter.setListeners(object : ChooseBookAdapter.ChooseBookAdapterListeners {
             override fun onItemClick(position: Int) {
                 if (position > 0) {
-                    val book = viewModel.otherUserBooks.value?.get(position - 1)
-                    viewModel.downloadImage(book!!)
+                    val book = viewModel.getOtherUserBooks().get(position - 1)
+                    viewModel.downloadImage(book)
                     viewModel.bookDetails.observe(this@RequirementsFragment) {
                         if (bookDetailsDialog == null && viewModel.uiState.value == UiState.Idle) {
                             displayBookDetails(it)
@@ -140,7 +145,7 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
                 requirement.exchange?.id!!))
             if (position != 0) {
                 params = params.plus(Pair(ExecuteExchangeRequest.FOR_BOOK_ID_KEY,
-                    viewModel.otherUserBooks.value?.get(position - 1)?.id!!))
+                    viewModel.getOtherUserBooks().get(position - 1).id!!))
             }
             viewModel.executeExchange(params)
             chooseExchangeDialog?.dismiss()
@@ -212,8 +217,8 @@ class RequirementsFragment : BaseFragment<RequirementsViewModel>(R.layout.fragme
     }
 
     override fun onResume() {
-        Log.d(TAG, "onResume: RequirementsFragment")
         viewModel.getRequirements()
+        viewModel._canDisplay.value = false
         super.onResume()
     }
 }

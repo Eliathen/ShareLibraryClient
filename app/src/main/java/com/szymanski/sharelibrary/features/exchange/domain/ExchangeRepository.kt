@@ -6,7 +6,6 @@ import com.szymanski.sharelibrary.features.home.domain.model.ExchangeDetails
 interface ExchangeRepository {
 
     suspend fun shareBook(exchange: Exchange): Exchange
-//    suspend fun getNotUserExchanges(userId: Long): List<Exchange>
     suspend fun finishExchange(exchangeId: Long?)
     suspend fun getUserExchanges(userId: Long): List<Exchange>
     suspend fun getExchangeById(exchangeId: Long): Exchange

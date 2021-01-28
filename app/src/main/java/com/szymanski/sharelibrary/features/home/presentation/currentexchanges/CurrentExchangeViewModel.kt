@@ -68,12 +68,6 @@ class CurrentExchangeViewModel(
             result.onSuccess {
                 showMessage("Exchange has been finished")
                 getCurrentExchanges()
-                val newList = _exchanges.value?.filter { it.id != exchangeId }
-                if (newList.isNullOrEmpty()) {
-                    _exchanges.postValue(mutableListOf())
-                } else {
-                    _exchanges.postValue(ArrayList(newList))
-                }
             }
             result.onFailure {
                 handleFailure(it)
