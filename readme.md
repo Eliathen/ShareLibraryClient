@@ -20,17 +20,9 @@ Backend for application: https://github.com/Eliathen/sharelibrary
 - Users can communicate with others via chat
 
 # Screenshots
-<table border="0" style ="width : 300px; table-layout: fixed;">
- <tr>
-    <td style ="width: 400px; overflow: hidden; text-align:center;"><img src="./screenshots/adding_book.png"></td>
-    <td style ="width: 400px; overflow: hidden; text-align:center;"><img src="./screenshots/exchanges_view_map.png"></td>
-    <td style ="width: 400px; overflow: hidden; text-align:center;"><img src="./screenshots/filtering.png"></td>
- </tr>
- <tr>
-    <td style ="width: 400px; overflow: hidden; text-align:center;">Adding book for exchange. All fields are mandatory</td>
-    <td style ="width: 400px; overflow: hidden; text-align:center;">Displaying current exchanges using map. Orange icon stand for user's current exchange place, red is others' exchanges and black is user's current location</td>
-    <td style ="width: 400px; overflow: hidden; text-align:center;">Beside standard book's details like language and category users can filter by distance from current location.</td>
- </tr>
-</table>
-            
+| ![](./screenshots/adding_book.png)        | ![](./screenshots/exchanges_view_map.png) | ![](./screenshots/filtering.png)          |
+|                  :----:                   |                  :----:                   |                  :----:                   |
+| Adding book for exchange. All fields are mandatory| Displaying current exchanges using map.<br>Orange icon stand for user's current exchange place,<br>red is others' exchanges and black is user's current location| Beside standard book's details like<br>language and category users can filter<br>by distance from current location.                             |
+|                  :----                    |                  :----                    |                  :----                    |
+
 
