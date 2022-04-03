@@ -23,6 +23,5 @@ Backend for application: https://github.com/Eliathen/sharelibrary
 | ![](./screenshots/adding_book.png)        | ![](./screenshots/exchanges_view_map.png) | ![](./screenshots/filtering.png)          |
 |                  :----:                   |                  :----:                   |                  :----:                   |
 | Adding book for exchange. All fields are mandatory| Displaying current exchanges using map.<br>Orange icon stand for user's current exchange place,<br>red is others' exchanges and black is user's current location| Beside standard book's details like<br>language and category users can filter<br>by distance from current location.                             |
-|                  :----                    |                  :----                    |                  :----                    |
 
 
