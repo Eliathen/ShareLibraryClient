@@ -20,23 +20,16 @@ Backend for application: https://github.com/Eliathen/sharelibrary
 - Users can communicate with others via chat
 
 # Screenshots
-
-<style type="text/css">
-        td { width: 300px; overflow: hidden; text-align:center}
-        table { width : 300px; table-layout: fixed; }
-    </style>
-
-<table border="0">
+<table border="0" style ="width : 300px; table-layout: fixed;">
  <tr>
-    <td><img src="./screenshots/adding_book.png"></td>
-    <td><img src="./screenshots/exchanges_view_map.png"></td>
-    <td><img src="./screenshots/filtering.png"></td>
+    <td style ="width: 400px; overflow: hidden; text-align:center;"><img src="./screenshots/adding_book.png"></td>
+    <td style ="width: 400px; overflow: hidden; text-align:center;"><img src="./screenshots/exchanges_view_map.png"></td>
+    <td style ="width: 400px; overflow: hidden; text-align:center;"><img src="./screenshots/filtering.png"></td>
  </tr>
  <tr>
-    <td>Adding book for exchange. All fields are mandatory</td>
-    <td>Displaying current exchanges using map.<br>Orange icon stand for user's current exchange<br>place, red is others' exchanges and black is<br>user's current location</td>
-    <td>Beside standard book's details like<br>language and category users can filter by<br>distance from current location.</td>
-
+    <td style ="width: 400px; overflow: hidden; text-align:center;">Adding book for exchange. All fields are mandatory</td>
+    <td style ="width: 400px; overflow: hidden; text-align:center;">Displaying current exchanges using map. Orange icon stand for user's current exchange place, red is others' exchanges and black is user's current location</td>
+    <td style ="width: 400px; overflow: hidden; text-align:center;">Beside standard book's details like language and category users can filter by distance from current location.</td>
  </tr>
 </table>
             
